@@ -1,0 +1,27 @@
+Things to show in Github Demo:
+
+- Whats version control/source control. Useful for tracking changes, undoing mistakes
+    collaboration
+- Whats a repo. Local vs Remote. 
+- Branches vs master. Explain merging.
+- Go over how to clone using Github Desktop. Local vs Remote. Mention .gitignore. Readme.md
+- Explain the logic about staging (git add) where you prepare the package to commit. Commit wraps it up. 
+    Closes it and its ready to be shipped. Metaphor: Preparing a gift for someone. Git add puts Things
+    in the box, git commit wraps up the gift. Git push hands the gift to the postal office.
+- Make a change on my files. See the difference. 
+    Git add
+    Git commit. Save changes with a message
+    Git push
+    Git pull. Maybe go over fetch vs pull? Fetch looks up changes without merging to local. Pull full 
+        sends and merges them to local
+
+Workflow Demo:
+- Create repo on Github
+- Clone it locally
+- Make changes and commit
+- Push changes
+- Create a branch, make changes, and push
+- Open pull request and merge
+
+Good resources:
+https://www.freecodecamp.org/news/guide-to-git-github-for-beginners-and-experienced-devs/ 
