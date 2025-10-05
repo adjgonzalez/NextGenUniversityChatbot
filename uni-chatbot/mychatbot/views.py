@@ -4,4 +4,4 @@ from django.shortcuts import render
 # Create your views here.
 
 def index(request):
-    return HttpResponse("Hello, World! This is the chatbot's landing page")
+    return render(request, "home.html")
