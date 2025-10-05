@@ -1,7 +1,13 @@
 {% extends "base/base.html" %} 
+{% comment %} Extends needs to be first line {% endcomment %}
+{% load static %}
+{% comment %} Tells django to use the css styles from static {% endcomment %}
     {% block title %} 
+    {% comment %} Change the name of the page on the tab {% endcomment %}
         Home Page 
     {% endblock %}
+
     {% block content %}
-        <p> Hello, world! </p>
+    {% comment %} Change the block 'content' found in base.html for whatever is here {% endcomment %}
+        <h1> Hello, world! </h1>
     {% endblock %}
