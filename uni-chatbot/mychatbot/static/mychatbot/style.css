@@ -3,6 +3,25 @@ body {
   padding: 0;
 }
 
+/* Override Bootstrap modal positioning */
+#chatbotModal .modal-dialog {
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    margin: 0 !important; /* Override Bootstrap's margin */
+    max-width: 400px;
+}
+
+/* Position the button */
+.chatbot-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    z-index: 1000;
+    width: 60px;
+    height: 60px;
+}
+
 /* bottom nav-bar custom color */
 .custom-bottom-navbar {
   background-color: #b9625d;

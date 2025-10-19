@@ -1,11 +1,9 @@
 {% load static %}
 
-<!-- Chat Button -->
+<!-- old chatbot, keeping in case there may be something useful for the final version here
 <button id="chatToggle" class="chat-btn btn btn-primary">
   💬 Chat with me
 </button>
-
-<!-- Chat Box -->
 <div id="chatBox" class="chat-box shadow-lg">
   <div class="chat-header d-flex justify-content-between align-items-center">
     <span>NextGen Chatbot</span>
@@ -22,3 +20,96 @@
     <button id="sendBtn" class="btn btn-primary ms-2">Send</button>
   </div>
 </div>
+-->
+<!-- Bootstrap Chat Widget -->
+    <button class="btn btn-primary rounded-circle chatbot-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#chatbotModal">
+        💬
+    </button>
+
+                <div class="modal fade" id="chatbotModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">University Assistant</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body" style="height: 300px; overflow-y: auto;" id="chatMessages">
+                <div class="alert alert-info">
+                    <p>Hello! Welcome to the NextGen university chatbot.</p>
+                    <strong>Assistant:</strong> Are you already a student?
+                </div>
+                <div class="gap-2" id="initialDecision">
+                    <button class="btn btn-outline-primary" id='yesButton' onclick="yesListener()">
+                        ✅ Yes
+                    </button>
+                    <button class="btn btn-outline-primary" id='noButton' onclick="noListener()">
+                        ❌ No
+                    </button>
+                </div>
+
+                <!-- Program options as buttons -->
+                <div class="gap-2" id="programButtons" hidden>
+                    <button class="btn btn-outline-primary program-option" data-program="computer-science">
+                        🖥️ Computer Science
+                    </button>
+                    <button class="btn btn-outline-primary program-option" data-program="business">
+                        💼 Business Administration
+                    </button>
+                    <button class="btn btn-outline-primary program-option" data-program="engineering">
+                        ⚙️ Engineering
+                    </button>
+                    <button class="btn btn-outline-primary program-option" data-program="arts">
+                        🎨 Arts & Humanities
+                    </button>
+                    <button class="btn btn-outline-primary program-option" data-program="arts">
+                        🩺 Health Sciences
+                    </button>
+                </div>
+                <div class="gap-2" id="studentButtons" hidden>
+                    <button class="btn btn-outline-primary program-option" data-program="computer-science">
+                        Email me my program's resources
+                    </button>
+                    <button class="btn btn-outline-primary program-option" data-program="business">
+                        I want to contact an administrator
+                    </button>
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="text" class="form-control" placeholder="Type your question...">
+                    <button class="btn btn-primary">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- YOUR JAVASCRIPT CODE GOES HERE -->
+    <script>
+    // This is where you add the new functions
+
+    let conversationState = 'asking-if-student';
+    function yesListener(){
+        document.getElementById('programButtons').hidden=false;
+        document.getElementById('initialDecision').hidden=true;
+    }
+    function noListener(){
+        document.getElementById('studentButtons').hidden=false;
+        document.getElementById('initialDecision').hidden=true;
+    }
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `alert ${sender === 'user' ? 'alert-primary ms-5' : 'alert-secondary'}`;
+        messageDiv.innerHTML = `<strong>${sender === 'user' ? 'You' : 'Assistant'}:</strong> ${text}`;
+        document.getElementById('chatMessages').appendChild(messageDiv);
+
+        const chatMessages = document.getElementById('chatMessages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    function displayPrograms(){
+
+    }
+    </script>

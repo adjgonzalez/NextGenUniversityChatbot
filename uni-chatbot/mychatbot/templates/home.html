@@ -6,8 +6,7 @@
     {% comment %} Change the name of the page on the tab {% endcomment %}
         Home Page 
     {% endblock %}
-
-    {% block content %}
+ {% block content %}
     {% comment %} Change the block 'content' found in base.html for whatever is here {% endcomment %}
     <section class="hero-section container-fluid">
         <div class="row align-items-center">
@@ -21,14 +20,13 @@
             </h1>
             <p>Reignite your career with hands-on learning and expert mentorship. Start your journey today.</p>
           </div>
-      
+
           <!-- Right Side -->
           <div class="col-lg-6 col-md-12 hero-image text-center">
             <img src="{% static 'images/group.png' %}" alt="Hero Banner" class="img-fluid">
           </div>
         </div>
       </section>
-      
       <!-- Floating Chat Button -->
       {% include "base/chatbox.html" %}
     {% endblock %}
