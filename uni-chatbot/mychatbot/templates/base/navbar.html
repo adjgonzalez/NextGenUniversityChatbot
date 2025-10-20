@@ -3,21 +3,10 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
   <div class="container">
     <!-- Logo -->
-    <a class="navbar-brand" href="">
+    <a class="navbar-brand" href="/">
       <img src="{% static 'images/logo.png' %}" alt="Logo"  width="120" class="d-inline-block align-text-top">
     </a>
-    
-    <!-- Search Bar -->
-    <form class="d-flex ms-auto" role="search">
-      <input class="form-control me-2" type="search" placeholder="Search">
-      <button class="btn btn-outline-primary" type="submit">Search</button>
-    </form>
-
-    <!-- Sign In | Register -->
-    <div class="d-flex align-items-center">
-      <a href="" class="btn btn-outline-primary me-2 ms-3">Sign In</a>
-      <a href="" class="btn btn-primary">Register</a>
-    </div>
+       
   </div>
 </nav>
 
@@ -26,11 +15,19 @@
   <div class="container">
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Admissions</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Programs</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Faculty and Departments</a></li>
         <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+        <li class="nav-item"> 
+          <form class="d-flex ms-auto" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+          </form>
+         </li>
+        <li class="nav-item"><a href="" class="btn btn-outline-primary me-2 ms-3">Sign In</a></li>
+        <li class="nav-item"><a href="{% url 'users:register' %}" class="btn btn-primary" aria-label="User Registration" title="User Registration">Register</a></li>
       </ul>
     </div>
   </div>
