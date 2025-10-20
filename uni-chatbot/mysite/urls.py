@@ -21,5 +21,7 @@ from mychatbot import views
 urlpatterns = [
     path('', views.index, name='mychatbot'),
     path('admin/', admin.site.urls),
+    path('users/', include('users.urls'))
+
     # path('uni/', include("mychatbot.urls")),
 ]
