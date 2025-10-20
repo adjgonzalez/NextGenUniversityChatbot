@@ -20,18 +20,18 @@
         <li class="nav-item"><a class="nav-link" href="#">Programs</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Faculty and Departments</a></li>
         <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-        {% comment %} <li class="nav-item"> 
-          <form class="d-flex ms-auto" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search">
-            <button class="btn btn-outline-primary" type="submit">Search</button>
-          </form>
-         </li> {% endcomment %}        
-        <li class="nav-item"><a href="{% url 'users:login' %}" class="btn btn-primary" aria-label="User Log In" title="User Log In">Log In</a></li>
-        <li class="nav-item"><a href="{% url 'users:register' %}" class="btn btn-primary" aria-label="User Registration" title="User Registration">Register</a></li>
-        <form class="logout" action="{% url 'users:logout' %}" method="post">
-          {% csrf_token %}
-          <button class="btn btn-primary" aria-label="Log Out" title="Log Out">Log Out</button>
-        </form> 
+        
+        {% if user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" aria-label="Current User" title="Current User">Hello {{user.username}}</a></li>
+          
+          <form class="logout" action="{% url 'users:logout' %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-primary" aria-label="Log Out" title="Log Out">Log Out</button>
+          </form>          
+        {% else %}
+          <li class="nav-item"><a href="{% url 'users:register' %}" class="btn btn-primary" aria-label="User Registration" title="User Registration">Register</a></li>
+          <li class="nav-item"><a href="{% url 'users:login' %}" class="btn btn-primary" aria-label="User Log In" title="User Log In">Log In</a></li>
+        {% endif %}
       </ul>
     </div>
   </div>
