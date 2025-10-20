@@ -28,6 +28,10 @@
          </li> {% endcomment %}        
         <li class="nav-item"><a href="{% url 'users:login' %}" class="btn btn-primary" aria-label="User Log In" title="User Log In">Log In</a></li>
         <li class="nav-item"><a href="{% url 'users:register' %}" class="btn btn-primary" aria-label="User Registration" title="User Registration">Register</a></li>
+        <form class="logout" action="{% url 'users:logout' %}" method="post">
+          {% csrf_token %}
+          <button class="btn btn-primary" aria-label="Log Out" title="Log Out">Log Out</button>
+        </form> 
       </ul>
     </div>
   </div>
