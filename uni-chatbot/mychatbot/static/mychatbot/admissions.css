@@ -1,0 +1,123 @@
+body {
+  background-color: #fff;
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary-color: #b9625d;
+}
+
+/* Sidebar items */
+.list-group {
+  box-shadow: none !important;
+  border: none;
+  border-radius: 0;
+}
+
+.list-group-item {
+  color: #003366;
+  font-weight: 0;
+  border: none;
+  border-radius: 0;
+  transition: color 0.3s;
+  background-color: transparent;
+}
+
+.list-group-item:hover {
+  color: var(--primary-color);
+  background-color: transparent !important;
+}
+
+.list-group-item.active {
+  color: var(--primary-color);
+  font-weight: 650;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+/* Main content area */
+#content {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Optional: Sidebar container spacing */
+aside {
+  padding: 10px 0;
+}
+
+/* Main Heading - first heading */
+.main-heading {
+  color: var(--primary-color); /* Use your primary color #b9625d */
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Subheadings */
+#content h4 {
+  color: #000000;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Paragraph text */
+#content p {
+  color: #333333;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* Custom bullet points */
+.custom-bullets {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.custom-bullets li {
+  margin-bottom: 8px;
+}
+
+/* Remove any borders/shadows from content */
+#content {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: none;
+}
+
+/* Breadcrumb container */
+#admissions-breadcrumb {
+  margin: 0; 
+  padding: 0; 
+}
+
+/* Breadcrumb links */
+#admissions-breadcrumb .breadcrumb-item a {
+  color: #b9625d !important; 
+  text-decoration: none !important;
+  font-weight: 300;
+}
+
+/* Hover state for links */
+#admissions-breadcrumb .breadcrumb-item a:hover {
+  color: #ddb8b6 !important; 
+  text-decoration: underline !important; 
+}
+
+/* Active breadcrumb (current page) */
+#admissions-breadcrumb .breadcrumb-item.active {
+  color: #6c3f3b !important;
+  font-weight: 300;
+}
+
+/* Reduce spacing between breadcrumb items */
+#admissions-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  padding: 0 4px; /* spacing between separator and text */
+}

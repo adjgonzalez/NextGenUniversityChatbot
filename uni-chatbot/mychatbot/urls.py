@@ -2,5 +2,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.index, name="index")
+    path("", views.index, name="index"),
+    path("admissions/", views.admissions_page, name="admissions"),
+    path("admissions/<str:page_name>/", views.admissions_page, name="admissions_page"),
+    path("admissions/load/<str:page_name>/", views.load_sidebar_content, name="load_sidebar_content"),  # AJAX
+    path("contact/", views.contact, name="contact"),
+    path("faculty/", views.faculty, name="faculty"),
 ]
