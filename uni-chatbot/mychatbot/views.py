@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+from django.http import Http404
 
 # Home page
 def index(request):
@@ -44,3 +45,95 @@ def contact(request):
 # Faculty page
 def faculty(request):
     return render(request, "base/faculty.html")
+
+
+def programs(request):
+    return render(request, 'base/programs.html', {'programs': PROGRAMS})
+
+
+PROGRAMS = {
+    'Undergraduate': [
+        {
+            'name': 'BSc in Computer Science',
+            'slug': 'bsc-in-computer-science',
+            'degree': 'BSc',
+            'duration': '4 years',
+            'routes': 'Course-based',
+            'enrollment_status': 'Full-time',
+            'campus': "St. John's",
+            'description': (
+            'Learn programming, algorithms, AI, and software development. '
+            'Computer science deals with the theoretical foundations of information and computation, and with practical techniques for their implementation and application. '
+            'Virtually every discipline – practical, theoretical or creative – is experiencing the influence of computers. The ever-increasing dependence on computer technology '
+            'in our daily lives presents rich opportunities for those interested in the design of new applications and systems. Every career can benefit from a deeper understanding of computing. '
+            'The technology skills a major in computer science helps develop will make you indispensable and relevant no matter your position. '
+            'We offer individual courses and full programs so any student can develop their computer skills and interest regardless of their career trajectory. '
+            'Memorial’s Co-operative Internship in Computer Science (CICS) provides an opportunity for you to obtain rewarding placements in computer industries. '
+            'The internship program includes a paid placement of eight to 16 months so you can explore career options and develop workplace skills at the same time. '
+            'We offer major, minor and honours programs leading to either a bachelor of arts (BA) or bachelor of science (B.Sc.) in Computer Science. '
+            'Joint programs are available in: '
+
+            ),
+            'joint_programs': [
+                'Applied Mathematics and Computer Science (B.Sc. major)',
+                'Computer Science and Economics (B.Sc. major)',
+                'Computer Science and Physics (B.Sc. major and honours)',
+                'Computer Science and Pure Mathematics (B.Sc. major and honours)',
+                'Computer Science and Statistics (B.Sc. major and honours)',
+            ],
+        },
+        {
+            'name': 'BA in Economics',
+            'slug': 'ba-in-economics',
+            'degree': 'BA', 
+            'duration': '3 years',
+            'description': 'Study economics, finance, and market theory. '
+            'Economics is a versatile field that deals with the analysis and management of production, '
+            'distribution and consumption of goods and services. Economics gives us the analytical tools to understand questions '
+            'such as how prices are determined, why some people are unemployed, why interest rates rise and fall, '
+            'and why product is traded between nations.'
+        }
+    ],
+    'Graduate': [
+        {
+            'name': 'MBA',
+            'slug': 'mba',
+            'degree': 'MBA', 
+            'duration': '2 years',
+            'description': 'Advanced business management, leadership, and strategy. The MBA program is made up of 20 courses to be '
+            'completed on a part-time or full-time basis. Our MBA program is offered on campus in St. John’s and is not available online. '
+            'Required courses include business ethics, leadership skills and international business as well as business fundamentals '
+            'such as economics, finance, accounting, organizational behaviour, operations management, statistics, marketing, information '
+            'systems, human resources and strategic management. '
+            'Students can focus their studies through electives, including up to two graduate courses from other faculties, '
+            'and self-directed, faculty supervised research projects. One elective must be a designated course in any area of '
+            'international business.'
+        },
+        {
+            'name': 'MDSc in Data Science',
+            'slug': 'mdsc-in-data-science',
+            'degree': 'MDSc', 
+            'duration': '2 years',
+            'description': 'Master data analytics, machine learning, and AI. Data science is one of the most sought-after professions of '
+            'the 21st century. With lives increasingly being lived online, nearly every individual leaves behind a data trail that is as '
+            'valuable as gold in this digital age. With this increasing generation of data, there is also an ever-increasing demand for '
+            'specialists who are able to structure, analyse and process it. This work is done by data scientists. Given the continuing '
+            'demand for data scientists, and the expected accelerated growth of this profession over the next few decades, Memorial has '
+            'developed the Master of Data Science (MDSc). Jointly offered by the Departments of Mathematics and Statistics and Computer '
+            'Science, it is a one-year program aiming to equip students with the foundations of data science and provide them with '
+            'practical techniques needed to effectively translate data into knowledge, communicate the findings, and help in the '
+            'decision-making process.'
+        }
+    ],
+}
+
+def programs_detail1(request, program_slug):
+    for category, programs in PROGRAMS.items():
+        for program in programs:
+            if program['slug'] == program_slug:
+                return render(request, 'base/programs_detail1.html', {
+                    'program': program,
+                    'category': category
+                })
+        
+    raise Http404("Program not found")
