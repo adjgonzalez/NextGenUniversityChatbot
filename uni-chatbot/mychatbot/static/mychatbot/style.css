@@ -1,30 +1,53 @@
+/* Make footer stick to bottom if content is short */
+html,
 body {
-  margin: 0;
-  padding: 0;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1 0 auto; /* content grows and pushes footer down */
+}
+
+:root {
+  --primary-color: #b9625d;
+  --chat-light: #cea09d;
+  --chat-accent: #f0d3d1;
+}
+
+/* Navbar */
+.nav-link.active {
+  color: #ddb8b6 !important;
+  font-weight: 600;
 }
 
 /* Override Bootstrap modal positioning */
 #chatbotModal .modal-dialog {
-    position: fixed;
-    bottom: 40px;
-    right: 20px;
-    margin: 0 !important; /* Override Bootstrap's margin */
-    max-width: 400px;
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  margin: 0 !important; /* Override Bootstrap's margin */
+  max-width: 400px;
 }
 
 /* Position the button */
 .chatbot-btn {
-    position: fixed;
-    bottom: 40px;
-    right: 20px;
-    z-index: 1000;
-    width: 60px;
-    height: 60px;
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  z-index: 1000;
+  width: 60px;
+  height: 60px;
 }
 
 /* bottom nav-bar custom color */
 .custom-bottom-navbar {
-  background-color: #b9625d;
+  background-color: var(--primary-color);
 }
 .custom-bottom-navbar .nav-link {
   color: white;
@@ -33,9 +56,11 @@ body {
   color: #ddb8b6;
 }
 
-/* footer color */
+/* footer */
 .custom-footer {
-  background-color: #b9625d;
+  margin-top: auto;
+  background-color: var(--primary-color);
+  color: white;
 }
 
 /* Hero Section */
@@ -45,7 +70,7 @@ body {
 }
 
 .enroll-btn {
-  background-color: #b9625d;
+  background-color: var(--primary-color);
   color: white;
   padding: 5px 12px;
   border-radius: 12px;
@@ -116,12 +141,6 @@ body {
 }
 
 /* === CHAT BUTTON === */
-:root {
-  --chat-primary: #b9625d;
-  --chat-light: #cea09d;
-  --chat-accent: #f0d3d1;
-}
-
 .chat-btn {
   position: fixed;
   bottom: 25px;
