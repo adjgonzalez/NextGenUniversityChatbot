@@ -1,0 +1,83 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Programs{% endblock %}
+
+{% block content %}
+<div class="programs-container container my-5">
+    <div class="row justify-content-between">
+        <!-- Programs List Card -->
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm p-3">
+                <h5 class="fw-bold mb-3">Programs List</h5>
+                <ul class="list-unstyled programs-list">
+
+                <!-- Undergraduate -->
+                <li>
+                    <a class="program-link d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#undergraduateList"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="undergraduateList">
+                    Undergraduate
+                    <i class="bi bi-chevron-down"></i>
+                    </a>
+                    <ul class="collapse ms-3 mt-2" id="undergraduateList" data-bs-parent="#programsAccordion">
+                    {% for program in programs.Undergraduate %}
+                        <li>
+                        <a href="{% url 'programs_detail1' program.slug %}" class="nested-link">
+                            {{ program.name }}
+                        </a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </li>
+
+                <!-- Graduate -->
+                <li class="mt-2">
+                    <a class="program-link d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#graduateList"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="graduateList">
+                    Graduate
+                    <i class="bi bi-chevron-down"></i>
+                    </a>
+                    <ul class="collapse ms-3 mt-2" id="graduateList" data-bs-parent="#programsAccordion">
+                    {% for program in programs.Graduate %}
+                        <li>
+                        <a href="{% url 'programs_detail1' program.slug %}" class="nested-link">
+                            {{ program.name }}
+                        </a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </li>
+            </div>
+        </div>
+
+
+        <!-- Main Programs Info -->
+         
+        <div class="col-md-8 mb-4">
+        <h3 class="fw-bold">Our Programs</h3>
+        <p>
+            Explore the undergraduate and graduate programs offered at 
+            <strong>NextGen University</strong>.
+        </p>
+
+        <h4 class="fw-bold mt-4">Featured Programs</h4>
+        <ul>
+            <li>Computer Science</li>
+            <li>Business Administration</li>
+            <li>Engineering</li>
+            <li>Arts & Humanities</li>
+            <li>Health Sciences</li> 
+        </ul>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
