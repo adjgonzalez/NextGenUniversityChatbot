@@ -20,7 +20,7 @@
 
     <!-- LEFT COLUMN: Program Details -->
     <div class="col-md-8">
-      <div class="card p-4 shadow-sm">
+        <div class="card p-4 shadow-sm">
         <h2 class="fw-bold">{{ program.name }}</h2>
         <p><strong>Duration:</strong> {{ program.duration }}</p>
         <p>{{ program.description }}</p>
@@ -28,9 +28,9 @@
         {% if program.joint_programs %}
         <h5 class="mt-4">Joint Programs:</h5>
         <ul>
-          {% for joint in program.joint_programs %}
-          <li>{{ joint }}</li>
-          {% endfor %}
+            {% for joint in program.joint_programs %}
+            <li>{{ joint }}</li>
+            {% endfor %}
         </ul>
         {% endif %}
 
@@ -50,7 +50,8 @@
     <div class="col-md-4">
       <div class="card shadow-sm p-3">
         <h5 class="fw-bold mb-3">Program Information</h5>
-        <p><strong>Degrees Offered:</strong> {{ program.degree }}</p>        <p><strong>Routes:</strong> Course-based</p>
+        <p><strong>Degrees Offered:</strong> {{ program.degree }}</p>        
+        <p><strong>Routes:</strong> Course-based</p>
         <p><strong>Enrollment Status:</strong> Full-time</p>
         <p><strong>Campus:</strong> St. John’s</p>
         <p><strong>Application Deadline:</strong><br>

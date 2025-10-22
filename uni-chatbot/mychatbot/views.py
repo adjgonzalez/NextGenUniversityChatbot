@@ -125,6 +125,35 @@ PROGRAMS = {
             'decision-making process.'
         }
     ],
+    'Online Courses': [
+        {
+            'name': 'Web Development Bootcamp',
+            'slug': 'web-development-bootcamp',
+            'degree': 'Web development', 
+            'duration': '6 months',
+            'description': 'Learn full stack web development with hands-on projects. The Web Development Bootcamp is an intensive, '
+            'hands-on program designed to help learners master the essential skills required to build modern, responsive websites '
+            'and web applications. Through a practical, project-based approach, students gain experience in front-end technologies '
+            'such as HTML, CSS, JavaScript, and React, as well as back-end development using Node.js, Express, and databases like '
+            'MongoDB. Whether you’re a complete beginner or looking to enhance your existing skills, this bootcamp prepares you '
+            'for a successful career as a Full-Stack Web Developer. By the end of the course, participants will have built multiple '
+            'real-world projects, developed a professional portfolio, and gained the confidence to pursue freelance work or entry-level '
+            'developer roles.'
+        },
+        {
+            'name': 'Introduction to AI',
+            'slug': 'introduction-to-ai',
+            'degree': 'AI', 
+            'duration': '3 months',
+            'description': 'Beginner-friendly AI concepts and tools. The Introduction to Artificial Intelligence course provides a '
+            'comprehensive foundation in the core principles and applications of AI. Designed for beginners and aspiring professionals, '
+            'this program explores how machines can simulate human intelligence through problem-solving, learning, and decision-making. '
+            'Students will gain hands-on experience with key AI techniques such as machine learning, natural language processing, and '
+            'computer vision. The course also covers the ethical implications of AI and its growing impact across industries including '
+            'healthcare, finance, and technology. By the end of the course, learners will understand fundamental AI concepts, develop '
+            'basic models using Python-based tools, and be prepared to pursue advanced studies or careers in AI-driven fields.'
+        }
+    ],
 }
 
 def programs_detail1(request, program_slug):
@@ -135,5 +164,4 @@ def programs_detail1(request, program_slug):
                     'program': program,
                     'category': category
                 })
-        
     raise Http404("Program not found")
