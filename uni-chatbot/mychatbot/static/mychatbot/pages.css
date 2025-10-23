@@ -1,0 +1,199 @@
+
+/* Navbar alignment fix */
+.navbar-nav .nav-item {
+  display: flex;
+  align-items: center;
+}
+
+/* Default link style */
+.navbar-nav .nav-link {
+  color: #fff !important;         /* Make all nav links white */
+  padding: 10px 15px;
+  text-decoration: none;
+  vertical-align: middle;
+}
+
+/* Hover effect */
+.navbar-nav .nav-link:hover {
+  color: #f8f8f8 !important;
+}
+
+/* Active link style */
+.navbar-nav .nav-link.active {
+  color: #fff !important;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* Remove blue link focus outline */
+.navbar-nav .nav-link:focus,
+.navbar-nav .nav-link:visited,
+.navbar-nav .nav-link:active {
+  color: #fff !important;
+  text-decoration: none;
+  outline: none;
+}
+
+
+/* === Programs Page Styling === */
+
+.programs-container {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.programs-container h3,
+.programs-container h4,
+.programs-container h5 {
+  color: #333;
+}
+
+.programs-list .program-link {
+  display: block;
+  padding: 6px 0;
+  color: #6c1c1c;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.programs-list .program-link:hover {
+  color: #a43d3d;
+  text-decoration: underline;
+}
+
+.card {
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+}
+
+.card h5 {
+  color: #2e2e2e;
+}
+
+.card p {
+  margin-bottom: 8px;
+}
+
+.container ul {
+  padding-left: 20px;
+}
+
+/* For smaller screens */
+@media (max-width: 768px) {
+  .programs-container .card {
+    margin-bottom: 20px;
+  }
+}
+
+.program-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.program-link:hover {
+  color: #007BFF;
+}
+
+.nested-link {
+  text-decoration: none;
+  color: #555;
+  display: block;
+  padding: 3px 0;
+}
+
+.nested-link:hover {
+  color: #007BFF;
+}
+
+.bi {
+  transition: transform 0.3s ease;
+}
+
+a[aria-expanded="true"] .bi {
+  transform: rotate(180deg);
+}
+
+.program-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.program-link:hover {
+  color: #007BFF;
+}
+
+.nested-link {
+  text-decoration: none;
+  color: #555;
+  display: block;
+  padding: 3px 0;
+}
+
+.nested-link:hover {
+  color: #007BFF;
+}
+
+.bi {
+  transition: transform 0.3s ease;
+}
+
+/* Rotate arrow on expand */
+.program-link[aria-expanded="true"] .bi {
+  transform: rotate(180deg);
+}
+
+.breadcrumb {
+  background-color: transparent !important;
+}
+
+.breadcrumb-item a {
+  color: #0d6efd !important; /* Bootstrap blue for links */
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+  color: #212529 !important; /* standard dark text for the active breadcrumb */
+  font-weight: 500;
+}
+
+
+/* Force breadcrumb text to be visible and consistent */
+nav.breadcrumb-nav,
+nav[aria-label="breadcrumb"] .breadcrumb {
+  background-color: transparent !important;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+/* All breadcrumb items */
+.breadcrumb-item {
+  color: #212529 !important; /* readable dark text */
+  font-weight: 500;
+}
+
+/* Breadcrumb links */
+.breadcrumb-item a {
+  color: #0d6efd !important; /* Bootstrap blue */
+  text-decoration: none !important;
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline !important;
+  color: #0a58ca !important; /* darker hover blue */
+}
+
+/* Active breadcrumb (current page) */
+.breadcrumb-item.active {
+  color: #212529 !important; /* visible gray/black */
+}
+
