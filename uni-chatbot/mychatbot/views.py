@@ -156,7 +156,7 @@ PROGRAMS = {
     ],
 }
 
-def programs_detail1(request, program_slug):
+def programs_detail(request, program_slug):
     for category, programs in PROGRAMS.items():
         for program in programs:
             if program['slug'] == program_slug:

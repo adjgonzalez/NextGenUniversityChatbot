@@ -22,9 +22,9 @@ urlpatterns = [
     # path('', views.index, name='mychatbot'),
     path('admin/', admin.site.urls),
     path('', include('mychatbot.urls')),
-    path('users/', include('users.urls'))
+    path('users/', include('users.urls')),
 
     # path('uni/', include("mychatbot.urls")),
-    path('programs/', include('mychatbot.urls')),
-    path('programs/<slug:program_slug>/', views.programs_detail1, name='programs_detail1'),
+    # path('programs/', include('mychatbot.urls')),
+    # path('programs/<slug:program_slug>/', views.programs_detail1, name='programs_detail1'),
 ]
