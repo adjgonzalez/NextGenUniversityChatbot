@@ -48,23 +48,42 @@
                         ❌ No
                     </button>
                 </div>
-
-                <!-- Program options as buttons -->
-                <div class="gap-2" id="programButtons" hidden>
-                    <button class="btn btn-outline-primary program-option" data-program="computer-science">
-                        🖥️ Computer Science
+                       <!-- Type of studies -->
+                <div class="gap-2" id="typeOfStudyButtons" hidden>
+                    <p>Are you a looking to study an undergrad, a grad or an online course?.</p>
+                    <button class="btn btn-outline-primary program-option" data-program="undergrads" onclick="underGradListener()">
+                        Undergraduate studies
                     </button>
-                    <button class="btn btn-outline-primary program-option" data-program="business">
-                        💼 Business Administration
+                    <button class="btn btn-outline-primary program-option" data-program="grads" onclick="gradListener()">
+                        Graduate studies
                     </button>
-                    <button class="btn btn-outline-primary program-option" data-program="engineering">
-                        ⚙️ Engineering
+                    <button class="btn btn-outline-primary program-option" data-program="online" onclick="onlineStudiesListener()">
+                        Online courses
                     </button>
-                    <button class="btn btn-outline-primary program-option" data-program="arts">
-                        🎨 Arts & Humanities
+                </div>
+                <!-- Undergrad Program options as buttons -->
+                <div class="gap-2" id="undergrads" hidden>
+                    <button class="btn btn-outline-primary program-option" data-program="computer-bsc_cs" onclick="redirect('/programs/bsc-in-computer-science/')">
+                        🖥️ BSc in Computer Science
                     </button>
-                    <button class="btn btn-outline-primary program-option" data-program="arts">
-                        🩺 Health Sciences
+                    <button class="btn btn-outline-primary program-option" data-program="ba_economics" onclick="redirect('/programs/ba-in-economics/')">
+                        📈 BA in Economics
+                    </button>
+                </div>
+                <div class="gap-2" id="grads" hidden>
+                    <button class="btn btn-outline-primary program-option" data-program="mba" onclick="redirect('/programs/mba/')">
+                        💼 MBA
+                    </button>
+                    <button class="btn btn-outline-primary program-option" data-program="mdsc_datascience" onclick="redirect('/mdsc-in-data-science/')">
+                        🖥 MDSc in Data Science
+                    </button>
+                </div>
+                <div class="gap-2" id="online" hidden>
+                    <button class="btn btn-outline-primary program-option" data-program="webdev_online" onclick="redirect('/programs/web-development-bootcamp/')">
+                        🌐 Web development bootcamp
+                    </button>
+                    <button class="btn btn-outline-primary program-option" data-program="ai_intro" onclick="redirect('/programs/introduction-to-ai/')">
+                        🤖 Introduction to AI
                     </button>
                 </div>
                 <div class="gap-2" id="studentButtons" hidden>
@@ -87,18 +106,31 @@
 
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- YOUR JAVASCRIPT CODE GOES HERE -->
     <script>
-    // This is where you add the new functions
 
     let conversationState = 'asking-if-student';
+    function redirect(path) {
+    window.location.href = path;
+    }
     function yesListener(){
-        document.getElementById('programButtons').hidden=false;
+        document.getElementById('studentButtons').hidden=false;
         document.getElementById('initialDecision').hidden=true;
     }
     function noListener(){
-        document.getElementById('studentButtons').hidden=false;
+        document.getElementById('typeOfStudyButtons').hidden=false;
         document.getElementById('initialDecision').hidden=true;
+    }
+    function underGradListener(){
+        document.getElementById('undergrads').hidden=false;
+        document.getElementById('typeOfStudyButtons').hidden=true;
+    }
+    function gradListener(){
+        document.getElementById('grads').hidden=false;
+        document.getElementById('typeOfStudyButtons').hidden=true;
+    }
+    function onlineStudiesListener(){
+        document.getElementById('online').hidden=false;
+        document.getElementById('typeOfStudyButtons').hidden=true;
     }
     function addMessage(text, sender) {
         const messageDiv = document.createElement('div');
@@ -109,6 +141,7 @@
         const chatMessages = document.getElementById('chatMessages');
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
+    <!--return redirect('contact/') -->
     function displayPrograms(){
 
     }

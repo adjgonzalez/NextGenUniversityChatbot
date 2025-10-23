@@ -1,0 +1,69 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}{{ program.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="breadcrumb-nav mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'programs' %}">Programs</a></li>
+      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">{{ category }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ program.name }}</li>
+    </ol>
+  </nav>
+
+  <!-- Two-column layout -->
+  <div class="row g-4">
+
+    <!-- LEFT COLUMN: Program Details -->
+    <div class="col-md-8">
+        <div class="card p-4 shadow-sm">
+        <h2 class="fw-bold">{{ program.name }}</h2>
+        <p><strong>Duration:</strong> {{ program.duration }}</p>
+        <p>{{ program.description }}</p>
+
+        {% if program.joint_programs %}
+        <h5 class="mt-4">Joint Programs:</h5>
+        <ul>
+            {% for joint in program.joint_programs %}
+            <li>{{ joint }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="mt-4">
+          <h5>Admission Requirements:</h5>
+          <p>
+            Applicants must have completed high school with a strong background in mathematics and science.
+            Prior programming experience is an asset but not required.
+            Admission decisions are based on academic performance and available program capacity.
+          </p>
+          <button class="btn btn-outline-secondary mt-2">Admission Requirements</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: Program Information -->
+    <div class="col-md-4">
+      <div class="card shadow-sm p-3">
+        <h5 class="fw-bold mb-3">Program Information</h5>
+        <p><strong>Degrees Offered:</strong> {{ program.degree }}</p>        
+        <p><strong>Routes:</strong> Course-based</p>
+        <p><strong>Enrollment Status:</strong> Full-time</p>
+        <p><strong>Campus:</strong> St. John’s</p>
+        <p><strong>Application Deadline:</strong><br>
+          April 1 (International) for Fall admission<br>
+          May 1 (Canadian) for Fall admission
+        </p>
+        <button class="btn btn-outline-secondary w-100">Apply Now</button>
+      </div>
+    </div>
+
+  </div> <!-- end row -->
+<!-- Floating Chat Button -->
+      {% include "base/chatbox.html" %}
+</div> <!-- end container -->
+{% endblock %}
