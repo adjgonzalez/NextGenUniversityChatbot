@@ -1,0 +1,32 @@
+{% extends "base/base.html" %} 
+{% comment %} Extends needs to be first line {% endcomment %}
+{% load static %}
+{% comment %} Tells django to use the css styles from static {% endcomment %}
+    {% block title %} 
+    {% comment %} Change the name of the page on the tab {% endcomment %}
+        Home Page 
+    {% endblock %}
+ {% block content %}
+    {% comment %} Change the block 'content' found in base.html for whatever is here {% endcomment %}
+    <section class="hero-section container-fluid">
+        <div class="row align-items-center">
+          <!-- Left Side -->
+          <div class="col-lg-6 col-md-12 hero-content">
+            <!-- Enroll Now button -->
+            <a href="#" class="enroll-btn">Enroll Now</a>
+            <h1>
+              YOUR <span class="swatch-word">COMEBACK</span> STARTS<br>
+              <small>NOW WITH NextGen University</small>
+            </h1>
+            <p>Reignite your career with hands-on learning and expert mentorship. Start your journey today.</p>
+          </div>
+
+          <!-- Right Side -->
+          <div class="col-lg-6 col-md-12 hero-image text-center">
+            <img src="{% static 'images/group.png' %}" alt="Hero Banner" class="img-fluid">
+          </div>
+        </div>
+      </section>
+      <!-- Floating Chat Button -->
+      {% include "base/chatbox.html" %}
+    {% endblock %}

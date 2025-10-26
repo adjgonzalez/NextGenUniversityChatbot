@@ -1,0 +1,244 @@
+/* Make footer stick to bottom if content is short */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1 0 auto; /* content grows and pushes footer down */
+}
+
+:root {
+  --primary-color: #b9625d;
+  --chat-light: #cea09d;
+  --chat-accent: #f0d3d1;
+}
+
+/* Navbar */
+.nav-link.active {
+  color: #ddb8b6 !important;
+  font-weight: 600;
+}
+
+/* Override Bootstrap modal positioning */
+#chatbotModal .modal-dialog {
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  margin: 0 !important; /* Override Bootstrap's margin */
+  max-width: 400px;
+}
+
+/* Position the button */
+.chatbot-btn {
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  z-index: 1000;
+  width: 60px;
+  height: 60px;
+}
+
+/* bottom nav-bar custom color */
+.custom-bottom-navbar {
+  background-color: var(--primary-color);
+}
+.custom-bottom-navbar .nav-link {
+  color: white;
+}
+.custom-bottom-navbar .nav-link:hover {
+  color: #ddb8b6;
+}
+
+/* footer */
+.custom-footer {
+  margin-top: auto;
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Hero Section */
+.hero-section {
+  background-color: #fff;
+  padding: 80px 8%;
+}
+
+.enroll-btn {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 10px;
+}
+
+.enroll-btn:hover {
+  background-color: #a6534e; /* slightly darker on hover */
+}
+
+.hero-content h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #1c1c1c;
+  line-height: 1.15;
+}
+
+.hero-content h1 small {
+  font-size: 1.8rem;
+  font-weight: 700;
+  display: block;
+  margin-top: 8px;
+  color: #333;
+}
+
+.hero-content h1 .swatch-word {
+  position: relative;
+  color: #fff;
+  font-weight: 700;
+  display: inline-block;
+  padding: 0 8px;
+  z-index: 1;
+}
+
+.hero-content h1 .swatch-word::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-2deg);
+  height: 1.1em;
+  background: rgba(185, 98, 93, 0.8);
+  border-radius: 4px;
+  z-index: -1;
+}
+
+/* Paragraph below heading */
+.hero-content p {
+  font-size: 1rem;
+  color: #333;
+  margin-top: 20px;
+  line-height: 1.6;
+  max-width: 90%;
+}
+
+/* === IMAGE === */
+.hero-image img {
+  width: 85%;
+  border-radius: 8px;
+  filter: grayscale(100%);
+}
+
+/* === CHAT BUTTON === */
+.chat-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: var(--chat-primary);
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-weight: 600;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.chat-btn:hover {
+  background-color: #e29ba4;
+  color: #fff;
+}
+
+.chat-box {
+  position: fixed;
+  bottom: 90px;
+  right: 25px;
+  width: 330px;
+  height: 430px;
+  background-color: #fff;
+  border-radius: 12px;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1001;
+  border: 1px solid #cfddee;
+}
+
+.chat-header {
+  background-color: var(--chat-primary);
+  color: white;
+  padding: 10px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.chat-body {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background-color: rgb(247, 242, 242);
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-footer {
+  padding: 10px;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  position: sticky;
+  bottom: 0;
+}
+
+.bot-message,
+.user-message {
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.bot-message {
+  background-color: var(--chat-light);
+  color: white;
+  align-self: flex-start;
+}
+
+.user-message {
+  background-color: var(--chat-accent);
+  color: #000;
+  align-self: flex-end;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 992px) {
+  .hero-section {
+    padding: 60px 5%;
+    text-align: center;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-content h1 small {
+    font-size: 1.4rem;
+  }
+
+  .hero-image img {
+    width: 70%;
+    margin-top: 30px;
+  }
+}
+

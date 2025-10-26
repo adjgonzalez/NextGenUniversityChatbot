@@ -1,0 +1,32 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}Admissions | {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid my-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="py-1 ps-3 mb-2">
+        <ol class="breadcrumb" id="admissions-breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'admissions' %}">Admissions</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ page_title }}</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <!-- Sidebar -->
+        {% include "admissions/sidebar.html" %}
+
+        <!-- Dynamic Content Area -->
+        <main class="col-md-9 col-lg-10" id="content">
+            {% include "admissions/"|add:current_page|add:".html" %}
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/admission_sidebar.js' %}"></script>
+<!-- Floating Chat Button -->
+      {% include "base/chatbox.html" %}
+{% endblock %}
