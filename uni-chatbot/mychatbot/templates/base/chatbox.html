@@ -1,0 +1,148 @@
+{% load static %}
+
+<!-- old chatbot, keeping in case there may be something useful for the final version here
+<button id="chatToggle" class="chat-btn btn btn-primary">
+  💬 Chat with me
+</button>
+<div id="chatBox" class="chat-box shadow-lg">
+  <div class="chat-header d-flex justify-content-between align-items-center">
+    <span>NextGen Chatbot</span>
+    <button id="closeChat" class="btn-close btn-sm"></button>
+  </div>
+
+  <div class="chat-body" id="chatBody">
+    <div class="bot-message">Hi there! How can I help you today?</div>
+    <div class="user-message">Hi, I want to know about courses.</div>
+  </div>
+
+  <div class="chat-footer d-flex align-items-center">
+    <input type="text" id="userInput" class="form-control" placeholder="Type your message..." />
+    <button id="sendBtn" class="btn btn-primary ms-2">Send</button>
+  </div>
+</div>
+-->
+<!-- Bootstrap Chat Widget -->
+    <button class="btn btn-primary rounded-circle chatbot-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#chatbotModal">
+        💬
+    </button>
+
+                <div class="modal fade" id="chatbotModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">University Assistant</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body" style="height: 300px; overflow-y: auto;" id="chatMessages">
+                <div class="alert alert-info">
+                    <p>Hello! Welcome to the NextGen university chatbot.</p>
+                    <strong>Assistant:</strong> Are you already a student?
+                </div>
+                <div class="gap-2" id="initialDecision">
+                    <button class="btn btn-outline-primary" id='yesButton' onclick="yesListener()">
+                        ✅ Yes
+                    </button>
+                    <button class="btn btn-outline-primary" id='noButton' onclick="noListener()">
+                        ❌ No
+                    </button>
+                </div>
+                       <!-- Type of studies -->
+                <div class="gap-2" id="typeOfStudyButtons" hidden>
+                    <p>Are you a looking to study an undergrad, a grad or an online course?.</p>
+                    <button class="btn btn-outline-primary program-option" data-program="undergrads" onclick="underGradListener()">
+                        Undergraduate studies
+                    </button>
+                    <button class="btn btn-outline-primary program-option" data-program="grads" onclick="gradListener()">
+                        Graduate studies
+                    </button>
+                    <button class="btn btn-outline-primary program-option" data-program="online" onclick="onlineStudiesListener()">
+                        Online courses
+                    </button>
+                </div>
+                <!-- Undergrad Program options as buttons -->
+                <div class="gap-2" id="undergrads" hidden>
+                    <button class="btn btn-outline-primary program-option" data-program="computer-bsc_cs" onclick="redirect('/programs/bsc-in-computer-science/')">
+                        🖥️ BSc in Computer Science
+                    </button>
+                    <button class="btn btn-outline-primary program-option" data-program="ba_economics" onclick="redirect('/programs/ba-in-economics/')">
+                        📈 BA in Economics
+                    </button>
+                </div>
+                <div class="gap-2" id="grads" hidden>
+                    <button class="btn btn-outline-primary program-option" data-program="mba" onclick="redirect('/programs/mba/')">
+                        💼 MBA
+                    </button>
+                    <button class="btn btn-outline-primary program-option" data-program="mdsc_datascience" onclick="redirect('/programs/mdsc-in-data-science/')">
+                        🖥 MDSc in Data Science
+                    </button>
+                </div>
+                <div class="gap-2" id="online" hidden>
+                    <button class="btn btn-outline-primary program-option" data-program="webdev_online" onclick="redirect('/programs/web-development-bootcamp/')">
+                        🌐 Web development bootcamp
+                    </button>
+                    <button class="btn btn-outline-primary program-option" data-program="ai_intro" onclick="redirect('/programs/introduction-to-ai/')">
+                        🤖 Introduction to AI
+                    </button>
+                </div>
+                <div class="gap-2" id="studentButtons" hidden>
+                    <button class="btn btn-outline-primary program-option" data-program="computer-science">
+                        Email me my program's resources
+                    </button>
+                    <button class="btn btn-outline-primary program-option" data-program="business">
+                        I want to contact an administrator
+                    </button>
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="text" class="form-control" placeholder="Type your question...">
+                    <button class="btn btn-primary">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+    let conversationState = 'asking-if-student';
+    function redirect(path) {
+    window.location.href = path;
+    }
+    function yesListener(){
+        document.getElementById('studentButtons').hidden=false;
+        document.getElementById('initialDecision').hidden=true;
+    }
+    function noListener(){
+        document.getElementById('typeOfStudyButtons').hidden=false;
+        document.getElementById('initialDecision').hidden=true;
+    }
+    function underGradListener(){
+        document.getElementById('undergrads').hidden=false;
+        document.getElementById('typeOfStudyButtons').hidden=true;
+    }
+    function gradListener(){
+        document.getElementById('grads').hidden=false;
+        document.getElementById('typeOfStudyButtons').hidden=true;
+    }
+    function onlineStudiesListener(){
+        document.getElementById('online').hidden=false;
+        document.getElementById('typeOfStudyButtons').hidden=true;
+    }
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `alert ${sender === 'user' ? 'alert-primary ms-5' : 'alert-secondary'}`;
+        messageDiv.innerHTML = `<strong>${sender === 'user' ? 'You' : 'Assistant'}:</strong> ${text}`;
+        document.getElementById('chatMessages').appendChild(messageDiv);
+
+        const chatMessages = document.getElementById('chatMessages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    <!--return redirect('contact/') -->
+    function displayPrograms(){
+
+    }
+    </script>
