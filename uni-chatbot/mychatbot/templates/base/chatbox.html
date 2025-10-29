@@ -74,7 +74,7 @@
                     <button class="btn btn-outline-primary program-option" data-program="mba" onclick="redirect('/programs/mba/')">
                         💼 MBA
                     </button>
-                    <button class="btn btn-outline-primary program-option" data-program="mdsc_datascience" onclick="redirect('/mdsc-in-data-science/')">
+                    <button class="btn btn-outline-primary program-option" data-program="mdsc_datascience" onclick="redirect('/programs/mdsc-in-data-science/')">
                         🖥 MDSc in Data Science
                     </button>
                 </div>
@@ -145,4 +145,29 @@
     function displayPrograms(){
 
     }
+    </script>
+    <script>//THIS MAY HAVE TO CHANGE IF WE MAKE MORE USER FLOWS
+    function resetChatbotVisibility() {
+        // Display only the yes or no
+        document.getElementById('initialDecision').hidden = false;
+
+        // Hides everything else
+        document.getElementById('typeOfStudyButtons').hidden = true;
+        document.getElementById('undergrads').hidden = true;
+        document.getElementById('grads').hidden = true;
+        document.getElementById('online').hidden = true;
+        document.getElementById('studentButtons').hidden = true;
+
+        // Scrolls back to the top of the chatbox
+        document.getElementById('chatMessages').scrollTop = 0;
+    }
+
+    // Create listener after the chatbot modal has been initialized,
+    // we await for the chatbot to be fully hidden to reset it back to its original state
+    document.addEventListener('DOMContentLoaded', function () {
+        const chatbotModal = document.getElementById('chatbotModal');
+        chatbotModal.addEventListener('hidden.bs.modal', function () {
+            resetChatbotVisibility();
+        });
+    });
     </script>
