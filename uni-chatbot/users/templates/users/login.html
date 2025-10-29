@@ -1,0 +1,18 @@
+{% extends "base/base.html" %} 
+{% load static %}
+
+{% block title %} 
+    Login User
+{% endblock %}
+
+{% block content %}
+    <h1>Login User</h1>
+
+    <form class="form-with-validation" action="/users/login/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button>Submit</button>
+    </form>
+    <!-- Floating Chat Button -->
+    {% include "base/chatbox.html" %}
+{% endblock %}
