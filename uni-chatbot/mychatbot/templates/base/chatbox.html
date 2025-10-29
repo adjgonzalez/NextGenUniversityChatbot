@@ -1,33 +1,11 @@
 {% load static %}
-
-<!-- old chatbot, keeping in case there may be something useful for the final version here
-<button id="chatToggle" class="chat-btn btn btn-primary">
-  💬 Chat with me
-</button>
-<div id="chatBox" class="chat-box shadow-lg">
-  <div class="chat-header d-flex justify-content-between align-items-center">
-    <span>NextGen Chatbot</span>
-    <button id="closeChat" class="btn-close btn-sm"></button>
-  </div>
-
-  <div class="chat-body" id="chatBody">
-    <div class="bot-message">Hi there! How can I help you today?</div>
-    <div class="user-message">Hi, I want to know about courses.</div>
-  </div>
-
-  <div class="chat-footer d-flex align-items-center">
-    <input type="text" id="userInput" class="form-control" placeholder="Type your message..." />
-    <button id="sendBtn" class="btn btn-primary ms-2">Send</button>
-  </div>
-</div>
--->
 <!-- Bootstrap Chat Widget -->
     <button class="btn btn-primary rounded-circle chatbot-btn"
             data-bs-toggle="modal"
             data-bs-target="#chatbotModal">
         💬
     </button>
-
+                <!--This is the body of the chatbot containing the modal which is the window that pops up to greet the user -->
                 <div class="modal fade" id="chatbotModal" tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -109,6 +87,9 @@
     <script>
 
     let conversationState = 'asking-if-student';
+    // The buttons are hidden and shown based on the user clicking buttons and the respective listener,
+    // altering the visibility of the items in its level and the ones on the next level
+
     function redirect(path) {
     window.location.href = path;
     }
@@ -131,19 +112,6 @@
     function onlineStudiesListener(){
         document.getElementById('online').hidden=false;
         document.getElementById('typeOfStudyButtons').hidden=true;
-    }
-    function addMessage(text, sender) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `alert ${sender === 'user' ? 'alert-primary ms-5' : 'alert-secondary'}`;
-        messageDiv.innerHTML = `<strong>${sender === 'user' ? 'You' : 'Assistant'}:</strong> ${text}`;
-        document.getElementById('chatMessages').appendChild(messageDiv);
-
-        const chatMessages = document.getElementById('chatMessages');
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-    <!--return redirect('contact/') -->
-    function displayPrograms(){
-
     }
     </script>
     <script>//THIS MAY HAVE TO CHANGE IF WE MAKE MORE USER FLOWS
