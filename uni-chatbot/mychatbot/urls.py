@@ -5,7 +5,6 @@ app_name = 'mychatbot'
 
 urlpatterns = [
     path("", views.index, name="index"),
-
     path("admissions/", views.admissions_page, name="admissions"),
     path("admissions/<str:page_name>/", views.admissions_page, name="admissions_page"),
     path("admissions/load/<str:page_name>/", views.load_sidebar_content, name="load_sidebar_content"),  # AJAX
