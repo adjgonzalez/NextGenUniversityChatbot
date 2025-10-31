@@ -19,7 +19,7 @@ from django.urls import include, path
 from mychatbot import views
 
 urlpatterns = [
-    # path('', views.index, name='mychatbot'),
+    path('', views.index, name='mychatbot'),
     path('admin/', admin.site.urls),
     path('', include('mychatbot.urls')),
     path('users/', include('users.urls')),
