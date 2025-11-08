@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse
 from django.contrib.auth import login, logout
 
-# Tutorial in https://www.youtube.com/watch?v=DIFaOkxy6TE&list=PL0Zuz27SZ-6NamGNr7dEqzNFEcZ_FAUVX&index=9
 
 # Create your views here.
 def register_view(request):
