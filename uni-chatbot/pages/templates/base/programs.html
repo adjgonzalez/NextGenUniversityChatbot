@@ -6,7 +6,7 @@
 {% block content %}
 <div class="container mt-5">
     <div class="row">
-        
+
         <!-- LEFT COLUMN: Programs List -->
         <div class="col-md-3 mb-4">
         <div class="card shadow-sm p-3">
@@ -30,7 +30,7 @@
                         {% for program in program_list %}
                         <li class="list-group-item px-0">
                         <div class="d-flex justify-content-between align-items-center">
-                            <a href="{% url 'mychatbot:program_detail' program.slug %}" class="text-decoration-none fw-semibold text-dark">
+                            <a href="{% url 'pages:program_detail' program.slug %}" class="text-decoration-none fw-semibold text-dark">
                             {{ program.name }}
                             </a>
                         </div>
@@ -50,11 +50,11 @@
 
 
         <!-- Main Programs Info -->
-         
+
         <div class="col-md-8 mb-4">
         <h3 class="fw-bold">Our Programs</h3>
         <p>
-            Explore the undergraduate and graduate programs offered at 
+            Explore the undergraduate and graduate programs offered at
             <strong>NextGen University</strong>.
         </p>
 
@@ -64,7 +64,7 @@
             <li>Business Administration</li>
             <li>Engineering</li>
             <li>Arts & Humanities</li>
-            <li>Health Sciences</li> 
+            <li>Health Sciences</li>
         </ul>
         </div>
 

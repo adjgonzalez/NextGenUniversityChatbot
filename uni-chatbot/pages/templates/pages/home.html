@@ -1,0 +1,35 @@
+{% extends "base/base.html" %}
+{% comment %} Extends needs to be first line {% endcomment %}
+{% load static %}
+{% comment %} Tells django to use the css styles from static {% endcomment %}
+{% load i18n %}
+{% block title %}
+{% trans "Home Page" %}  {% comment %} Translate the title {% endcomment %}
+{% endblock %}
+
+{% block content %}
+    <section class="hero-section container-fluid">
+        <div class="row align-items-center">
+          <!-- Left Side -->
+          <div class="col-lg-6 col-md-12 hero-content">
+            <!-- Enroll Now button -->
+            <a href="#" class="enroll-btn">{% trans "Enroll Now" %}</a>  {% comment %} Translate button {% endcomment %}
+
+            <h1>
+              {% trans "YOUR" %} <span class="swatch-word">{% trans "COMEBACK" %}</span> {% trans "STARTS" %}<br>
+              <small>{% trans "NOW WITH NextGen University" %}</small>
+            </h1>
+
+            <p>{% trans "Reignite your career with hands-on learning and expert mentorship. Start your journey today." %}</p>
+          </div>
+
+          <!-- Right Side -->
+          <div class="col-lg-6 col-md-12 hero-image text-center">
+            <img src="{% static 'images/group.png' %}" alt="{% trans 'Hero Banner' %}" class="img-fluid">  {% comment %} Translate alt text {% endcomment %}
+          </div>
+        </div>
+    </section>
+
+    <!-- Floating Chat Button -->
+    {% include "base/chatbox.html" %}
+{% endblock %}

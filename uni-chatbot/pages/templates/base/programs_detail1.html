@@ -9,7 +9,7 @@
   <!-- Breadcrumb -->
   <nav aria-label="breadcrumb" class="breadcrumb-nav mb-4">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'mychatbot:programs' %}">Programs</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'pages:programs' %}">Programs</a></li>
       <li class="breadcrumb-item"><a href="#" class="text-decoration-none">{{ category }}</a></li>
       <li class="breadcrumb-item active" aria-current="page">{{ program.name }}</li>
     </ol>
@@ -50,7 +50,7 @@
     <div class="col-md-4">
       <div class="card shadow-sm p-3">
         <h5 class="fw-bold mb-3">Program Information</h5>
-        <p><strong>Degrees Offered:</strong> {{ program.degree }}</p>        
+        <p><strong>Degrees Offered:</strong> {{ program.degree }}</p>
         <p><strong>Routes:</strong> Course-based</p>
         <p><strong>Enrollment Status:</strong> Full-time</p>
         <p><strong>Campus:</strong> St. John’s</p>
