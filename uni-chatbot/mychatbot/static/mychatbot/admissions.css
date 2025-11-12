@@ -94,21 +94,21 @@ aside {
 
 /* Breadcrumb container */
 #admissions-breadcrumb {
-  margin: 0; 
-  padding: 0; 
+  margin: 0;
+  padding: 0;
 }
 
 /* Breadcrumb links */
 #admissions-breadcrumb .breadcrumb-item a {
-  color: #b9625d !important; 
+  color: #b9625d !important;
   text-decoration: none !important;
   font-weight: 300;
 }
 
 /* Hover state for links */
 #admissions-breadcrumb .breadcrumb-item a:hover {
-  color: #ddb8b6 !important; 
-  text-decoration: underline !important; 
+  color: #ddb8b6 !important;
+  text-decoration: underline !important;
 }
 
 /* Active breadcrumb (current page) */
