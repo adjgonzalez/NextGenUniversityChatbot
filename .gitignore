@@ -75,6 +75,17 @@ docs/_build/
 .pybuilder/
 target/
 
+# Django:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Additional safety:
+/db.sqlite3
+/db.sqlite3-journal
+*.sqlite3
+*.sqlite
 # Jupyter Notebook
 .ipynb_checkpoints
 
