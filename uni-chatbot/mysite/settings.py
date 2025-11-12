@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'mychatbot',
     'users',
     'pages',
+    'feedback',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -118,6 +119,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+FEEDBACK_CHOICES = (
+('bug','Bug'),
+('issue','Issue')
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
