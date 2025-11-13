@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   {% load static %}
+  {% load i18n %}
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,7 +13,7 @@
     <title>Programs</title>
     {% block head %}{% endblock %}
 
-    
+
     <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS files-->
@@ -24,12 +25,13 @@
 
     <!-- Bootstrap JS (for collapse functionality) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
 
   </head>
   <body>
     {% include "./navbar.html" %}
     <div class="main-content container py-4">
+<<<<<<< HEAD:uni-chatbot/mychatbot/templates/base/base.html
       
       {% if messages %}
   <div class_name="container position-fixed" 
@@ -67,12 +69,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     
       {% block content %} 
+=======
+      {% block content %}
+>>>>>>> 7dd55b7b8701d0508f9923bfd7e82dcb80876813:uni-chatbot/pages/templates/base/base.html
       {% endblock %}
     </div>
     {% include "./footer.html" %}
     <!-- Optional Bootstrap JS  -->
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>   
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"></script>
     <script src="{% static 'js/chatbox.js' %}"></script>

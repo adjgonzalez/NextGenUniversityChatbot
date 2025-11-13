@@ -1,0 +1,56 @@
+{% load static %}
+{% load i18n %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand" href="/">
+      <img src="{% static 'images/logo.png' %}" alt="Logo" width="120" class="d-inline-block align-text-top">
+    </a>
+
+    <!-- Language Switcher - Moved inside the main nav -->
+    <div class="navbar-nav ms-auto">
+      <form action="{% url 'set_language' %}" method="post" class="d-flex" id="languageForm">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.path }}">
+        <select name="language" class="form-select form-select-sm" onchange="this.form.submit()">
+          {% get_current_language as CURRENT_LANGUAGE %}
+          {% get_available_languages as AVAILABLE_LANGUAGES %}
+          {% for lang_code, lang_name in AVAILABLE_LANGUAGES %}
+            <option value="{{ lang_code }}" {% if lang_code == CURRENT_LANGUAGE %}selected{% endif %}>
+              {{ lang_name }}
+            </option>
+          {% endfor %}
+        </select>
+      </form>
+    </div>
+    <!-- End Language Switcher -->
+  </div>
+</nav>
+
+<!-- Bottom Navbar -->
+<nav class="navbar navbar-expand-lg custom-bottom-navbar">
+  <div class="container">
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">{% trans "Home" %}</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == '/admissions/' %}active{% endif %}" href="/admissions/">{% trans "Admissions" %}</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == '/programs/' %}active{% endif %}" href="/programs/">{% trans "Programs" %}</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == '/faculty/' %}active{% endif %}" href="/faculty/">{% trans "Faculty and Departments" %}</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == '/contact/' %}active{% endif %}" href="/contact/">{% trans "Contact Us" %}</a></li>
+
+        {% if user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" aria-label="Current User" title="Current User">{% trans "Hello" %} {{ user.username }}</a></li>
+
+          <form class="logout" action="{% url 'users:logout' %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-primary" aria-label="Log Out" title="Log Out">{% trans "Log Out" %}</button>
+          </form>
+        {% else %}
+          <li class="nav-item"><a href="{% url 'users:register' %}" class="btn btn-primary" aria-label="User Registration" title="User Registration">{% trans "Register" %}</a></li>
+          <li class="nav-item"><a href="{% url 'users:login' %}" class="btn btn-primary" aria-label="User Log In" title="User Log In">{% trans "Log In" %}</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
