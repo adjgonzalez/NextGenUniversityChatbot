@@ -20,6 +20,7 @@
         <li class="nav-item"><a class="nav-link {% if request.path == '/programs/' %}active{% endif %}" href="/programs/">Programs</a></li>  
         <li class="nav-item"><a class="nav-link {% if request.path == '/faculty/' %}active{% endif %}" href="/faculty/">Faculty and Departments</a></li>
         <li class="nav-item"><a class="nav-link {% if request.path == '/contact/' %}active{% endif %}" href="/contact/">Contact Us</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == '/feedback/' %}active{% endif %}" href="{% url 'feedback_form' %}">Leave Feedback</a></li>
 
         {% if user.is_authenticated %}
           <li class="nav-item"><a class="nav-link" aria-label="Current User" title="Current User">Hello {{user.username}}</a></li>
