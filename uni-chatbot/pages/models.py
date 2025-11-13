@@ -1,3 +1,5 @@
+from django.db import models
+
 # Create your models here.
 class ProgramType(models.Model):
     name = models.CharField(max_length=50, unique=True)  # e.g., Undergraduate, Graduate, Online

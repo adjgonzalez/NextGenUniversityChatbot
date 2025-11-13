@@ -58,7 +58,8 @@
           April 1 (International) for Fall admission<br>
           May 1 (Canadian) for Fall admission
         </p>
-        <button class="btn btn-outline-secondary w-100">Apply Now</button>
+        
+        <button onClick=userApply() class="btn btn-outline-secondary w-100" aria-label="Apply Now" title="Apply Now">Apply Now</button>                          
       </div>
     </div>
 
@@ -66,4 +67,28 @@
 <!-- Floating Chat Button -->
       {% include "base/chatbox.html" %}
 </div> <!-- end container -->
+
+<script>
+  function userApply() {
+      fetch('/programs/apply_now/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': '{{ csrf_token }}'
+            }
+            }).then(response => {
+              if (response.status === 403) {
+                window.location.href = "{% url 'users:login' %}";
+              }
+              else {
+                return response.json();
+              }
+            }).then(data => {
+              if (data) {
+                alert(data.message);
+              }
+            })            
+  }
+</script>
 {% endblock %}
+

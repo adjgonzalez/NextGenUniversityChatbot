@@ -1,8 +1,8 @@
 from django.http import Http404, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
-
-
+from users.services import enroll_user_in_program
+from pages.models import Program
 # Home page
 def index(request):
     return render(request, "pages/home.html")
@@ -166,3 +166,26 @@ def programs_detail(request, program_slug):
                     {"program": program, "category": category},
                 )
     raise Http404("Program not found")
+
+def apply_now(request):
+    my_program = Program(
+            name= "MBA",
+            slug= "mba",
+            degree= "MBA",
+            duration= "2 years",
+            description= "Advanced business management, leadership, and strategy. The MBA program is made up of 20 courses to be "
+            "completed on a part-time or full-time basis. Our MBA program is offered on campus in St. John’s and is not available online. "
+            "Required courses include business ethics, leadership skills and international business as well as business fundamentals "
+            "such as economics, finance, accounting, organizational behaviour, operations management, statistics, marketing, information "
+            "systems, human resources and strategic management. "
+            "Students can focus their studies through electives, including up to two graduate courses from other faculties, "
+            "and self-directed, faculty supervised research projects. One elective must be a designated course in any area of "
+            "international business.",
+    ) 
+    
+    if request.user.is_authenticated:
+        enroll_user_in_program(request.user, my_program)
+        return JsonResponse({"message": "Application successful"})
+    else:
+        return JsonResponse({"message": "You must be logged in to apply"}, status=403)
+        # return render(request, "users/login.html")
