@@ -1,0 +1,349 @@
+{% load static %}
+<!-- Bootstrap Chat Widget -->
+<button class="btn btn-primary rounded-circle chatbot-btn"
+        data-bs-toggle="modal"
+        data-bs-target="#chatbotModal">
+    💬
+</button>
+
+<!--This is the body of the chatbot containing the modal which is the window that pops up to greet the user -->
+<div class="modal fade" id="chatbotModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">University Assistant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" style="height: 300px; overflow-y: auto;" id="chatMessages">
+                <div class="alert alert-info">
+                    <p>Hello! Welcome to the NextGen university chatbot.</p>
+                    <strong>Assistant:</strong> Are you already a student?
+                </div>
+                <div class="gap-2" id="initialDecision">
+                    <button class="btn btn-outline-primary" id='yesButton' onclick="yesListener()">
+                        ✅ Yes
+                    </button>
+                    <button class="btn btn-outline-primary" id='noButton' onclick="noListener()">
+                        ❌ No
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-footer" id="chatbotFooter" style="display: none;">
+                <!-- Email transcript option -->
+                <div class="w-100 mb-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="sendTranscript">
+                        <label class="form-check-label" for="sendTranscript">
+                            📧 Email me this conversation
+                        </label>
+                    </div>
+                    <input type="email" class="form-control mt-2" id="userEmail" placeholder="Your email address" style="display: none;">
+                </div>
+
+                <input type="text" class="form-control" placeholder="Type your question..." id="userInput">
+                <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Track conversation history
+let conversationHistory = [
+    { sender: "assistant", message: "Hello! Welcome to the NextGen university chatbot." },
+    { sender: "assistant", message: "Are you already a student?" }
+];
+
+// Track if we're in admin contact mode
+let isAdminContactMode = false;
+
+// Function to add messages to conversation and display them
+function addToConversation(sender, message) {
+    conversationHistory.push({ sender: sender, message: message });
+
+    // Display the message in the chat
+    const chatMessages = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `alert ${sender === 'user' ? 'alert-primary' : 'alert-info'}`;
+    messageDiv.innerHTML = `<strong>${sender === 'user' ? 'You' : 'Assistant'}:</strong> ${message}`;
+    chatMessages.appendChild(messageDiv);
+
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Function to show buttons at the current conversation level
+function showButtons(buttonHTML) {
+    const chatMessages = document.getElementById('chatMessages');
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'gap-2 mt-2';
+    buttonContainer.innerHTML = buttonHTML;
+    chatMessages.appendChild(buttonContainer);
+
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Function to hide all button containers
+function hideAllButtons() {
+    const buttonContainers = document.querySelectorAll('#chatMessages .gap-2');
+    buttonContainers.forEach(container => {
+        container.remove();
+    });
+}
+
+// Function to show/hide the footer (transcript and message box)
+function toggleFooter(show) {
+    const footer = document.getElementById('chatbotFooter');
+    footer.style.display = show ? 'block' : 'none';
+    isAdminContactMode = show;
+}
+
+// Button click handlers
+function yesListener(){
+    hideAllButtons();
+    toggleFooter(false);
+    addToConversation('user', '✅ Yes, I am a student');
+    addToConversation('assistant', 'What would you like to do?');
+
+    const studentButtonsHTML = `
+        <button class="btn btn-outline-primary program-option" onclick="addToConversation('user', '📧 Email me my program resources'); showEmailOption()">
+            📧 Email me my program's resources
+        </button>
+        <button class="btn btn-outline-primary program-option" onclick="contactAdmin()">
+            👨‍💼 Contact Administrator
+        </button>
+    `;
+    showButtons(studentButtonsHTML);
+}
+
+function noListener(){
+    hideAllButtons();
+    toggleFooter(false);
+    addToConversation('user', '❌ No, I am not a student');
+    addToConversation('assistant', 'What type of program are you interested in?');
+
+    const studyTypeButtonsHTML = `
+        <button class="btn btn-outline-primary program-option" onclick="underGradListener()">
+            🎓 Undergraduate
+        </button>
+        <button class="btn btn-outline-primary program-option" onclick="gradListener()">
+            🎯 Graduate
+        </button>
+        <button class="btn btn-outline-primary program-option" onclick="onlineStudiesListener()">
+            🌐 Online Courses
+        </button>
+    `;
+    showButtons(studyTypeButtonsHTML);
+}
+
+function underGradListener(){
+    hideAllButtons();
+    toggleFooter(false);
+    addToConversation('user', '🎓 Undergraduate programs');
+    addToConversation('assistant', 'Which undergraduate program interests you?');
+
+    const undergradButtonsHTML = `
+        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/bsc-in-computer-science/', '🎓 BSc in Computer Science')">
+            🖥️ BSc in Computer Science
+        </button>
+        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/ba-in-economics/', '🎓 BA in Economics')">
+            📈 BA in Economics
+        </button>
+    `;
+    showButtons(undergradButtonsHTML);
+}
+
+function gradListener(){
+    hideAllButtons();
+    toggleFooter(false);
+    addToConversation('user', '🎯 Graduate programs');
+    addToConversation('assistant', 'Which graduate program interests you?');
+
+    const gradButtonsHTML = `
+        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/mba/', '🎯 MBA')">
+            💼 MBA
+        </button>
+        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/mdsc-in-data-science/', '🎯 MDSc in Data Science')">
+            📊 MDSc in Data Science
+        </button>
+    `;
+    showButtons(gradButtonsHTML);
+}
+
+function onlineStudiesListener(){
+    hideAllButtons();
+    toggleFooter(false);
+    addToConversation('user', '🌐 Online courses');
+    addToConversation('assistant', 'Which online course interests you?');
+
+    const onlineButtonsHTML = `
+        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/web-development-bootcamp/', '🌐 Web Development Bootcamp')">
+            🌐 Web Development Bootcamp
+        </button>
+        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/introduction-to-ai/', '🌐 Introduction to AI')">
+            🤖 Introduction to AI
+        </button>
+    `;
+    showButtons(onlineButtonsHTML);
+}
+
+// Redirect function with conversation tracking
+function redirect(path, programName){
+    hideAllButtons();
+    toggleFooter(false);
+    addToConversation('user', `I'm interested in: ${programName}`);
+    addToConversation('assistant', `Taking you to the ${programName} page...`);
+
+    // Small delay to show the message before redirecting
+    setTimeout(() => {
+        window.location.href = path;
+    }, 1500);
+}
+
+// Student option functions
+function showEmailOption() {
+    hideAllButtons();
+    toggleFooter(false);
+    addToConversation('assistant', 'Please provide your email address and we will send your program resources.');
+    // Show email input but not the full footer
+    document.getElementById('sendTranscript').checked = true;
+    document.getElementById('userEmail').style.display = 'block';
+    addToConversation('user', 'Please include your email above to receive program resources');
+}
+
+function contactAdmin() {
+    hideAllButtons();
+    toggleFooter(true);
+    addToConversation('user', '👨‍💼 I want to contact an administrator');
+    addToConversation('assistant', 'Please use the message box below to describe your issue. Check the box to receive a transcript of this conversation.');
+
+    // Auto-check the transcript option for admin contact
+    document.getElementById('sendTranscript').checked = true;
+    document.getElementById('userEmail').style.display = 'block';
+}
+
+// Send message function (for text input) - only works in admin contact mode
+function sendMessage() {
+    if (!isAdminContactMode) return;
+
+    const userInput = document.getElementById('userInput');
+    const message = userInput.value.trim();
+
+    if (message) {
+        addToConversation('user', message);
+        addToConversation('assistant', 'Thank you for your message. An administrator will contact you shortly. Please ensure your email is correct to receive updates.');
+        userInput.value = '';
+
+        // Auto-send transcript if email is provided
+        const userEmail = document.getElementById('userEmail').value;
+        if (userEmail) {
+            sendTranscript();
+        }
+    }
+}
+
+// Email transcript functionality
+function sendTranscript() {
+    const sendTranscript = document.getElementById('sendTranscript').checked;
+    const userEmail = document.getElementById('userEmail').value;
+
+    if (sendTranscript && userEmail) {
+        fetch('/send-transcript/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            },
+            body: JSON.stringify({
+                'email': userEmail,
+                'conversation': conversationHistory
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showAlert('Transcript sent to your email!', 'success');
+            } else {
+                showAlert('Failed to send transcript.', 'error');
+            }
+        });
+    }
+}
+
+// Get CSRF token function
+function getCSRFToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]').value;
+}
+
+// Show alert function
+function showAlert(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} mt-2`;
+    alertDiv.textContent = message;
+    document.querySelector('.modal-footer').prepend(alertDiv);
+    setTimeout(() => alertDiv.remove(), 3000);
+}
+
+// Reset chatbot when closed
+function resetChatbotVisibility() {
+    // Clear conversation history
+    conversationHistory = [
+        { sender: "assistant", message: "Hello! Welcome to the NextGen university chatbot." },
+        { sender: "assistant", message: "Are you already a student?" }
+    ];
+
+    // Clear chat display and show initial setup
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.innerHTML = `
+        <div class="alert alert-info">
+            <p>Hello! Welcome to the NextGen university chatbot.</p>
+            <strong>Assistant:</strong> Are you already a student?
+        </div>
+        <div class="gap-2" id="initialDecision">
+            <button class="btn btn-outline-primary" id='yesButton' onclick="yesListener()">
+                ✅ Yes
+            </button>
+            <button class="btn btn-outline-primary" id='noButton' onclick="noListener()">
+                ❌ No
+            </button>
+        </div>
+    `;
+
+    // Clear email inputs and hide footer
+    document.getElementById('sendTranscript').checked = false;
+    document.getElementById('userEmail').style.display = 'none';
+    document.getElementById('userEmail').value = '';
+    document.getElementById('userInput').value = '';
+    toggleFooter(false);
+    isAdminContactMode = false;
+
+    // Scroll to top
+    chatMessages.scrollTop = 0;
+}
+
+// Reset when modal is closed
+document.addEventListener('DOMContentLoaded', function () {
+    const chatbotModal = document.getElementById('chatbotModal');
+    chatbotModal.addEventListener('hidden.bs.modal', function () {
+        resetChatbotVisibility();
+    });
+
+    // Email input toggle
+    document.getElementById('sendTranscript').addEventListener('change', function() {
+        const emailInput = document.getElementById('userEmail');
+        emailInput.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) emailInput.value = '';
+    });
+
+    // Enter key support for text input
+    document.getElementById('userInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && isAdminContactMode) {
+            sendMessage();
+        }
+    });
+});
+</script>
