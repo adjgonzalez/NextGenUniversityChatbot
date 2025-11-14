@@ -16,19 +16,8 @@ urlpatterns = [
     ),  # AJAX
     path("contact/", views.contact, name="contact"),
     path("faculty/", views.faculty, name="faculty"),
-<<<<<<< HEAD
-
-    
-
-    path("programs/", views.programs, name="programs"),
-    path('programs/<slug:program_slug>/', views.programs_detail,
-         name='program_detail')  # ,path("programs_detail1/", views.programs_detail1, name="programs_detail1"),
-    
-]
-=======
     path("programs/", views.programs, name="programs"),
     path(
         "programs/<slug:program_slug>/", views.programs_detail, name="program_detail"
     ),  # ,path("programs_detail1/", views.programs_detail1, name="programs_detail1"),
 ]
->>>>>>> 7dd55b7b8701d0508f9923bfd7e82dcb80876813

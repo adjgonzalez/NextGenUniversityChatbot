@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "mychatbot",
     "users",
     "pages",
+    "feedback",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -118,6 +119,8 @@ DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@nextgenuniversity.
 
 # Static files
 STATIC_URL = "static/"
+
+FEEDBACK_CHOICES = [("Bug", "bug"), ("Issue", "issue")]
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

@@ -31,47 +31,41 @@
   <body>
     {% include "./navbar.html" %}
     <div class="main-content container py-4">
-<<<<<<< HEAD:uni-chatbot/mychatbot/templates/base/base.html
-      
+
       {% if messages %}
-  <div class_name="container position-fixed" 
-       style="top: 80px; right: 20px; z-index: 1050; width: auto;">
-    
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-flex align-items-center" role="alert" id="message-alert-{{ forloop.counter }}">
-        <div class="flex-grow-1">
-          {{ message }}
-        </div>
-        <button type"button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <div class="container position-fixed"
+           style="top: 80px; right: 20px; z-index: 1050; width: auto;">
+
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-flex align-items-center" role="alert" id="message-alert-{{ forloop.counter }}">
+            <div class="flex-grow-1">
+              {{ message }}
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+
       </div>
-    {% endfor %}
+      {% endif %}
 
-  </div>
-{% endif %}
+      <script>
+      // Automatically close the success alerts after 4 seconds
+      document.addEventListener('DOMContentLoaded', (event) => {
+        // Find all alerts with the 'alert-success' class
+        const successAlerts = document.querySelectorAll('.alert-success');
 
+        successAlerts.forEach((alert) => {
+          // Set a timeout to remove the 'show' class, triggering the fade-out
+          setTimeout(() => {
+            // We use the Bootstrap Alert instance to properly close it
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+          }, 4000); // 4000 milliseconds = 4 seconds
+        });
+      });
+      </script>
 
-<script>
-// Automatically close the success alerts after 4 seconds
-document.addEventListener('DOMContentLoaded', (event) => {
-  // Find all alerts with the 'alert-success' class
-  const successAlerts = document.querySelectorAll('.alert-success');
-  
-  successAlerts.forEach((alert) => {
-    // Set a timeout to remove the 'show' class, triggering the fade-out
-    setTimeout(() => {
-      // We use the Bootstrap Alert instance to properly close it
-      const bsAlert = new bootstrap.Alert(alert);
-      bsAlert.close();
-    }, 4000); // 4000 milliseconds = 4 seconds
-  });
-});
-</script>
-
-    
-      {% block content %} 
-=======
       {% block content %}
->>>>>>> 7dd55b7b8701d0508f9923bfd7e82dcb80876813:uni-chatbot/pages/templates/base/base.html
       {% endblock %}
     </div>
     {% include "./footer.html" %}

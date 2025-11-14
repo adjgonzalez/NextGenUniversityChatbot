@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,31 +14,77 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='AnonymousFeedback',
+            name="AnonymousFeedback",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('bug', 'Bug'), ('issue', 'Issue')], max_length=255, verbose_name='Type')),
-                ('message', models.TextField(verbose_name='Message')),
-                ('time', models.DateTimeField(auto_now_add=True, verbose_name='Time')),
-                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[("bug", "Bug"), ("issue", "Issue")],
+                        max_length=255,
+                        verbose_name="Type",
+                    ),
+                ),
+                ("message", models.TextField(verbose_name="Message")),
+                ("time", models.DateTimeField(auto_now_add=True, verbose_name="Time")),
+                (
+                    "user",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="User",
+                    ),
+                ),
             ],
             options={
-                'ordering': ('time',),
-                'abstract': False,
+                "ordering": ("time",),
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Feedback',
+            name="Feedback",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('bug', 'Bug'), ('issue', 'Issue')], max_length=255, verbose_name='Type')),
-                ('message', models.TextField(verbose_name='Message')),
-                ('time', models.DateTimeField(auto_now_add=True, verbose_name='Time')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[("bug", "Bug"), ("issue", "Issue")],
+                        max_length=255,
+                        verbose_name="Type",
+                    ),
+                ),
+                ("message", models.TextField(verbose_name="Message")),
+                ("time", models.DateTimeField(auto_now_add=True, verbose_name="Time")),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="User",
+                    ),
+                ),
             ],
             options={
-                'ordering': ('time',),
-                'abstract': False,
+                "ordering": ("time",),
+                "abstract": False,
             },
         ),
     ]
