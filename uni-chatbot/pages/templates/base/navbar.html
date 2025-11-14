@@ -31,23 +31,43 @@
 <nav class="navbar navbar-expand-lg custom-bottom-navbar">
   <div class="container">
     <div class="collapse navbar-collapse">
+      <!-- Left-aligned navigation links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">{% trans "Home" %}</a></li>
         <li class="nav-item"><a class="nav-link {% if request.path == '/admissions/' %}active{% endif %}" href="/admissions/">{% trans "Admissions" %}</a></li>
         <li class="nav-item"><a class="nav-link {% if request.path == '/programs/' %}active{% endif %}" href="/programs/">{% trans "Programs" %}</a></li>
         <li class="nav-item"><a class="nav-link {% if request.path == '/faculty/' %}active{% endif %}" href="/faculty/">{% trans "Faculty and Departments" %}</a></li>
         <li class="nav-item"><a class="nav-link {% if request.path == '/contact/' %}active{% endif %}" href="/contact/">{% trans "Contact Us" %}</a></li>
-        <li class="nav-item"><a class="nav-link {% if request.path == '/feedback/' %}active{% endif %}" href="{% url 'feedback_form' %}">Leave Feedback</a></li>
-        {% if user.is_authenticated %}
-          <li class="nav-item"><a class="nav-link" aria-label="Current User" title="Current User">{% trans "Hello" %} {{ user.username }}</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == '/feedback/' %}active{% endif %}" href="{% url 'feedback_form' %}">{% trans "Leave Feedback" %}</a></li>
+      </ul>
 
-          <form class="logout" action="{% url 'users:logout' %}" method="post">
-            {% csrf_token %}
-            <button class="btn btn-primary" aria-label="Log Out" title="Log Out">{% trans "Log Out" %}</button>
-          </form>
+      <!-- Right-aligned user buttons -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" aria-label="Current User" title="Current User">
+              {% trans "Hello" %} {{ user.username }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <form class="logout d-inline" action="{% url 'users:logout' %}" method="post">
+              {% csrf_token %}
+              <button class="btn btn-primary ms-2" aria-label="Log Out" title="Log Out">
+                {% trans "Log Out" %}
+              </button>
+            </form>
+          </li>
         {% else %}
-          <li class="nav-item"><a href="{% url 'users:register' %}" class="btn btn-primary" aria-label="User Registration" title="User Registration">{% trans "Register" %}</a></li>
-          <li class="nav-item"><a href="{% url 'users:login' %}" class="btn btn-primary" aria-label="User Log In" title="User Log In">{% trans "Log In" %}</a></li>
+          <li class="nav-item">
+            <a href="{% url 'users:register' %}" class="btn btn-primary me-2" aria-label="User Registration" title="User Registration">
+              {% trans "Register" %}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'users:login' %}" class="btn btn-primary" aria-label="User Log In" title="User Log In">
+              {% trans "Log In" %}
+            </a>
+          </li>
         {% endif %}
       </ul>
     </div>

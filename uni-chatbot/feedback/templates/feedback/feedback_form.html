@@ -1,5 +1,6 @@
 {% extends "base/base.html" %}
-{% block title %}Leave Feedback{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Leave Feedback" %}{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -10,8 +11,9 @@
       <div class="card shadow-lg border-0" style="border-radius: 1rem;">
         <div class="card-body p-4 p-md-5">
 
-          <h1 class="h2 text-center mb-4">Leave Your Feedback</h1>
-          <p class="text-center text-muted mb-5">We value your opinion and will use it to improve our services.</p>
+          <h1 class="h2 text-center mb-4">{% trans "Leave Your Feedback" %}</h1>
+          <p class="text-center text-muted mb-5">{% trans "We value your opinion and will use it to improve our services." %}</p>
+
           <form action="{% url 'feedback_form' %}" method="POST">
             {% csrf_token %}
 
@@ -48,7 +50,7 @@
             <!-- This is the new button -->
             <div class="d-grid">
               <button class="btn btn-primary btn-lg" type="submit">
-                <i class="bi bi-send-fill me-2"></i> Leave Feedback
+                <i class="bi bi-send-fill me-2"></i> {% trans "Leave Feedback" %}
               </button>
             </div>
 
