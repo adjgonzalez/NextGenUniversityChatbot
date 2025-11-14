@@ -60,7 +60,7 @@
         </p>
         <form id="apply-form" method="POST" action="{% url 'pages:apply_now' %}">
           {% csrf_token %}
-          <input type="hidden" name="program" value='{{ program_json|escapejs }}'>
+          <input type="hidden" name="program" value='{{ program_json|safe }}'>
           <button type="submit" class="btn btn-outline-secondary w-100" aria-label="Apply Now" title="Apply Now">Apply Now</button>                          
         </form>
       </div>
@@ -76,7 +76,10 @@
     e.preventDefault();  // prevent page reload
 
     const form = e.target;
-    const program = form.querySelector("input[name='program']").value;
+    const raw = form.querySelector("input[name='program']").value;
+    console.log("Raw:", raw);
+    const program = JSON.parse(raw);
+    console.log("Program:", program);
 
     fetch("{% url 'pages:apply_now' %}", {
       method: "POST",
@@ -84,7 +87,7 @@
         "Content-Type": "application/json",
         "X-CSRFToken": "{{ csrf_token }}"
       },
-      body: JSON.stringify({ program: JSON.parse(program) })
+      body: JSON.stringify({ program })
     })
     .then(res => {
       if (res.status === 401 || res.status === 403) {

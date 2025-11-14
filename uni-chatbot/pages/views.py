@@ -161,15 +161,19 @@ def programs_detail(request, program_slug):
     for category, programs in PROGRAMS.items():
         for program in programs:
             if program["slug"] == program_slug:
+                program_json = json.dumps(program, ensure_ascii=False)
+                print("Found json program:", program_json)                
+
                 return render(
                     request,
                     "base/programs_detail1.html",
-                    {"program": json.dumps(program), "category": category},
+                    {"program": program, "program_json": program_json, "category": category},
                 )
     raise Http404("Program not found")
 
 
 def apply_now(request):    
+    print("IN APPLY NOW")
     if not request.user.is_authenticated:
         return JsonResponse({"message": "You must be logged in"}, status=401)
 
@@ -177,7 +181,7 @@ def apply_now(request):
         # Get program that user wants to apply for
         data = json.loads(request.body)
         program = data.get("program")
-
+        print("PARSED PROGRAM:\t", program)
         enroll_user_in_program(request.user, program)
         return JsonResponse({"message": "Application successful"})                      
 
