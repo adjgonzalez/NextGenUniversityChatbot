@@ -1,0 +1,132 @@
+# French translations for Django project.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-14 09:41-0330\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: French <LL@li.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: .\pages\templates\base\navbar.html:36
+msgid "Home"
+msgstr "Accueil"
+
+#: .\pages\templates\base\navbar.html:37
+msgid "Admissions"
+msgstr "Admissions"
+
+#: .\pages\templates\base\navbar.html:38
+msgid "Programs"
+msgstr "Programmes"
+
+#: .\pages\templates\base\navbar.html:39
+msgid "Faculty and Departments"
+msgstr "Faculté et Départements"
+
+#: .\pages\templates\base\navbar.html:40
+msgid "Contact Us"
+msgstr "Contactez-Nous"
+
+#: .\pages\templates\base\navbar.html:49
+msgid "Hello"
+msgstr "Bonjour"
+
+#: .\pages\templates\base\navbar.html:56
+msgid "Log Out"
+msgstr "Se Déconnecter"
+
+#: .\pages\templates\base\navbar.html:63
+msgid "Register"
+msgstr "S'inscrire"
+
+#: .\pages\templates\base\navbar.html:68
+msgid "Log In"
+msgstr "Se Connecter"
+
+#: .\pages\templates\pages\home.html:9
+msgid "Home Page"
+msgstr "Page d'Accueil"
+
+#: .\pages\templates\pages\home.html:19
+msgid "Enroll Now"
+msgstr "S'inscrire Maintenant"
+
+#: .\pages\templates\pages\home.html:23
+msgid "YOUR"
+msgstr "TON"
+
+#: .\pages\templates\pages\home.html:23
+msgid "COMEBACK"
+msgstr "RETOUR"
+
+#: .\pages\templates\pages\home.html:23
+msgid "STARTS"
+msgstr "COMMENCE"
+
+#: .\pages\templates\pages\home.html:24
+msgid "NOW WITH NextGen University"
+msgstr "MAINTENANT AVEC NextGen University"
+
+#: .\pages\templates\base\navbar.html:41
+msgid "Leave Feedback"
+msgstr "Laisser un Commentaire"
+
+#: .\feedback\forms.py:18
+msgid "Feedback Type"
+msgstr "Type de Commentaire"
+
+#: .\feedback\forms.py:19
+msgid "General"
+msgstr "Général"
+
+#: .\feedback\forms.py:20
+msgid "Bug Report"
+msgstr "Rapport de Bug"
+
+#: .\feedback\forms.py:21
+msgid "Feature Request"
+msgstr "Demande de Fonctionnalité"
+
+#: .\feedback\forms.py:22
+msgid "Complaint"
+msgstr "Plainte"
+
+#: .\feedback\forms.py:23
+msgid "Compliment"
+msgstr "Compliment"
+
+#: .\feedback\forms.py:27
+msgid "Your Message"
+msgstr "Votre Message"
+
+#: .\feedback\templates\feedback\feedback_form.html:7
+msgid "Leave Your Feedback"
+msgstr "Laissez Votre Commentaire"
+
+#: .\feedback\templates\feedback\feedback_form.html:8
+msgid "We value your opinion and will use it to improve our services."
+msgstr "Nous apprécions votre opinion et l'utiliserons pour améliorer nos services."
+
+#: .\feedback\templates\feedback\feedback_form.html:33
+msgid "Send Feedback"
+msgstr "Envoyer le Commentaire"
+
+#: .\pages\templates\pages\home.html:27
+msgid ""
+"Reignite your career with hands-on learning and expert mentorship. Start "
+"your journey today."
+msgstr "Ravivez votre carrière avec un apprentissage pratique et un mentorat expert. Commencez votre voyage aujourd'hui."
+
+#: .\pages\templates\pages\home.html:32
+msgid "Hero Banner"
+msgstr "Bannière Héroïque"

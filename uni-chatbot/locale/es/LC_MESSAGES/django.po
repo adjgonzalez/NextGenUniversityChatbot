@@ -1,0 +1,148 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-14 09:41-0330\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Spanish <LL@li.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\feedback\models.py:9
+msgid "Type"
+msgstr "Tipo"
+
+#: .\feedback\models.py:11
+msgid "Message"
+msgstr "Mensaje"
+
+#: .\feedback\models.py:12
+msgid "Time"
+msgstr "Tiempo"
+
+#: .\feedback\models.py:23 .\feedback\models.py:28
+msgid "User"
+msgstr "Usuario"
+
+#: .\pages\templates\base\navbar.html:36
+msgid "Home"
+msgstr "Inicio"
+
+#: .\pages\templates\base\navbar.html:37
+msgid "Admissions"
+msgstr "Admisiones"
+
+#: .\pages\templates\base\navbar.html:38
+msgid "Programs"
+msgstr "Programas"
+
+#: .\pages\templates\base\navbar.html:39
+msgid "Faculty and Departments"
+msgstr "Facultad y Departamentos"
+
+#: .\pages\templates\base\navbar.html:40
+msgid "Contact Us"
+msgstr "Contáctenos"
+
+#: .\pages\templates\base\navbar.html:49
+msgid "Hello"
+msgstr "Hola"
+
+#: .\pages\templates\base\navbar.html:56
+msgid "Log Out"
+msgstr "Cerrar Sesión"
+
+#: .\pages\templates\base\navbar.html:63
+msgid "Register"
+msgstr "Registrarse"
+
+#: .\pages\templates\base\navbar.html:68
+msgid "Log In"
+msgstr "Iniciar Sesión"
+
+#: .\pages\templates\pages\home.html:9
+msgid "Home Page"
+msgstr "Página de Inicio"
+
+#: .\pages\templates\pages\home.html:19
+msgid "Enroll Now"
+msgstr "Inscribirse Ahora"
+
+#: .\pages\templates\pages\home.html:23
+msgid "YOUR"
+msgstr "TU"
+
+#: .\pages\templates\pages\home.html:23
+msgid "COMEBACK"
+msgstr "REGRESO"
+
+#: .\pages\templates\pages\home.html:23
+msgid "STARTS"
+msgstr "COMIENZA"
+
+#: .\pages\templates\pages\home.html:24
+msgid "NOW WITH NextGen University"
+msgstr "AHORA CON NextGen University"
+
+#: .\pages\templates\pages\home.html:27
+msgid ""
+"Reignite your career with hands-on learning and expert mentorship. Start "
+"your journey today."
+msgstr "Reaviva tu carrera con aprendizaje práctico y tutoría experta. Comienza tu viaje hoy."
+
+#: .\pages\templates\base\navbar.html:41
+msgid "Leave Feedback"
+msgstr "Dejar Comentarios"
+
+#: .\feedback\forms.py:18
+msgid "Feedback Type"
+msgstr "Tipo de Comentario"
+
+#: .\feedback\forms.py:19
+msgid "General"
+msgstr "General"
+
+#: .\feedback\forms.py:20
+msgid "Bug Report"
+msgstr "Reporte de Error"
+
+#: .\feedback\forms.py:21
+msgid "Feature Request"
+msgstr "Solicitud de Función"
+
+#: .\feedback\forms.py:22
+msgid "Complaint"
+msgstr "Queja"
+
+#: .\feedback\forms.py:23
+msgid "Compliment"
+msgstr "Elogio"
+
+#: .\feedback\forms.py:27
+msgid "Your Message"
+msgstr "Tu Mensaje"
+
+#: .\feedback\templates\feedback\feedback_form.html:7
+msgid "Leave Your Feedback"
+msgstr "Deja Tu Comentario"
+
+#: .\feedback\templates\feedback\feedback_form.html:8
+msgid "We value your opinion and will use it to improve our services."
+msgstr "Valoramos tu opinión y la usaremos para mejorar nuestros servicios."
+
+#: .\feedback\templates\feedback\feedback_form.html:33
+msgid "Send Feedback"
+msgstr "Enviar Comentario"
+
+#: .\pages\templates\pages\home.html:32
+msgid "Hero Banner"
+msgstr "Banner Principal"
