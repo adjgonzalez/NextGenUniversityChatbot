@@ -7,7 +7,6 @@
     <a class="navbar-brand" href="/">
       <img src="{% static 'images/logo.png' %}" alt="Logo" width="120" class="d-inline-block align-text-top">
     </a>
-
     <!-- Language Switcher - Moved inside the main nav -->
     <div class="navbar-nav ms-auto">
       <form action="{% url 'set_language' %}" method="post" class="d-flex" id="languageForm">
@@ -38,7 +37,7 @@
         <li class="nav-item"><a class="nav-link {% if request.path == '/programs/' %}active{% endif %}" href="/programs/">{% trans "Programs" %}</a></li>
         <li class="nav-item"><a class="nav-link {% if request.path == '/faculty/' %}active{% endif %}" href="/faculty/">{% trans "Faculty and Departments" %}</a></li>
         <li class="nav-item"><a class="nav-link {% if request.path == '/contact/' %}active{% endif %}" href="/contact/">{% trans "Contact Us" %}</a></li>
-
+        <li class="nav-item"><a class="nav-link {% if request.path == '/feedback/' %}active{% endif %}" href="{% url 'feedback_form' %}">Leave Feedback</a></li>
         {% if user.is_authenticated %}
           <li class="nav-item"><a class="nav-link" aria-label="Current User" title="Current User">{% trans "Hello" %} {{ user.username }}</a></li>
 

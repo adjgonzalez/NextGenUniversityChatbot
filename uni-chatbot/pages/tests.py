@@ -1,4 +1,4 @@
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.urls import reverse
 
 
@@ -13,7 +13,9 @@ class PagesSectionTests(TestCase):
         self.contact_url = reverse("mychatbot:contact")
         self.faculty_url = reverse("mychatbot:faculty")
         self.programs_url = reverse("mychatbot:programs")
-        self.admissions_page = lambda name: reverse("mychatbot:admissions_page", args=[name])
+        self.admissions_page = lambda name: reverse(
+            "mychatbot:admissions_page", args=[name]
+        )
         self.program_detail = lambda slug: reverse(
             "mychatbot:program_detail", kwargs={"program_slug": slug}
         )

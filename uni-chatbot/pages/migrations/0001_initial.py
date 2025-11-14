@@ -5,34 +5,58 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='ProgramType',
+            name="ProgramType",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Program',
+            name="Program",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200)),
-                ('slug', models.SlugField(unique=True)),
-                ('degree', models.CharField(max_length=50)),
-                ('duration', models.CharField(max_length=50)),
-                ('description', models.TextField()),
-                ('routes', models.CharField(blank=True, max_length=100, null=True)),
-                ('enrollment_status', models.CharField(blank=True, max_length=100, null=True)),
-                ('campus', models.CharField(blank=True, max_length=100, null=True)),
-                ('joint_programs', models.JSONField(blank=True, default=list)),
-                ('program_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='programs', to='pages.programtype')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=200)),
+                ("slug", models.SlugField(unique=True)),
+                ("degree", models.CharField(max_length=50)),
+                ("duration", models.CharField(max_length=50)),
+                ("description", models.TextField()),
+                ("routes", models.CharField(blank=True, max_length=100, null=True)),
+                (
+                    "enrollment_status",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                ("campus", models.CharField(blank=True, max_length=100, null=True)),
+                ("joint_programs", models.JSONField(blank=True, default=list)),
+                (
+                    "program_type",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="programs",
+                        to="pages.programtype",
+                    ),
+                ),
             ],
         ),
     ]
