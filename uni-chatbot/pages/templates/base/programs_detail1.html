@@ -58,8 +58,11 @@
           April 1 (International) for Fall admission<br>
           May 1 (Canadian) for Fall admission
         </p>
-        
-        <button onClick=userApply() class="btn btn-outline-secondary w-100" aria-label="Apply Now" title="Apply Now">Apply Now</button>                          
+        <form id="apply-form" method="POST" action="{% url 'pages:apply_now' %}">
+          {% csrf_token %}
+          <input type="hidden" name="program" value='{{ program_json|escapejs }}'>
+          <button type="submit" class="btn btn-outline-secondary w-100" aria-label="Apply Now" title="Apply Now">Apply Now</button>                          
+        </form>
       </div>
     </div>
 
@@ -69,26 +72,38 @@
 </div> <!-- end container -->
 
 <script>
-  function userApply() {
-      fetch('/programs/apply_now/', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'X-CSRFToken': '{{ csrf_token }}'
-            }
-            }).then(response => {
-              if (response.status === 403) {
-                window.location.href = "{% url 'users:login' %}";
-              }
-              else {
-                return response.json();
-              }
-            }).then(data => {
-              if (data) {
-                alert(data.message);
-              }
-            })            
-  }
+  document.getElementById("apply-form").addEventListener("submit", function(e) {
+    e.preventDefault();  // prevent page reload
+
+    const form = e.target;
+    const program = form.querySelector("input[name='program']").value;
+
+    fetch("{% url 'pages:apply_now' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: JSON.stringify({ program: JSON.parse(program) })
+    })
+    .then(res => {
+      if (res.status === 401 || res.status === 403) {
+        window.location.href = "/users/login/" + window.location.pathname;
+      } else {
+        return res.json();
+      }
+    })
+    .then(data => {
+      if (data?.message) {
+        alert(data.message);  
+      }
+    })
+    .catch(err => {
+      console.error("Error:", err);
+      alert("Something went wrong.");
+    });
+  });
 </script>
+
 {% endblock %}
 
