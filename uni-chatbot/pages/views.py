@@ -55,6 +55,7 @@ def programs(request):
 PROGRAMS = {
     "Undergraduate": [
         {
+            "id": "55204d2b-3dfa-4d92-873a-9b6ec8ae49ff",
             "name": "BSc in Computer Science",
             "slug": "bsc-in-computer-science",
             "degree": "BSc",
@@ -83,6 +84,7 @@ PROGRAMS = {
             ],
         },
         {
+            "id": "7d523468-684f-4d44-b904-bfca5251d511",
             "name": "BA in Economics",
             "slug": "ba-in-economics",
             "degree": "BA",
@@ -96,6 +98,7 @@ PROGRAMS = {
     ],
     "Graduate": [
         {
+            "id": "1ff1babe-54aa-46a5-bee4-1112964ba0d8",
             "name": "MBA",
             "slug": "mba",
             "degree": "MBA",
@@ -110,6 +113,7 @@ PROGRAMS = {
             "international business.",
         },
         {
+            "id": "71669288-a256-466a-8eb4-7113eac249c0",
             "name": "MDSc in Data Science",
             "slug": "mdsc-in-data-science",
             "degree": "MDSc",
@@ -127,6 +131,7 @@ PROGRAMS = {
     ],
     "Online Courses": [
         {
+            "id": "ed404c78-959e-42fe-9bb8-14a238ebfcd0",
             "name": "Web Development Bootcamp",
             "slug": "web-development-bootcamp",
             "degree": "Web development",
@@ -141,6 +146,7 @@ PROGRAMS = {
             "developer roles.",
         },
         {
+            "id": "dfee4da8-cf6d-4955-90b8-4a8c3ba0d851",
             "name": "Introduction to AI",
             "slug": "introduction-to-ai",
             "degree": "AI",
