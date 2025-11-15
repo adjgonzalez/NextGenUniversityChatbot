@@ -1,8 +1,9 @@
-from django.http import Http404, JsonResponse
+import json
+from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
-
-
+from users.services import enroll_user_in_program
+from pages.models import Program
 # Home page
 def index(request):
     return render(request, "pages/home.html")
@@ -54,6 +55,7 @@ def programs(request):
 PROGRAMS = {
     "Undergraduate": [
         {
+            "id": "55204d2b-3dfa-4d92-873a-9b6ec8ae49ff",
             "name": "BSc in Computer Science",
             "slug": "bsc-in-computer-science",
             "degree": "BSc",
@@ -82,6 +84,7 @@ PROGRAMS = {
             ],
         },
         {
+            "id": "7d523468-684f-4d44-b904-bfca5251d511",
             "name": "BA in Economics",
             "slug": "ba-in-economics",
             "degree": "BA",
@@ -95,6 +98,7 @@ PROGRAMS = {
     ],
     "Graduate": [
         {
+            "id": "1ff1babe-54aa-46a5-bee4-1112964ba0d8",
             "name": "MBA",
             "slug": "mba",
             "degree": "MBA",
@@ -109,6 +113,7 @@ PROGRAMS = {
             "international business.",
         },
         {
+            "id": "71669288-a256-466a-8eb4-7113eac249c0",
             "name": "MDSc in Data Science",
             "slug": "mdsc-in-data-science",
             "degree": "MDSc",
@@ -126,6 +131,7 @@ PROGRAMS = {
     ],
     "Online Courses": [
         {
+            "id": "ed404c78-959e-42fe-9bb8-14a238ebfcd0",
             "name": "Web Development Bootcamp",
             "slug": "web-development-bootcamp",
             "degree": "Web development",
@@ -140,6 +146,7 @@ PROGRAMS = {
             "developer roles.",
         },
         {
+            "id": "dfee4da8-cf6d-4955-90b8-4a8c3ba0d851",
             "name": "Introduction to AI",
             "slug": "introduction-to-ai",
             "degree": "AI",
@@ -160,9 +167,30 @@ def programs_detail(request, program_slug):
     for category, programs in PROGRAMS.items():
         for program in programs:
             if program["slug"] == program_slug:
+                program_json = json.dumps(program, ensure_ascii=False)
+                print("Found json program:", program_json)                
+
                 return render(
                     request,
                     "base/programs_detail1.html",
-                    {"program": program, "category": category},
+                    {"program": program, "program_json": program_json, "category": category},
                 )
     raise Http404("Program not found")
+
+
+def apply_now(request):        
+    if not request.user.is_authenticated:
+        return JsonResponse({"message": "You must be logged in"}, status=401)
+
+    try:
+        # Get program that user wants to apply for
+        data = json.loads(request.body)
+        program = data.get("program")        
+        enroll_user_in_program(request.user, program)
+        return JsonResponse({"message": "Application successful"})                      
+
+    except Exception as e:        
+        return JsonResponse({"message": "Something went wrong. Application Cancelled"}, status=500)
+
+    
+    
