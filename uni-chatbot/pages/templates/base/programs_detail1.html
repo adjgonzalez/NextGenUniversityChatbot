@@ -76,10 +76,8 @@
     e.preventDefault();  // prevent page reload
 
     const form = e.target;
-    const raw = form.querySelector("input[name='program']").value;
-    console.log("Raw:", raw);
-    const program = JSON.parse(raw);
-    console.log("Program:", program);
+    const raw = form.querySelector("input[name='program']").value;    
+    const program = JSON.parse(raw);    
 
     fetch("{% url 'pages:apply_now' %}", {
       method: "POST",

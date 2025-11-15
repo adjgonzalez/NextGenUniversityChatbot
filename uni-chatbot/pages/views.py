@@ -178,22 +178,19 @@ def programs_detail(request, program_slug):
     raise Http404("Program not found")
 
 
-def apply_now(request):    
-    print("IN APPLY NOW")
+def apply_now(request):        
     if not request.user.is_authenticated:
         return JsonResponse({"message": "You must be logged in"}, status=401)
 
     try:
         # Get program that user wants to apply for
         data = json.loads(request.body)
-        program = data.get("program")
-        print("PARSED PROGRAM:\t", program)
+        program = data.get("program")        
         enroll_user_in_program(request.user, program)
         return JsonResponse({"message": "Application successful"})                      
 
-    except Exception as e:
-        print("Something went wrong:", e)
-        return JsonResponse({"message": str(e)}, status=500)
+    except Exception as e:        
+        return JsonResponse({"message": "Something went wrong. Application Cancelled"}, status=500)
 
     
     
