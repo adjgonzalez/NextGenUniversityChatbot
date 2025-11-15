@@ -35,13 +35,13 @@ def clear_browser_data(page):
 def take_screenshot(page, filename, description):
     """Take screenshot and log description"""
     page.screenshot(path=f'test_results/{filename}')
-    print(f"📸 {description} - saved as {filename}")
+    print(f"✓ {description} - saved as {filename}")
 
 
 def test_comprehensive_features():
-    """Comprehensive E2E test with screenshots and improved chatbot flow"""
+    """ E2E test with screenshots and chatbot flow"""
     print("=" * 70)
-    print("COMPREHENSIVE FEATURE TEST SUITE - ENHANCED")
+    print("E2E TEST SUITE")
     print("=" * 70)
     print("Testing: Chatbot → User Registration → Feedback")
     print()
@@ -143,13 +143,13 @@ def test_comprehensive_features():
                                     page.goto('http://localhost:8000/')
                                     print("✓ Navigated back to home page")
                             else:
-                                print("ℹ No redirect occurred after program selection")
+                                print("X No redirect occurred after program selection")
                         else:
-                            print("ℹ No program options found")
+                            print("X No program options found")
                     else:
-                        print("ℹ Undergraduate button not found")
+                        print("X Undergraduate button not found")
                 else:
-                    print("❌ No button not found in chatbot")
+                    print("X No button not found in chatbot")
 
                 # Close chatbot if it's still open
                 close_btn = page.locator('[data-bs-dismiss="modal"]').first
@@ -158,7 +158,7 @@ def test_comprehensive_features():
                     page.wait_for_timeout(500)
                     print("✓ Chatbot closed")
             else:
-                print("❌ Chatbot button not found")
+                print("X Chatbot button not found")
                 return False, created_users, test_feedback_content
 
             # ===== TEST 2: USER REGISTRATION =====
@@ -192,15 +192,15 @@ def test_comprehensive_features():
                         if logout_link.is_visible():
                             print("✓ Confirmed logged in (logout link visible)")
                         else:
-                            print("ℹ Login status unclear")
+                            print("X Login status not visible")
                     else:
-                        print(f"❌ Registration failed - at URL: {page.url}")
+                        print(f"X Registration failed - at URL: {page.url}")
                         return False, created_users, test_feedback_content
                 else:
-                    print("❌ Submit button not found")
+                    print("X Submit button not found")
                     return False, created_users, test_feedback_content
             else:
-                print("❌ Register link not found")
+                print("X Register link not found")
                 return False, created_users, test_feedback_content
 
             # ===== TEST 3: FEEDBACK SUBMISSION =====
@@ -259,10 +259,10 @@ def test_comprehensive_features():
                         error_messages = page.locator('.alert-danger, .error')
 
                         if success_messages.count() > 0:
-                            print("🎉 Feedback submitted successfully!")
+                            print("✓ Feedback submitted successfully!")
                             take_screenshot(page, '11_feedback_success.png', 'Feedback submitted successfully')
                         elif error_messages.count() > 0:
-                            print("❌ Form validation errors:")
+                            print("X Form validation errors:")
                             for i in range(error_messages.count()):
                                 print(f"  - {error_messages.nth(i).text_content()}")
                             take_screenshot(page, '11_feedback_error.png', 'Feedback submission error')
@@ -277,14 +277,14 @@ def test_comprehensive_features():
                                 print("✓ Form was cleared - submission successful!")
                                 take_screenshot(page, '11_feedback_cleared.png', 'Feedback form cleared')
                             else:
-                                print("❌ Form not cleared - submission failed")
+                                print("X Form not cleared - submission failed")
                                 take_screenshot(page, '11_feedback_failed.png', 'Feedback submission failed')
                                 return False, created_users, test_feedback_content
                     else:
-                        print("❌ Submit button not found")
+                        print("X Submit button not found")
                         return False, created_users, test_feedback_content
                 else:
-                    print("❌ Feedback form not found")
+                    print("X Feedback form not found")
                     return False, created_users, test_feedback_content
 
             # ===== TEST 4: LOGOUT =====
@@ -306,18 +306,18 @@ def test_comprehensive_features():
                 if login_link.is_visible():
                     print("✓ Confirmed logged out (login link visible)")
                 else:
-                    print("ℹ Logout status unclear")
+                    print("X Logout status unclear")
             else:
-                print("ℹ Logout link not found")
+                print("X Logout link not found")
 
             print("\n" + "=" * 70)
-            print("🎉 ALL COMPREHENSIVE TESTS PASSED!")
+            print("ALL TESTS PASSED!")
             print("=" * 70)
             take_screenshot(page, '13_all_tests_complete.png', 'All tests completed successfully')
             return True, created_users, test_feedback_content
 
         except Exception as e:
-            print(f"\n❌ TEST FAILED: {e}")
+            print(f"\nX TEST FAILED: {e}")
             import traceback
             traceback.print_exc()
             take_screenshot(page, 'error_test_failed.png', 'Test failed with error')
@@ -348,34 +348,33 @@ def cleanup_test_data(usernames, feedback_content):
                 user.delete()
                 print(f"✓ Deleted test user: {username}")
             except User.DoesNotExist:
-                print(f"ℹ Test user not found: {username}")
+                print(f"X Test user not found: {username}")
 
         try:
             feedback_count = Feedback.objects.filter(message__contains=feedback_content).count()
             print(f"Feedback entries in database: {feedback_count}")
         except Exception as e:
-            print(f"ℹ Could not check feedback: {e}")
+            print(f"X Could not check feedback: {e}")
 
-        print("✓ Cleanup completed")
+        print("* Cleanup completed")
 
     except Exception as e:
-        print(f"⚠ Cleanup failed: {e}")
+        print(f"X Cleanup failed: {e}")
 
 
 if __name__ == "__main__":
     os.makedirs('test_results', exist_ok=True)
 
     print("PREREQUISITES:")
-    print("✅ Django server: python manage.py runserver")
-    print("✅ Enhanced with screenshots and improved chatbot flow")
+    print("Django server: python manage.py runserver")
     print()
 
     success, created_users, feedback_content = test_comprehensive_features()
 
     if success:
         cleanup_test_data(created_users, feedback_content)
-        print("\n✅ COMPREHENSIVE TEST SUITE COMPLETED SUCCESSFULLY!")
-        print("📸 All screenshots saved in test_results/ folder")
+        print("\n✅ TEST SUITE COMPLETED SUCCESSFULLY!")
+        print("All screenshots saved in test_results/ folder")
     else:
         print("\n❌ TEST SUITE FAILED")
         if created_users:
