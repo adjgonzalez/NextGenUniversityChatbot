@@ -4,13 +4,13 @@ from django.shortcuts import redirect, render
 from django.conf import settings
 from django.core.mail import send_mail
 
-from .forms import UserRegistrationForm  # 👈 forms.py доторх формоо ашиглана
+from .forms import UserRegistrationForm  
 
 
 def send_welcome_resources_email(user):
     """
-    Шинэ бүртгүүлсэн хэрэглэгчид program/resource холбоотой
-    мэдээллийг имэйлээр илгээх туслах функц.
+    Helper function to send program- and resource-related information
+    to newly registered users via email.
     """
     subject = "Welcome to NextGen University – Your Program Resources"
 
@@ -30,7 +30,6 @@ def send_welcome_resources_email(user):
 
     message = "\n".join(lines)
 
-    # Хэрвээ email байхгүй бол имэйл илгээхгүй
     if not user.email:
         return
 
@@ -38,7 +37,7 @@ def send_welcome_resources_email(user):
         subject,
         message,
         settings.DEFAULT_FROM_EMAIL,
-        [user.email],   # 👈 Одоо хэрэглэгчийн өөрийн email рүү явна
+        [user.email],   
         fail_silently=False,
     )
 
