@@ -3,23 +3,39 @@ from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from users.services import enroll_user_in_program
-from pages.models import Program
+from pages.models import Program, HomePage, AdmissionSidebarItem
+from django.utils.translation import gettext as _
 # Home page
 def index(request):
-    return render(request, "pages/home.html")
+    homepage = HomePage.objects.first() 
+    page_title = _(homepage.page_title)
+    hero_title = homepage.hero_title.split()
+    title_part1 = _(hero_title[0])
+    title_highlight = _(hero_title[1])
+    title_part2 = _(hero_title[2])
+    subtitle = _(homepage.hero_subtitle)
+    body = _(homepage.body)
+    context = {
+        "page_title": page_title,
+        "title_part1": title_part1,
+        "title_highlight": title_highlight,
+        "title_part2": title_part2,
+        "subtitle": subtitle,
+        "body": body,
+        "homepage": homepage,
+    }
+    return render(request, "pages/home.html", context)
 
 
 # Admissions full page view (reload-safe, works with dynamic sidebar)
-def admissions_page(request, page_name="undergraduate"):
-    allowed_pages = ["undergraduate", "graduate", "online_course", "funding"]
-    if page_name not in allowed_pages:
-        page_name = "undergraduate"
-
+def admissions_page(request, page_slug='undergraduate'):
+    sidebar_items = AdmissionSidebarItem.objects.filter(is_active=True).order_by('order')
+    current_page = page_slug
     context = {
-        "current_page": page_name,
-        "page_title": page_name.replace("_", " ").title(),  # e.g., "Undergraduate"
+        'current_page': current_page,
+        'admissions_sidebar_items': sidebar_items
     }
-    return render(request, "admissions/admission.html", context)
+    return render(request, 'admissions/admission.html', context)
 
 
 # Load sidebar content dynamically via AJAX
