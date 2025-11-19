@@ -1,4 +1,3 @@
-
 /* Navbar alignment fix */
 .navbar-nav .nav-item {
   display: flex;
@@ -7,7 +6,7 @@
 
 /* Default link style */
 .navbar-nav .nav-link {
-  color: #fff !important;         /* Make all nav links white */
+  color: #fff !important; /* Make all nav links white */
   padding: 10px 15px;
   text-decoration: none;
   vertical-align: middle;
@@ -33,7 +32,6 @@
   text-decoration: none;
   outline: none;
 }
-
 
 /* === Programs Page Styling === */
 
@@ -95,7 +93,7 @@
 }
 
 .program-link:hover {
-  color: #007BFF;
+  color: #007bff;
 }
 
 .nested-link {
@@ -106,7 +104,7 @@
 }
 
 .nested-link:hover {
-  color: #007BFF;
+  color: #007bff;
 }
 
 .bi {
@@ -125,7 +123,7 @@ a[aria-expanded="true"] .bi {
 }
 
 .program-link:hover {
-  color: #007BFF;
+  color: #007bff;
 }
 
 .nested-link {
@@ -136,7 +134,7 @@ a[aria-expanded="true"] .bi {
 }
 
 .nested-link:hover {
-  color: #007BFF;
+  color: #007bff;
 }
 
 .bi {
@@ -165,7 +163,6 @@ a[aria-expanded="true"] .bi {
   color: #212529 !important; /* standard dark text for the active breadcrumb */
   font-weight: 500;
 }
-
 
 /* Force breadcrumb text to be visible and consistent */
 nav.breadcrumb-nav,

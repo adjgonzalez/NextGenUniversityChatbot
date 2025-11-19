@@ -3,62 +3,31 @@
 <!-- ================================ -->
 
 <!-- Main Heading -->
-<h2 class="main-heading mb-3">Undergraduate Applications</h2>
+<h2 class="main-heading mb-3">{{ page.page_heading }}</h2>
 
 <!-- Admission Requirements Section -->
-<h4 class="pt-3">Admission Requirements</h4>
+<h4 class="pt-3">{{ page.admission_req_heading }}</h4>
 <!-- Description Paragraphs -->
-<p>
-  Admission requirements depend on where you went to school and your level of education.
-  Grade 12 English (ENG4U / EAE4U or its equivalent) is required for all programs. Individual program
-  areas may have additional prerequisites—review our undergraduate programs for requirements for your
-  intended area of study.
-</p>
-<p>
-  In determining admissibility, we reserve the right to take into account repeated courses, grades in
-  specific subjects and other aspects of the student’s academic record.
-</p>
-<p>
-  We will make conditional offers of admission on the basis of your available Grade 11 and 12 (or
-  equivalent) marks, provided your record shows that you are enrolled in all required Grade 12 (or
-  equivalent) courses. If a Grade 12 mark in a prerequisite subject is not available, we will use the
-  mark in the corresponding Grade 11 course. You must submit all required documents by the published
-  document deadline for your program(s) of interest.
-</p>
+<p>{{ page.admission_req_description }}</p>
 
 <!-- English Requirements Section -->
-<h4 class="pt-3">English Requirements</h4>
-<p>
-  All applicants, including those who must present proof of English facility, are required to present
-  a senior level English course (equivalent to Ontario ENG4U/EAE4U) for admission to all undergraduate
-  programs. The English course result will be considered in the admissions process and calculated as
-  part of an applicant’s admission average.
-</p>
-<p>
-  If English is not your first language (i.e. is not the first language you learned at home as a child),
-  you will need to provide evidence of adequate English facility for admission consideration, unless you
-  qualify for an exemption.
-</p>
+<h4 class="pt-3">{{ page.english_req_heading }}</h4>
+<p>{{ page.english_req_description }}</p>
 
 <!-- Exemptions Subsection -->
-<h4 class="pt-3">Exemptions from our English language requirement</h4>
+<h4 class="pt-3">{{ page.language_req_exemtion_heading }}</h4>
+{% if exemption_bullets %}
 <ul class="custom-bullets">
-  <li>You have completed/are completing four or more years of full-time study in a recognized Canadian school (in Canada) that teaches in English</li>
-  <li>You have completed/are completing four or more years of full-time study in an English language school located in a country where the dominant language is English</li>
-  <li>Your first language is French and you have completed four or more years of full-time study at a Canadian school</li>
+    {% for bullet in exemption_bullets %}
+    <li>{{ bullet.text }}</li>
+    {% endfor %}
 </ul>
-<p>
-  If you meet any of the exemption criteria, you can request an English language test exemption after you apply.
-</p>
+{% endif %}
+<p>{{ page.language_req_exemtion_desc }}</p>
 
 <!-- Application Deadlines Section -->
-<h4 class="pt-3">Application Deadlines</h4>
-<p>
-  The university application process starts in the fall of the year before you intend to begin your studies.
-  We encourage you to submit your application and your supporting documents well in advance of posted deadlines.
-  Admission decisions will be released beginning in January and continue through to late May. Decisions may also
-  be released in the summer, depending on the program and applicant type. If we receive your application from OUAC
-  after the program is closed, your application will be cancelled with no refund.
-</p>
+<h4 class="pt-3">{{ page.application_heading }}</h4>
+<p>{{ page.application_deadlines }}</p>
+
 <!-- Floating Chat Button -->
       {% include "base/chatbox.html" %}

@@ -4,20 +4,21 @@
 {% block title %}Contact us | {{ page_title }}{% endblock %}
 
 {% block content %}
-<h2 class="main-heading mb-3 pt-3">Contact Us</h2>
+<h2 class="main-heading mb-3 pt-3">{{ page.page_title }}</h2>
 
 <h3>General Contact Information</h3>
 <p>
-<strong>Admission Office</strong><br>
-Room 3118<br>
-NextGen University, St. John's, Canada
+<strong>{{ page.office_name }}</strong><br>
+{{ page.office_room }}<br>
+{{ page.office_location }}
 </p>
 
 <p>
-<strong>Phone:</strong> xxx xxx xxxx<br>
-<strong>Fax:</strong> xxx xxx xxxx<br>
-<strong>Email:</strong> <a href="mailto:example@mail.com">example@mail.com</a>
+{% if page.phone %}<strong>Phone:</strong> {{ page.phone }}<br>{% endif %}
+{% if page.fax %}<strong>Fax:</strong> {{ page.fax }}<br>{% endif %}
+{% if page.email %}<strong>Email:</strong> <a href="mailto:{{ page.email }}">{{ page.email }}</a>{% endif %}
 </p>
+
 <!-- Floating Chat Button -->
-      {% include "base/chatbox.html" %}
+{% include "base/chatbox.html" %}
 {% endblock %}
