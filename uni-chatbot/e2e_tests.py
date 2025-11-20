@@ -173,6 +173,7 @@ def test_comprehensive_features():
                 take_screenshot(page, '07_registration_page.png', 'Registration page')
 
                 page.fill('#id_username', test_username)
+                page.fill('#id_email', f"{test_username}@example.com") 
                 page.fill('#id_password1', test_password)
                 page.fill('#id_password2', test_password)
                 print("✓ Registration form filled")
