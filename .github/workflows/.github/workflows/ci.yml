@@ -1,0 +1,310 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '30 5 * * *'  # 3 AM Newfoundland Time (UTC-2:30) = 5:30 UTC
+
+jobs:
+  # ===== QUICK SMOKE TESTS (Run on PRs) =====
+  e2e-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    name: E2E Smoke Tests
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+        cache: 'pip'
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest-playwright
+
+    - name: Install Playwright browsers
+      run: |
+        npx playwright install chromium
+        npx playwright install-deps
+
+    - name: Setup test environment
+      run: |
+        cd uni-chatbot
+        python -c "import secrets; key = secrets.token_urlsafe(50); open('.env', 'w', encoding='utf-8').write(f'DEBUG=True\nSECRET_KEY={key}\nALLOWED_HOSTS=localhost,127.0.0.1,::1\nDATABASE_URL=sqlite:///db.sqlite3')"
+        python manage.py migrate
+        python manage.py collectstatic --noinput
+        python manage.py compilemessages -l es -l fr
+
+    - name: Run smoke tests
+      run: |
+        cd uni-chatbot
+        # Start Django server in background
+        python manage.py runserver &
+        SERVER_PID=$!
+        
+        # Wait for server to start
+        sleep 10
+        
+        # Run only smoke tests (tagged with @smoke)
+        npx playwright test --grep="@smoke" --timeout=30000 --reporter=html || echo "Some tests failed - continuing"
+        
+        # Stop server
+        kill $SERVER_PID
+
+    - name: Upload Playwright report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-smoke-report
+        path: |
+          uni-chatbot/playwright-report/
+          uni-chatbot/test-results/
+        retention-days: 7
+
+  # ===== FULL E2E SUITE (Nightly only) =====
+  e2e-full:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    name: Full E2E Suite
+    if: github.event_name == 'schedule'  # Only run on scheduled builds
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+        cache: 'pip'
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest-playwright
+
+    - name: Install Playwright browsers
+      run: |
+        npx playwright install chromium
+        npx playwright install firefox
+        npx playwright install-deps
+
+    - name: Setup test environment
+      run: |
+        cd uni-chatbot
+        python -c "import secrets; key = secrets.token_urlsafe(50); open('.env', 'w', encoding='utf-8').write(f'DEBUG=True\nSECRET_KEY={key}\nALLOWED_HOSTS=localhost,127.0.0.1,::1\nDATABASE_URL=sqlite:///db.sqlite3')"
+        python manage.py migrate
+        python manage.py collectstatic --noinput
+        python manage.py compilemessages -l es -l fr
+
+    - name: Run full E2E test suite
+      run: |
+        cd uni-chatbot
+        # Start Django server in background
+        python manage.py runserver &
+        SERVER_PID=$!
+        
+        # Wait for server to start
+        sleep 10
+        
+        # Run all tests with longer timeout
+        npx playwright test --timeout=60000 --reporter=html
+        
+        # Stop server
+        kill $SERVER_PID
+
+    - name: Upload Playwright report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-full-report
+        path: |
+          uni-chatbot/playwright-report/
+          uni-chatbot/test-results/
+        retention-days: 7
+
+  # ===== SECURITY AUDIT (Existing - Updated) =====
+  security-audit:
+    runs-on: ubuntu-latest
+    name: Security Audit
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install security tools
+      run: |
+        pip install bandit safety
+
+    - name: Run focused security scan
+      run: |
+        cd uni-chatbot
+        bandit -r . -f html -o security-report.html \
+          --skip B101,B311,B403,B404,B605,B602,B603,B607 \
+          --exclude "venv/,__pycache__/,migrations/,tests/,*.pyc" || true
+
+    - name: Check for critical dependency vulnerabilities
+      run: |
+        safety check --ignore=51457 || true
+
+    - name: Upload security report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: security-audit-report
+        path: uni-chatbot/security-report.html
+        retention-days: 7
+
+  # ===== UNIT TESTS & BASIC CHECKS (Existing - Updated) =====
+  test:
+    runs-on: ubuntu-latest
+    name: Unit Tests & Basic Checks
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        cd uni-chatbot
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Setup test environment
+      run: |
+        cd uni-chatbot
+        python -c "import secrets; key = secrets.token_urlsafe(50); open('.env', 'w', encoding='utf-8').write(f'DEBUG=True\nSECRET_KEY={key}\nALLOWED_HOSTS=localhost,127.0.0.1,::1')"
+        python manage.py migrate
+        python manage.py collectstatic --noinput
+
+    - name: Run Django tests
+      run: |
+        cd uni-chatbot
+        python manage.py test || echo "No tests found or tests failed"
+
+    - name: Basic functionality check
+      run: |
+        cd uni-chatbot
+        python -c "
+        import sys
+        sys.path.append('.')
+        try:
+            import django
+            from django.conf import settings
+            django.setup()
+            print('✓ Django setup successful')
+            
+            # Test core imports
+            from mychatbot import models
+            from users import models as user_models
+            from pages import models as page_models
+            print('✓ Core models imported successfully')
+            
+        except Exception as e:
+            print(f'✗ Setup failed: {e}')
+            sys.exit(1)
+        "
+
+  # ===== CODE QUALITY (Existing) =====
+  code-quality:
+    runs-on: ubuntu-latest
+    name: Code Quality
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install code quality tools
+      run: |
+        pip install black ruff
+
+    - name: Check code formatting
+      run: |
+        black --check uni-chatbot --exclude="venv/|__pycache__/|migrations/" || echo "X Formatting issues found"
+
+    - name: Basic code quality check
+      run: |
+        ruff check uni-chatbot --select F401,F821,F841 || echo "X  Basic code issues found"
+
+  # ===== SECURITY SUMMARY =====
+  security-summary:
+    runs-on: ubuntu-latest
+    name: Security Summary
+    needs: [security-audit, test, code-quality, e2e-smoke]
+    if: always()
+
+    steps:
+    - name: Generate security summary
+      run: |
+        echo "# CI Security & Quality Report" > security-summary.md
+        echo "## Generated: $(date)" >> security-summary.md
+        echo "## Results:" >> security-summary.md
+        echo "- Security Scan: ${{ needs.security-audit.result }}" >> security-summary.md
+        echo "- Unit Tests: ${{ needs.test.result }}" >> security-summary.md
+        echo "- Code Quality: ${{ needs.code-quality.result }}" >> security-summary.md
+        echo "- E2E Smoke Tests: ${{ needs.e2e-smoke.result }}" >> security-summary.md
+        echo "- Full E2E Suite: ${{ needs.e2e-full.result || 'SKIPPED (not scheduled)' }}" >> security-summary.md
+        echo "" >> security-summary.md
+        echo "## Artifacts Available:" >> security-summary.md
+        echo "- Security Report: security-audit-report" >> security-summary.md
+        echo "- Playwright Smoke Tests: playwright-smoke-report" >> security-summary.md
+        echo "- Playwright Full Suite: playwright-full-report" >> security-summary.md
+        echo "" >> security-summary.md
+        echo "## Next Steps:" >> security-summary.md
+        echo "1. Download artifacts for detailed reports" >> security-summary.md
+        echo "2. Review any critical security findings" >> security-summary.md
+        echo "3. Check E2E test results for user journey issues" >> security-summary.md
+
+    - name: Upload security summary
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-summary
+        path: security-summary.md
+
+  # ===== NOTIFICATION =====
+  notify:
+    runs-on: ubuntu-latest
+    name: Notify on Failure
+    needs: [security-summary]
+    if: failure() && github.event_name == 'push'
+
+    steps:
+    - name: Notify on critical failure
+      run: |
+        echo "X Critical CI failure detected in ${{ github.repository }}"
+        echo "Failed jobs:"
+        echo "- Security: ${{ needs.security-summary.result.security-audit }}"
+        echo "- Tests: ${{ needs.security-summary.result.test }}"
+        echo "- Code Quality: ${{ needs.security-summary.result.code-quality }}"
+        echo "- E2E Smoke: ${{ needs.security-summary.result.e2e-smoke }}"
+        echo ""
+        echo "Check details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"

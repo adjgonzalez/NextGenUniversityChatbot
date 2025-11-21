@@ -154,6 +154,30 @@ NextGenUniversityChatbot/
 │   └── .env                 # Environment variables
 └── venv/                    # Python virtual environment
 ```
+# Code Quality & Development Tools
+
+# This project uses automated code formatting and linting.
+
+# Pre-commit Hooks
+# Install pre-commit (one-time setup)
+```
+pip install pre-commit
+pre-commit install
+```
+# Run on all files (optional)
+```
+pre-commit run --all-files
+
+# Auto-format code
+black .
+
+# Check code style
+ruff check .
+
+# Fix auto-fixable issues  
+ruff check --fix .
+```
+
 # Development Workflow
 
 # Adding New Translations
