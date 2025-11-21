@@ -1,0 +1,36 @@
+{% extends "base/base.html" %}
+{% block title %}{{ department_page.page_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- Main Heading -->
+    <h1 class="main-heading mb-3">{{ department_page.main_heading }}</h1>
+
+    <!-- Description -->
+    <div class="department-description">
+        {{ department_page.description|linebreaks }}
+    </div>
+
+    <!-- Achievements -->
+    {% if department_page.achievements %}
+    <h4 class="pt-3">Achievements</h4>
+    <p>{{ department_page.achievements|linebreaks }}</p>
+    {% endif %}
+
+    <!-- Advisor Information -->
+    {% if department_page.advisor_name %}
+    <h4 class="pt-3">Faculty Advisor</h4>
+    <ul>
+        <li><strong>Name:</strong> {{ department_page.advisor_name }}</li>
+        <li><strong>Title:</strong> {{ department_page.advisor_title }}</li>
+        <li><strong>Email:</strong> <a href="mailto:{{ department_page.advisor_email }}">{{ department_page.advisor_email }}</a></li>
+        <li><strong>Office:</strong> {{ department_page.advisor_office }}</li>
+    </ul>
+    {% endif %}
+
+    <!-- Floating Chat Button -->
+    {% include "base/chatbox.html" %}
+
+</div>
+{% endblock %}

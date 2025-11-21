@@ -1,52 +1,153 @@
-from django.http import Http404, JsonResponse
-from django.shortcuts import render
+import json
+from django.http import Http404, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
-
+from users.services import enroll_user_in_program
+from pages.models import (
+    Program, HomePage, AdmissionSidebarItem, UndergraduateAddmissionReqPage,
+    GraduateAdmissionPage, OnlineCoursesPage, FundingPage, ContactPage,
+    Faculty, Department, DepartmentPage
+)
+from django.utils.translation import gettext as _
 
 # Home page
 def index(request):
-    return render(request, "pages/home.html")
+    homepage = HomePage.objects.first() 
+    page_title = _(homepage.page_title)
+    hero_title = homepage.hero_title.split()
+    title_part1 = _(hero_title[0])
+    title_highlight = _(hero_title[1])
+    title_part2 = _(hero_title[2])
+    subtitle = _(homepage.hero_subtitle)
+    body = _(homepage.body)
+    context = {
+        "page_title": page_title,
+        "title_part1": title_part1,
+        "title_highlight": title_highlight,
+        "title_part2": title_part2,
+        "subtitle": subtitle,
+        "body": body,
+        "homepage": homepage,
+    }
+    return render(request, "pages/home.html", context)
 
 
 # Admissions full page view (reload-safe, works with dynamic sidebar)
-def admissions_page(request, page_name="undergraduate"):
-    allowed_pages = ["undergraduate", "graduate", "online_course", "funding"]
-    if page_name not in allowed_pages:
-        page_name = "undergraduate"
+def admissions_page(request, page_slug='undergraduate'):
+    sidebar_items = AdmissionSidebarItem.objects.filter(is_active=True).order_by('order')
+
+    # Determine the main page object based on slug
+    if page_slug == "undergraduate":
+        page = get_object_or_404(UndergraduateAddmissionReqPage, page_title__iexact="Undergraduate")
+        exemption_bullets = page.exemption_bullets.all()
+        page_context = {"page": page, "exemption_bullets": exemption_bullets}
+
+    elif page_slug == "graduate":
+        page = get_object_or_404(GraduateAdmissionPage, page_title__iexact="Graduate")
+        requirement_bullets = page.requirement_bullets.all()
+        page_context = {"page": page, "requirement_bullets": requirement_bullets}
+
+    elif page_slug == "online_course":
+        page = get_object_or_404(OnlineCoursesPage, page_title__iexact="Online Courses")
+        online_bullets = page.online_bullets.all()
+        page_context = {"page": page, "online_bullets": online_bullets}
+
+    elif page_slug == "funding":
+        page = get_object_or_404(FundingPage, page_title__iexact="Funding & Scholarships")
+        page_context = {"page": page}
+
+    else:
+        # Default fallback
+        page_context = {}
 
     context = {
-        "current_page": page_name,
-        "page_title": page_name.replace("_", " ").title(),  # e.g., "Undergraduate"
+        "current_page": page_slug,
+        "admissions_sidebar_items": sidebar_items,
+        **page_context,
     }
+
     return render(request, "admissions/admission.html", context)
 
 
 # Load sidebar content dynamically via AJAX
 def load_sidebar_content(request, page_name):
-    template_map = {
-        "undergraduate": "admissions/undergraduate.html",
-        "graduate": "admissions/graduate.html",
-        "online_course": "admissions/online_course.html",
-        "funding": "admissions/funding.html",
-    }
+    try:
+        if page_name == "undergraduate":
+            page = UndergraduateAddmissionReqPage.objects.first()
+            exemption_bullets = page.exemption_bullets.all()
+            html = render_to_string(
+                "admissions/undergraduate.html",
+                {"page": page, "exemption_bullets": exemption_bullets},
+                request=request
+            )
 
-    template_name = template_map.get(page_name)
-    if template_name:
-        html = render_to_string(template_name, request=request)
+        elif page_name == "graduate":
+            page = GraduateAdmissionPage.objects.first()
+            requirement_bullets = page.requirement_bullets.all()
+            html = render_to_string(
+                "admissions/graduate.html",
+                {"page": page, "requirement_bullets": requirement_bullets},
+                request=request
+            )
+
+        elif page_name == "online_course":
+            page = OnlineCoursesPage.objects.first()
+            online_bullets = page.online_bullets.all()
+            html = render_to_string(
+                "admissions/online_course.html",
+                {"page": page, "online_bullets": online_bullets},
+                request=request
+            )
+
+        elif page_name == "funding":
+            page = FundingPage.objects.first()
+            html = render_to_string(
+                "admissions/funding.html",
+                {"page": page},
+                request=request
+            )
+
+        else:
+            html = "<p>Page not found</p>"
+
         return JsonResponse({"html": html})
-    return JsonResponse({"html": "<p>Page not found</p>"}, status=404)
+
+    except Exception:
+        return JsonResponse({"html": "<p>Page not found</p>"}, status=404)
 
 
 # Contact page
 def contact(request):
-    return render(request, "base/contact.html")
+    page = get_object_or_404(ContactPage)
+    context = {
+        "page": page,
+        "page_title": page.page_title
+    }
+    return render(request, "base/contact.html", context)
 
 
 # Faculty page
 def faculty(request):
-    return render(request, "base/faculty.html")
+    faculties = Faculty.objects.prefetch_related("departments").all()
 
+    return render(request, "base/faculty.html", {
+        "faculties": faculties,
+        "page_title": "Faculties & Departments",
+        "heading": "Faculties and Departments"
+    })
 
+# Department Pages
+def department_page(request, dept_url):
+    department = get_object_or_404(Department, url=dept_url)
+    department_page = get_object_or_404(DepartmentPage, department=department)
+    
+    context = {
+        "department": department,
+        "department_page": department_page
+    }
+    return render(request, "base/departments.html", context)
+
+# Program Pages
 def programs(request):
     return render(request, "base/programs.html", {"programs": PROGRAMS})
 
@@ -54,6 +155,7 @@ def programs(request):
 PROGRAMS = {
     "Undergraduate": [
         {
+            "id": "55204d2b-3dfa-4d92-873a-9b6ec8ae49ff",
             "name": "BSc in Computer Science",
             "slug": "bsc-in-computer-science",
             "degree": "BSc",
@@ -82,6 +184,7 @@ PROGRAMS = {
             ],
         },
         {
+            "id": "7d523468-684f-4d44-b904-bfca5251d511",
             "name": "BA in Economics",
             "slug": "ba-in-economics",
             "degree": "BA",
@@ -95,6 +198,7 @@ PROGRAMS = {
     ],
     "Graduate": [
         {
+            "id": "1ff1babe-54aa-46a5-bee4-1112964ba0d8",
             "name": "MBA",
             "slug": "mba",
             "degree": "MBA",
@@ -109,6 +213,7 @@ PROGRAMS = {
             "international business.",
         },
         {
+            "id": "71669288-a256-466a-8eb4-7113eac249c0",
             "name": "MDSc in Data Science",
             "slug": "mdsc-in-data-science",
             "degree": "MDSc",
@@ -126,6 +231,7 @@ PROGRAMS = {
     ],
     "Online Courses": [
         {
+            "id": "ed404c78-959e-42fe-9bb8-14a238ebfcd0",
             "name": "Web Development Bootcamp",
             "slug": "web-development-bootcamp",
             "degree": "Web development",
@@ -140,6 +246,7 @@ PROGRAMS = {
             "developer roles.",
         },
         {
+            "id": "dfee4da8-cf6d-4955-90b8-4a8c3ba0d851",
             "name": "Introduction to AI",
             "slug": "introduction-to-ai",
             "degree": "AI",
@@ -160,9 +267,30 @@ def programs_detail(request, program_slug):
     for category, programs in PROGRAMS.items():
         for program in programs:
             if program["slug"] == program_slug:
+                program_json = json.dumps(program, ensure_ascii=False)
+                print("Found json program:", program_json)                
+
                 return render(
                     request,
                     "base/programs_detail1.html",
-                    {"program": program, "category": category},
+                    {"program": program, "program_json": program_json, "category": category},
                 )
     raise Http404("Program not found")
+
+
+def apply_now(request):        
+    if not request.user.is_authenticated:
+        return JsonResponse({"message": "You must be logged in"}, status=401)
+
+    try:
+        # Get program that user wants to apply for
+        data = json.loads(request.body)
+        program = data.get("program")        
+        enroll_user_in_program(request.user, program)
+        return JsonResponse({"message": "Application successful"})                      
+
+    except Exception as e:        
+        return JsonResponse({"message": "Something went wrong. Application Cancelled"}, status=500)
+
+    
+    

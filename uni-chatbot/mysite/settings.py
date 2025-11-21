@@ -15,10 +15,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load environment variables from .env file
 load_dotenv(BASE_DIR / '.env')
 
-# ===== CONFIGURATION =====
-
-# Detect testing
-TESTING = 'test' in sys.argv or 'pytest' in sys.argv
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
 
 # Generate SECRET_KEY if not provided (secure by default)
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -107,7 +106,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "django.template.context_processors.csrf",
+                "pages.context_processors.navbar_items",
+                "pages.context_processors.admissions_sidebar",
             ],
             'string_if_invalid': 'INVALID_EXPRESSION' if DEBUG else '',
         },

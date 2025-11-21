@@ -1,166 +1,46 @@
 {% extends "base/base.html" %}
-{% block title %}Faculties & Departments{% endblock %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <h1 class="main-heading mb-3">Faculties and Departments</h1>
+<h2 class="main-heading mb-3 pt-3">{{ heading }}</h2>
 
+<div class="container py-4">
     <div class="accordion" id="facultyAccordion">
 
-        <!-- Faculty of Business Administration -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingBusiness">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBusiness" aria-expanded="false" aria-controls="collapseBusiness">
-                    Faculty of Business Administration
-                </button>
-            </h2>
-            <div id="collapseBusiness" class="accordion-collapse collapse" aria-labelledby="headingBusiness" data-bs-parent="#facultyAccordion">
-                <div class="accordion-body">
-                    <ul class="list-unstyled">
-                        <li><a href="#">Business Administration</a></li>
-                        <!-- Add more programs if needed -->
-                    </ul>
+        {# Loop through faculties #}
+        {% for faculty in faculties %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+                        {{ faculty.name }}
+                    </button>
+                </h2>
+                <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#facultyAccordion">
+                    <div class="accordion-body">
+                        <ul class="list-unstyled department-links">
+                            {# Loop through departments for this faculty #}
+                            {% for dept in faculty.departments.all %}
+                                <li>
+                                    {% if dept.url %}
+                                        <a href="{{ dept.url }}" target="_blank">{{ dept.name }}</a>
+                                    {% else %}
+                                        {{ dept.name }}
+                                    {% endif %}
+                                </li>
+                            {% empty %}
+                                <li>No departments available.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endfor %}
 
-        <!-- Faculty of Education -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingEducation">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEducation" aria-expanded="false" aria-controls="collapseEducation">
-                    Faculty of Education
-                </button>
-            </h2>
-            <div id="collapseEducation" class="accordion-collapse collapse" aria-labelledby="headingEducation" data-bs-parent="#facultyAccordion">
-                <div class="accordion-body">
-                    <ul class="list-unstyled">
-                        <li><a href="#">Education</a></li>
-                        <!-- Add more programs if needed -->
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Faculty of Engineering and Applied Science -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingEngineering">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEngineering" aria-expanded="false" aria-controls="collapseEngineering">
-                    Faculty of Engineering and Applied Science
-                </button>
-            </h2>
-            <div id="collapseEngineering" class="accordion-collapse collapse" aria-labelledby="headingEngineering" data-bs-parent="#facultyAccordion">
-                <div class="accordion-body">
-                    <ul class="list-unstyled">
-                        <li><a href="#">Civil Engineering</a></li>
-                        <li><a href="#">Electrical and Computer Engineering</a></li>
-                        <li><a href="#">Mechanical Engineering</a></li>
-                        <li><a href="#">Ocean and Naval Architectural Engineering</a></li>
-                        <li><a href="#">Process Engineering</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Faculty of Humanities and Social Sciences -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingHumanities">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHumanities" aria-expanded="false" aria-controls="collapseHumanities">
-                    Faculty of Humanities and Social Sciences
-                </button>
-            </h2>
-            <div id="collapseHumanities" class="accordion-collapse collapse" aria-labelledby="headingHumanities" data-bs-parent="#facultyAccordion">
-                <div class="accordion-body">
-                    <ul class="list-unstyled">
-                        <li><a href="#">Anthropology</a></li>
-                        <li><a href="#">Archaeology</a></li>
-                        <li><a href="#">Classics</a></li>
-                        <li><a href="#">Communication Studies</a></li>
-                        <li><a href="#">Economics</a></li>
-                        <li><a href="#">English</a></li>
-                        <li><a href="#">English as a Second Language Programs</a></li>
-                        <li><a href="#">Folklore</a></li>
-                        <li><a href="#">Gender Studies</a></li>
-                        <li><a href="#">Geography</a></li>
-                        <li><a href="#">History</a></li>
-                        <li><a href="#">Humanities</a></li>
-                        <li><a href="#">Interdisciplinary Programs</a></li>
-                        <li><a href="#">Law and Society</a></li>
-                        <li><a href="#">Linguistics</a></li>
-                        <li><a href="#">Medieval and Early Modern Studies</a></li>
-                        <li><a href="#">Modern Languages, Literatures and Cultures</a></li>
-                        <li><a href="#">Newfoundland and Labrador Studies</a></li>
-                        <li><a href="#">Philosophy</a></li>
-                        <li><a href="#">Police Studies</a></li>
-                        <li><a href="#">Political Science</a></li>
-                        <li><a href="#">Psychology</a></li>
-                        <li><a href="#">Religious Studies</a></li>
-                        <li><a href="#">Sociology</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Add other faculties similarly -->
-        <!-- Faculty of Medicine -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingMedicine">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMedicine" aria-expanded="false" aria-controls="collapseMedicine">
-                    Faculty of Medicine
-                </button>
-            </h2>
-            <div id="collapseMedicine" class="accordion-collapse collapse" aria-labelledby="headingMedicine" data-bs-parent="#facultyAccordion">
-                <div class="accordion-body">
-                    <ul class="list-unstyled">
-                        <li><a href="#">Medicine</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Faculty of Nursing -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingNursing">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNursing" aria-expanded="false" aria-controls="collapseNursing">
-                    Faculty of Nursing
-                </button>
-            </h2>
-            <div id="collapseNursing" class="accordion-collapse collapse" aria-labelledby="headingNursing" data-bs-parent="#facultyAccordion">
-                <div class="accordion-body">
-                    <ul class="list-unstyled">
-                        <li><a href="#">Nursing</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Faculty of Science -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingScience">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseScience" aria-expanded="false" aria-controls="collapseScience">
-                    Faculty of Science
-                </button>
-            </h2>
-            <div id="collapseScience" class="accordion-collapse collapse" aria-labelledby="headingScience" data-bs-parent="#facultyAccordion">
-                <div class="accordion-body">
-                    <ul class="list-unstyled">
-                        <li><a href="#">Biochemistry</a></li>
-                        <li><a href="#">Biology</a></li>
-                        <li><a href="#">Chemistry</a></li>
-                        <li><a href="#">Computer Science</a></li>
-                        <li><a href="#">Earth Sciences</a></li>
-                        <li><a href="#">Mathematics and Statistics</a></li>
-                        <li><a href="#">Ocean Sciences</a></li>
-                        <li><a href="#">Physics and Physical Oceanography</a></li>
-                        <li><a href="#">Psychology</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Other schools: Marine Institute, School of Graduate Studies, Grenfell Campus -->
-        <!-- Add similar accordion items for each with their departments -->
     </div>
-    <!-- Floating Chat Button -->
-      {% include "base/chatbox.html" %}
+
+<!-- Floating Chat Button -->
+{% include "base/chatbox.html" %}
 </div>
 {% endblock %}

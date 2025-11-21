@@ -58,7 +58,11 @@
           April 1 (International) for Fall admission<br>
           May 1 (Canadian) for Fall admission
         </p>
-        <button class="btn btn-outline-secondary w-100">Apply Now</button>
+        <form id="apply-form" method="POST" action="{% url 'pages:apply_now' %}">
+          {% csrf_token %}
+          <input type="hidden" name="program" value='{{ program_json|safe }}'>
+          <button type="submit" class="btn btn-outline-secondary w-100" aria-label="Apply Now" title="Apply Now">Apply Now</button>                          
+        </form>
       </div>
     </div>
 
@@ -66,4 +70,41 @@
 <!-- Floating Chat Button -->
       {% include "base/chatbox.html" %}
 </div> <!-- end container -->
+
+<script>
+  document.getElementById("apply-form").addEventListener("submit", function(e) {
+    e.preventDefault();  // prevent page reload
+
+    const form = e.target;
+    const raw = form.querySelector("input[name='program']").value;    
+    const program = JSON.parse(raw);    
+
+    fetch("{% url 'pages:apply_now' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: JSON.stringify({ program })
+    })
+    .then(res => {
+      if (res.status === 401 || res.status === 403) {
+        window.location.href = "/users/login/";
+      } else {
+        return res.json();
+      }
+    })
+    .then(data => {
+      if (data?.message) {
+        alert(data.message);  
+      }
+    })
+    .catch(err => {
+      console.error("Error:", err);
+      alert("Something went wrong.");
+    });
+  });
+</script>
+
 {% endblock %}
+
