@@ -4,7 +4,7 @@
 {% comment %} Tells django to use the css styles from static {% endcomment %}
 {% load i18n %}
 {% block title %}
-{% trans "Home Page" %}  {% comment %} Translate the title {% endcomment %}
+{{ page_title }}  {% comment %} Translate the title {% endcomment %}
 {% endblock %}
 
 {% block content %}
@@ -16,17 +16,20 @@
             <a href="#" class="enroll-btn">{% trans "Enroll Now" %}</a>  {% comment %} Translate button {% endcomment %}
 
             <h1>
-              {% trans "YOUR" %} <span class="swatch-word">{% trans "COMEBACK" %}</span> {% trans "STARTS" %}<br>
-              <small>{% trans "NOW WITH NextGen University" %}</small>
+              {{ title_part1 }} <span class="swatch-word">{{ title_highlight }}</span> {{ title_part2 }}<br>
+              <small>{{ subtitle }}</small>
             </h1>
 
-            <p>{% trans "Reignite your career with hands-on learning and expert mentorship. Start your journey today." %}</p>
+            <p>{{ body }}</p>
           </div>
 
-          <!-- Right Side -->
-          <div class="col-lg-6 col-md-12 hero-image text-center">
-            <img src="{% static 'images/group.png' %}" alt="{% trans 'Hero Banner' %}" class="img-fluid">  {% comment %} Translate alt text {% endcomment %}
-          </div>
+        <!-- Right Side -->
+        <div class="col-lg-6 col-md-12 hero-image text-center">
+          {% if homepage.main_image %}
+              <img src="{% static homepage.hero_image %}" alt="{% trans 'Hero Banner' %}" class="img-fluid">
+          {% else %}
+              <img src="{% static 'images/group.png' %}" alt="{% trans 'Hero Banner' %}" class="img-fluid">
+          {% endif %}
         </div>
     </section>
 

@@ -6,16 +6,17 @@ app_name = "pages"
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("admissions/", views.admissions_page, name="admissions"),
-    path("admissions/<str:page_name>/", views.admissions_page, name="admissions_page"),
-    path("", include("mychatbot.urls")),
     path(
-        "admissions/load/<str:page_name>/",
-        views.load_sidebar_content,
-        name="load_sidebar_content",
-    ),  # AJAX
+      "admissions/", views.admissions_page, {"page_slug": "undergraduate"}, name="admissions"
+    ),
+    path("admissions/<str:page_slug>/", views.admissions_page, name="admissions_page"),
+    path(
+      "admissions/load/<str:page_name>/", views.load_sidebar_content, name="load_sidebar_content"
+    ),
+    path("", include("mychatbot.urls")),
     path("contact/", views.contact, name="contact"),
     path("faculty/", views.faculty, name="faculty"),
+    path("faculty/<str:dept_url>/", views.department_page, name="department_page"),
     path("programs/", views.programs, name="programs"),
     path("apply_now/", views.apply_now, name="apply_now"),
     path(
