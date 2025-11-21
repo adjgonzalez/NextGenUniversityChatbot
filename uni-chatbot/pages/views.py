@@ -50,7 +50,11 @@ def faculty(request):
 
 
 def programs(request):
-    return render(request, "base/programs.html", {"programs": PROGRAMS})
+    """Displays all programs with categories"""
+    programs = Program.objects.all()
+    categories = set(program.program_type.name for program in programs)
+
+    return render(request, "base/programs.html", {"programs": programs, "categories": categories })
 
 
 PROGRAMS = {
@@ -165,33 +169,21 @@ PROGRAMS = {
 
 
 def programs_detail(request, program_slug):
+    """Loads program information based on slug
+    
+        Input: 
+            program_slug: slug to search program from
+    """
     program = get_object_or_404(Program, slug=program_slug)
     category = program.program_type.name
-    print("Found program:", program)
-    # program_json = json.dumps(program, ensure_ascii=False)
-    # print("Found json program:", program_json)
-
+    
     return render(
                     request,
                     "base/programs_detail1.html",
                     {"program": program
-                    #  , "program_json": program_json
+                    #  , "program_json": program_json   
                      , "category": category},
                 )
-
-    # for category, programs in PROGRAMS.items():
-    #     for program in programs:
-    #         if program["slug"] == program_slug:
-    #             program_json = json.dumps(program, ensure_ascii=False)
-    #             print("Found json program:", program_json)                
-
-    #             return render(
-    #                 request,
-    #                 "base/programs_detail1.html",
-    #                 {"program": program, "program_json": program_json, "category": category},
-    #             )
-    # raise Http404("Program not found")
-
 
 def apply_now(request):        
     if not request.user.is_authenticated:
