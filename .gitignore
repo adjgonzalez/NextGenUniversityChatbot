@@ -55,10 +55,6 @@ cover/
 *.iml
 *.xml
 
-# Translations
-*.mo
-*.pot
-
 # Django stuff:
 # Test results and reports
 test_results/
