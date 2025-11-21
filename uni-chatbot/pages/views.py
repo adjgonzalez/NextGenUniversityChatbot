@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from users.services import enroll_user_in_program
 from pages.models import Program
+from django.shortcuts import get_object_or_404
 # Home page
 def index(request):
     return render(request, "pages/home.html")
@@ -164,18 +165,32 @@ PROGRAMS = {
 
 
 def programs_detail(request, program_slug):
-    for category, programs in PROGRAMS.items():
-        for program in programs:
-            if program["slug"] == program_slug:
-                program_json = json.dumps(program, ensure_ascii=False)
-                print("Found json program:", program_json)                
+    program = get_object_or_404(Program, slug=program_slug)
+    category = program.program_type.name
+    print("Found program:", program)
+    # program_json = json.dumps(program, ensure_ascii=False)
+    # print("Found json program:", program_json)
 
-                return render(
+    return render(
                     request,
                     "base/programs_detail1.html",
-                    {"program": program, "program_json": program_json, "category": category},
+                    {"program": program
+                    #  , "program_json": program_json
+                     , "category": category},
                 )
-    raise Http404("Program not found")
+
+    # for category, programs in PROGRAMS.items():
+    #     for program in programs:
+    #         if program["slug"] == program_slug:
+    #             program_json = json.dumps(program, ensure_ascii=False)
+    #             print("Found json program:", program_json)                
+
+    #             return render(
+    #                 request,
+    #                 "base/programs_detail1.html",
+    #                 {"program": program, "program_json": program_json, "category": category},
+    #             )
+    # raise Http404("Program not found")
 
 
 def apply_now(request):        
