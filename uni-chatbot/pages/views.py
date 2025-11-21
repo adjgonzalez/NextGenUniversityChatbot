@@ -177,11 +177,27 @@ def programs_detail(request, program_slug):
     program = get_object_or_404(Program, slug=program_slug)
     category = program.program_type.name
     
+    #Create dictionary of program to handle JSON serialization
+    program_dict = {
+        "id": str(program.id),
+        "name": program.name,
+        "slug": program.slug,
+        "degree": program.degree,
+        "duration": program.duration,
+        "description": program.description,
+        "routes": program.routes,
+        "enrollment_status": program.enrollment_status,
+        "campus": program.campus,
+        "joint_programs": program.joint_programs,
+    }
+    # Create JSON object from dictionary
+    program_json = json.dumps(program_dict, ensure_ascii=False)
+
     return render(
                     request,
                     "base/programs_detail1.html",
                     {"program": program
-                    #  , "program_json": program_json   
+                     , "program_json": program_json   
                      , "category": category},
                 )
 
