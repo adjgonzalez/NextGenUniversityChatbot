@@ -1,40 +1,39 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const navLinks = document.querySelectorAll(".nav-link[data-page]");
-  const contentDiv = document.getElementById("content");
-
-  function formatPageName(page) {
-    return page.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-  }
-
-  function loadNavbarPage(page, pushState = true) {
-    fetch(`/admissions/load/${page}/`)
-      .then((res) => res.json())
-      .then((data) => {
-        contentDiv.innerHTML = data.html;
-        if (pushState) history.pushState({ page }, "", `/admissions/${page}/`);
-        document.title = "Admissions | " + formatPageName(page);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      })
-      .catch((err) => console.error(err));
-  }
+  const navLinks = document.querySelectorAll(".nav-link");
+  const contentDiv = document.getElementById("main-content");
 
   navLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const page = link.dataset.page || "undergraduate"; // default to undergraduate
-      loadNavbarPage(page);
+    link.addEventListener("click", function (e) {
+      e.preventDefault(); // prevent full page reload
+
+      const page = this.getAttribute("data-page");
+
+      // Update active class
+      navLinks.forEach((l) => l.classList.remove("active"));
+      this.classList.add("active");
+
+      // Fetch partial content
+      fetch(`/load_page/${page}/`)
+        .then((response) => response.text())
+        .then((html) => {
+          contentDiv.innerHTML = html;
+
+          // Update URL
+          window.history.pushState({ page: page }, "", "/" + page + "/");
+
+          // Update document title
+          document.title = page.charAt(0).toUpperCase() + page.slice(1);
+        })
+        .catch((err) => console.error(err));
     });
   });
 
-  // Load undergraduate page by default if no page is specified
-  const currentPath = window.location.pathname;
-  if (currentPath.includes("/admissions/")) {
-    const defaultPage = "undergraduate";
-    loadNavbarPage(defaultPage, false);
-  }
-
-  // Handle back/forward for navbar
-  window.addEventListener("popstate", (e) => {
-    if (e.state?.page) loadNavbarPage(e.state.page, false);
+  // Handle browser back/forward
+  window.addEventListener("popstate", function (e) {
+    const page = e.state ? e.state.page : "home";
+    fetch(`/load_page/${page}/`)
+      .then((res) => res.text())
+      .then((html) => (contentDiv.innerHTML = html))
+      .catch((err) => console.error(err));
   });
 });

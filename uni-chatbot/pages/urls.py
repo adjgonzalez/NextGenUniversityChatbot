@@ -24,7 +24,5 @@ urlpatterns = [
     ),  # ,path("programs_detail1/", views.programs_detail1, name="programs_detail1"),
 ]
 
-
-
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,11 +1,23 @@
 <aside class="col-md-3 col-lg-2 mb-3">
   <div class="list-group">
-    {% for item in admissions_sidebar_items %}
-      <a href="{% url 'pages:admissions_page' item.slug %}"
-         class="list-group-item list-group-item-action {% if current_page == item.slug %}active{% endif %}"
-         data-page="{{ item.slug }}">
-         {{ item.title }}
-      </a>
-    {% endfor %}
+    <a href="{% url 'pages:admissions_page' 'undergraduate' %}"
+       class="list-group-item list-group-item-action {% if current_page == 'undergraduate' %}active{% endif %}" data-page="undergraduate">
+       Undergraduate
+    </a>
+
+    <a href="{% url 'pages:admissions_page' 'graduate' %}"
+       class="list-group-item list-group-item-action {% if current_page == 'graduate' %}active{% endif %}" data-page="graduate">
+       Graduate
+    </a>
+
+    <a href="{% url 'pages:admissions_page' 'online_course' %}"
+       class="list-group-item list-group-item-action {% if current_page == 'online_course' %}active{% endif %}" data-page="online_course">
+       Online Courses
+    </a>
+
+    <a href="{% url 'pages:admissions_page' 'funding' %}"
+       class="list-group-item list-group-item-action {% if current_page == 'funding' %}active{% endif %}" data-page="funding">
+       Funding and Scholarships
+    </a>
   </div>
 </aside>
