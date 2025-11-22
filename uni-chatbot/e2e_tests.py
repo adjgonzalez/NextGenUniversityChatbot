@@ -38,7 +38,7 @@ def take_screenshot(page, filename, description):
     print(f"✓ {description} - saved as {filename}")
 
 
-def test_comprehensive_features():
+def test_features():
     """ E2E test with screenshots and chatbot flow"""
     print("=" * 70)
     print("E2E TEST SUITE")
@@ -370,14 +370,14 @@ if __name__ == "__main__":
     print("Django server: python manage.py runserver")
     print()
 
-    success, created_users, feedback_content = test_comprehensive_features()
+    success, created_users, feedback_content = test_features()
 
     if success:
         cleanup_test_data(created_users, feedback_content)
-        print("\n✅ TEST SUITE COMPLETED SUCCESSFULLY!")
+        print("\n✓ TEST SUITE COMPLETED SUCCESSFULLY!")
         print("All screenshots saved in test_results/ folder")
     else:
-        print("\n❌ TEST SUITE FAILED")
+        print("\nX TEST SUITE FAILED")
         if created_users:
             cleanup_test_data(created_users, feedback_content)
         exit(1)

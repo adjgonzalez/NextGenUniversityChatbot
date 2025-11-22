@@ -1,4 +1,4 @@
-# Byte-compiled / optimized / DLL files
+﻿# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
@@ -55,11 +55,14 @@ cover/
 *.iml
 *.xml
 
-# Translations
-*.mo
-*.pot
-
 # Django stuff:
+# Test results and reports
+test_results/
+playwright-report/
+test-results/
+*.png
+*.jpg
+*.jpeg
 *.log
 local_settings.py
 db.sqlite3
@@ -232,5 +235,21 @@ __marimo__/
 # VS Code workspace files
 *.code-workspace
 
-# Virtual environment
-.venv/
+# ===== NEW ADDITIONS FOR PLAYWRIGHT & TEST FILES =====
+# Playwright test files
+playwright.config.js
+tests/
+
+# Node modules (if any)
+node_modules/
+
+# Playwright test results and reports
+test_results/
+playwright-report/
+test-results/
+
+# Test images and screenshots
+*.png
+*.jpg
+*.jpeg
+*.log
