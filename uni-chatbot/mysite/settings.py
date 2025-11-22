@@ -26,6 +26,16 @@ if not SECRET_KEY:
 
 # Debug mode - safe defaults
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+#DEBUG = True
+STATIC_URL = '/static/'
+
+if DEBUG:
+    # In dev, Django serves app static files automatically.
+    # Only add STATICFILES_DIRS if you have a global /static folder at BASE_DIR/static.
+    STATICFILES_DIRS = []
+else:
+    # In prod, collectstatic will copy everything here.
+    STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Security: Disable debug mode if using a custom secret key
 if SECRET_KEY and not SECRET_KEY.startswith("django-insecure-"):
@@ -127,8 +137,8 @@ DATABASES = {
 }
 
 # Use separate test database
-if TESTING:
-    DATABASES['default']['NAME'] = BASE_DIR / 'test_db.sqlite3'
+# if TESTING:
+#     DATABASES['default']['NAME'] = BASE_DIR / 'test_db.sqlite3'
 
 # ===== SECURITY & AUTHENTICATION =====
 
@@ -196,9 +206,9 @@ if EMAIL_HOST and EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
 
 # ===== STATIC FILES =====
 
-STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+#STATIC_URL = "/static/"
+# STATIC_ROOT = BASE_DIR / "staticfiles"
+# STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Security: File upload limits
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760
