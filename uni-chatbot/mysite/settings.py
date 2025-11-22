@@ -26,7 +26,6 @@ if not SECRET_KEY:
 
 # Debug mode - safe defaults
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
-#DEBUG = True
 STATIC_URL = '/static/'
 
 if DEBUG:
