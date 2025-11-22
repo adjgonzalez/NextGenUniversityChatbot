@@ -33,3 +33,4 @@ def enroll_user_in_program(user, program: dict):
     except Exception as e:
         print("Something went wrong for application")
         return e
+
