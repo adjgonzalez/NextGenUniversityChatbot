@@ -19,7 +19,7 @@ As of Iteration 3, our pages are now dynamically populated and localized in 3 di
 git clone https://github.com/adjgonzalez/NextGenUniversityChatbot/
 ```
 
-# For easy copy-pasting and, here's the Quick Start setup sequence that can be applied once our repository has been cloned:
+# Quick Start setup sequence:
 
 ```
 # 1. Create and activate virtual environment
@@ -56,15 +56,7 @@ python manage.py runserver
 ```
 # Installation \& Setup
 
- 1. Clone the Repository
-
-```
-
-# git clone https://github.com/adjgonzalez/NextGenUniversityChatbot/
-
-```
-
-# 2\. Create and Activate Virtual Environment
+# 1\. Create and Activate Virtual Environment
 
 Windows:
 
@@ -86,7 +78,7 @@ macOS/Linux:
 
 ```
 
-# 3\. Install Dependencies
+# 2\. Install Dependencies
 
 ```
 
@@ -94,7 +86,7 @@ macOS/Linux:
 
 ```
 
-# 4\. Environment Configuration
+# 3\. Environment Configuration
 
 Create a .env file in the project root (same directory as manage.py):
 
@@ -111,7 +103,7 @@ Create a .env file in the project root (same directory as manage.py):
 # python -c "from django.core.management.utils import get\_random\_secret\_key; print(get\_random\_secret\_key())"
 ```
 
-# 5\. Database Setup
+# 4\. Database Setup
 
 
 ```
@@ -122,14 +114,14 @@ python manage.py makemigrations
 ```
 # python manage.py migrate
 ```
-# 6\. Create Superuser (Admin Account)
+# 5\. Create Superuser (Admin Account)
 
 ```
 # python manage.py createsuperuser
 ```
 Follow the prompts to create an admin account for accessing the Django admin panel.
 
-# 7\. Set Up Translations
+# 6\. Set Up Translations
 
 Extract translation strings:
 
@@ -145,13 +137,7 @@ Extract translation strings:
 # python manage.py compilemessages -l es
 # python manage.py compilemessages -l fr
 ```
-# 8\. Collect Static Files
-
-```
-# python manage.py collectstatic
-```
-
-# 9\. Run the Development Server
+# 7\.Run the Development Server
 
 ```
 # python manage.py runserver
