@@ -58,6 +58,7 @@ def register_view(request):
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
+        print("IN LOGIN")
         if form.is_valid():
             login(request, form.get_user())
             return redirect("/")

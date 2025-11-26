@@ -5,9 +5,11 @@ from django.template.loader import render_to_string
 from users.services import enroll_user_in_program
 from pages.models import Program
 from django.shortcuts import get_object_or_404
+import django.conf
 
 # Home page
 def index(request):
+    print(django.conf.settings.DEBUG)
     return render(request, "pages/home.html")
 
 

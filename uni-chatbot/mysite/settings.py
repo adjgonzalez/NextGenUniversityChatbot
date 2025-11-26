@@ -5,7 +5,6 @@ Production-ready with secure defaults for localhost development.
 
 import os
 import secrets
-import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -17,7 +16,6 @@ load_dotenv(BASE_DIR / '.env')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / ".env")
 
 # Generate SECRET_KEY if not provided (secure by default)
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -28,17 +26,9 @@ if not SECRET_KEY:
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 STATIC_URL = '/static/'
 
-if DEBUG:
-    # In dev, Django serves app static files automatically.
-    # Only add STATICFILES_DIRS if you have a global /static folder at BASE_DIR/static.
-    STATICFILES_DIRS = []
-else:
+if not DEBUG: 
     # In prod, collectstatic will copy everything here.
-    STATIC_ROOT = BASE_DIR / "staticfiles"
-
-# Security: Disable debug mode if using a custom secret key
-if SECRET_KEY and not SECRET_KEY.startswith("django-insecure-"):
-    DEBUG = False
+    STATIC_ROOT = BASE_DIR / "staticfiles"   
 
 # Configure allowed hosts
 DEFAULT_ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1', 'testserver']
