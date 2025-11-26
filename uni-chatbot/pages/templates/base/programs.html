@@ -33,11 +33,11 @@
                                             {% if program.program_type.name == category %}
                                                 <a href="{% url 'pages:program_detail' program.slug %}" class="text-decoration-none fw-semibold text-dark">
                                                     {{ program.name }}
-                                                </a>                                                                                        
-                                            {% endif %}                                        
+                                                </a>
+                                            {% endif %}
                                         </div>
                                     {% endfor %}
-                                </li>                                
+                                </li>
                             </ul>
                             {% else %}
                             <p class="text-muted">No programs available.</p>
@@ -45,7 +45,7 @@
                     </div>
                     </div>
                 </div>
-                {% endfor %}            
+                {% endfor %}
             </div>
         </div>
     </div>

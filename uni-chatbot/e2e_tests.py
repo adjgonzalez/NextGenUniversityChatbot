@@ -1,7 +1,7 @@
-from playwright.sync_api import sync_playwright
-import time
-import random
 import os
+import random
+
+from playwright.sync_api import sync_playwright
 
 
 def generate_test_username():
@@ -17,7 +17,8 @@ def clear_browser_data(page):
     page.context.clear_cookies()
 
     # Clear localStorage and sessionStorage
-    page.evaluate("""
+    page.evaluate(
+        """
         () => {
             try {
                 localStorage.clear();
@@ -27,19 +28,20 @@ def clear_browser_data(page):
                 console.log('Could not clear storage:', e);
             }
         }
-    """)
+    """
+    )
 
     print("✓ Browser cache and storage cleared")
 
 
 def take_screenshot(page, filename, description):
     """Take screenshot and log description"""
-    page.screenshot(path=f'test_results/{filename}')
+    page.screenshot(path=f"test_results/{filename}")
     print(f"✓ {description} - saved as {filename}")
 
 
 def test_features():
-    """ E2E test with screenshots and chatbot flow"""
+    """E2E test with screenshots and chatbot flow"""
     print("=" * 70)
     print("E2E TEST SUITE")
     print("=" * 70)
@@ -54,14 +56,14 @@ def test_features():
     with sync_playwright() as p:
         browser = p.chromium.launch(
             headless=False,
-            args=['--incognito', '--disable-extensions', '--disable-plugins']
+            args=["--incognito", "--disable-extensions", "--disable-plugins"],
         )
 
         context = browser.new_context(
             ignore_https_errors=True,
-            viewport={'width': 1280, 'height': 720},
+            viewport={"width": 1280, "height": 720},
             storage_state=None,
-            locale='en-US'
+            locale="en-US",
         )
 
         page = context.new_page()
@@ -69,39 +71,47 @@ def test_features():
         try:
             # ===== SETUP =====
             print("SETUP: Starting with clean browser session...")
-            page.goto('http://localhost:8000/')
+            page.goto("http://localhost:8000/")
             clear_browser_data(page)
-            page.reload(wait_until='networkidle')
-            page.wait_for_selector('body')
+            page.reload(wait_until="networkidle")
+            page.wait_for_selector("body")
             print("✓ Fresh session started")
-            take_screenshot(page, '00_setup_complete.png', 'Fresh session started')
+            take_screenshot(page, "00_setup_complete.png", "Fresh session started")
 
             # ===== TEST 1: ENHANCED CHATBOT TEST =====
             print("\n1. ENHANCED CHATBOT TEST")
             print("-" * 40)
 
-            chatbot_btn = page.locator('.chatbot-btn').first
+            chatbot_btn = page.locator(".chatbot-btn").first
             if chatbot_btn.is_visible():
                 chatbot_btn.click()
                 page.wait_for_timeout(1000)
                 print("✓ Chatbot opened")
-                take_screenshot(page, '01_chatbot_opened.png', 'Chatbot modal opened')
+                take_screenshot(page, "01_chatbot_opened.png", "Chatbot modal opened")
 
                 # Test complete chatbot flow: No → Undergraduate → Program → Redirect
-                no_button = page.locator('#noButton').first
+                no_button = page.locator("#noButton").first
                 if no_button.is_visible():
                     no_button.click()
                     page.wait_for_timeout(1000)
                     print("✓ Selected 'No' in chatbot")
-                    take_screenshot(page, '02_chatbot_no_selected.png', 'Selected No option')
+                    take_screenshot(
+                        page, "02_chatbot_no_selected.png", "Selected No option"
+                    )
 
                     # Select Undergraduate
-                    undergrad_btn = page.locator('button:has-text("Undergraduate")').first
+                    undergrad_btn = page.locator(
+                        'button:has-text("Undergraduate")'
+                    ).first
                     if undergrad_btn.is_visible():
                         undergrad_btn.click()
                         page.wait_for_timeout(1000)
                         print("✓ Selected 'Undergraduate'")
-                        take_screenshot(page, '03_chatbot_undergrad_selected.png', 'Selected Undergraduate')
+                        take_screenshot(
+                            page,
+                            "03_chatbot_undergrad_selected.png",
+                            "Selected Undergraduate",
+                        )
 
                         # Select any available program (first one found)
                         program_selectors = [
@@ -109,7 +119,7 @@ def test_features():
                             'button:has-text("Economics")',
                             'button:has-text("🖥️")',
                             'button:has-text("📈")',
-                            '.program-option'
+                            ".program-option",
                         ]
 
                         program_selected = False
@@ -120,27 +130,46 @@ def test_features():
                                 program_btn.click()
                                 page.wait_for_timeout(2000)
                                 print(f"✓ Selected program: {program_name}")
-                                take_screenshot(page, '04_chatbot_program_selected.png', f'Selected {program_name}')
+                                take_screenshot(
+                                    page,
+                                    "04_chatbot_program_selected.png",
+                                    f"Selected {program_name}",
+                                )
                                 program_selected = True
                                 break
 
                         if program_selected:
                             # Wait for redirect and check if we're on a program page
                             current_url = page.url
-                            if 'program' in current_url.lower() or current_url != 'http://localhost:8000/':
-                                print(f"✓ Successfully redirected to program page: {current_url}")
-                                take_screenshot(page, '05_chatbot_redirected.png', 'Redirected to program page')
+                            if (
+                                "program" in current_url.lower()
+                                or current_url != "http://localhost:8000/"
+                            ):
+                                print(
+                                    f"✓ Successfully redirected to program page: {current_url}"
+                                )
+                                take_screenshot(
+                                    page,
+                                    "05_chatbot_redirected.png",
+                                    "Redirected to program page",
+                                )
 
                                 # Navigate back to home to continue other tests
-                                home_link = page.locator('a:has-text("Home"), a:has-text("Inicio")').first
+                                home_link = page.locator(
+                                    'a:has-text("Home"), a:has-text("Inicio")'
+                                ).first
                                 if home_link.is_visible():
                                     home_link.click()
                                     page.wait_for_timeout(1000)
                                     print("✓ Returned to home page")
-                                    take_screenshot(page, '06_returned_to_home.png', 'Returned to home page')
+                                    take_screenshot(
+                                        page,
+                                        "06_returned_to_home.png",
+                                        "Returned to home page",
+                                    )
                                 else:
                                     # Fallback: navigate to root URL
-                                    page.goto('http://localhost:8000/')
+                                    page.goto("http://localhost:8000/")
                                     print("✓ Navigated back to home page")
                             else:
                                 print("X No redirect occurred after program selection")
@@ -168,14 +197,14 @@ def test_features():
             register_link = page.locator('a:has-text("Register")').first
             if register_link.is_visible():
                 register_link.click()
-                page.wait_for_selector('form')
+                page.wait_for_selector("form")
                 print("✓ Registration page loaded")
-                take_screenshot(page, '07_registration_page.png', 'Registration page')
+                take_screenshot(page, "07_registration_page.png", "Registration page")
 
-                page.fill('#id_username', test_username)
-                page.fill('#id_email', f"{test_username}@example.com") 
-                page.fill('#id_password1', test_password)
-                page.fill('#id_password2', test_password)
+                page.fill("#id_username", test_username)
+                page.fill("#id_email", f"{test_username}@example.com")
+                page.fill("#id_password1", test_password)
+                page.fill("#id_password2", test_password)
                 print("✓ Registration form filled")
 
                 submit_btn = page.locator('button:has-text("Submit")').first
@@ -183,10 +212,14 @@ def test_features():
                     submit_btn.click()
                     page.wait_for_timeout(3000)
 
-                    if page.url == 'http://localhost:8000/':
+                    if page.url == "http://localhost:8000/":
                         created_users.append(test_username)
                         print("✓ Registration successful! (auto-logged in)")
-                        take_screenshot(page, '08_registration_success.png', 'Registration successful')
+                        take_screenshot(
+                            page,
+                            "08_registration_success.png",
+                            "Registration successful",
+                        )
 
                         # Verify login by checking for logout link
                         logout_link = page.locator('a:has-text("Log Out")').first
@@ -211,24 +244,24 @@ def test_features():
             feedback_link = page.locator('a:has-text("Feedback")').first
             if feedback_link.is_visible():
                 feedback_link.click()
-                page.wait_for_selector('form')
+                page.wait_for_selector("form")
                 print("✓ Feedback page loaded")
-                take_screenshot(page, '09_feedback_page.png', 'Feedback page')
+                take_screenshot(page, "09_feedback_page.png", "Feedback page")
 
                 # Find and fill the feedback form
-                feedback_form = page.locator('form:has(#id_type)').first
+                feedback_form = page.locator("form:has(#id_type)").first
                 if feedback_form.is_visible():
                     print("✓ Found feedback form")
 
                     # Select a valid option
-                    type_select = feedback_form.locator('#id_type').first
+                    type_select = feedback_form.locator("#id_type").first
                     if type_select.is_visible():
-                        options = type_select.locator('option')
+                        options = type_select.locator("option")
                         valid_option_found = False
 
                         for i in range(options.count()):
                             option = options.nth(i)
-                            value = option.get_attribute('value')
+                            value = option.get_attribute("value")
                             if value and value.strip():
                                 type_select.select_option(value=value)
                                 print(f"✓ Selected valid option: {value}")
@@ -240,12 +273,14 @@ def test_features():
                             print("✓ Selected first available option")
 
                     # Fill message
-                    message_area = feedback_form.locator('#id_message').first
+                    message_area = feedback_form.locator("#id_message").first
                     if message_area.is_visible():
                         message_area.fill(test_feedback_content)
                         print("✓ Feedback message filled")
 
-                    take_screenshot(page, '10_feedback_filled.png', 'Feedback form filled')
+                    take_screenshot(
+                        page, "10_feedback_filled.png", "Feedback form filled"
+                    )
 
                     # Submit the form
                     submit_btn = feedback_form.locator('button[type="submit"]').first
@@ -256,30 +291,50 @@ def test_features():
 
                         # Check result
                         current_url = page.url
-                        success_messages = page.locator('.alert-success, .success')
-                        error_messages = page.locator('.alert-danger, .error')
+                        success_messages = page.locator(".alert-success, .success")
+                        error_messages = page.locator(".alert-danger, .error")
 
                         if success_messages.count() > 0:
                             print("✓ Feedback submitted successfully!")
-                            take_screenshot(page, '11_feedback_success.png', 'Feedback submitted successfully')
+                            take_screenshot(
+                                page,
+                                "11_feedback_success.png",
+                                "Feedback submitted successfully",
+                            )
                         elif error_messages.count() > 0:
                             print("X Form validation errors:")
                             for i in range(error_messages.count()):
                                 print(f"  - {error_messages.nth(i).text_content()}")
-                            take_screenshot(page, '11_feedback_error.png', 'Feedback submission error')
+                            take_screenshot(
+                                page,
+                                "11_feedback_error.png",
+                                "Feedback submission error",
+                            )
                             return False, created_users, test_feedback_content
-                        elif current_url != 'http://localhost:8000/feedback/':
+                        elif current_url != "http://localhost:8000/feedback/":
                             print(f"✓ Redirected to: {current_url}")
-                            take_screenshot(page, '11_feedback_redirected.png', 'Feedback redirected')
+                            take_screenshot(
+                                page,
+                                "11_feedback_redirected.png",
+                                "Feedback redirected",
+                            )
                         else:
                             # Check if form was cleared
-                            current_message = message_area.evaluate('el => el.value')
+                            current_message = message_area.evaluate("el => el.value")
                             if not current_message:
                                 print("✓ Form was cleared - submission successful!")
-                                take_screenshot(page, '11_feedback_cleared.png', 'Feedback form cleared')
+                                take_screenshot(
+                                    page,
+                                    "11_feedback_cleared.png",
+                                    "Feedback form cleared",
+                                )
                             else:
                                 print("X Form not cleared - submission failed")
-                                take_screenshot(page, '11_feedback_failed.png', 'Feedback submission failed')
+                                take_screenshot(
+                                    page,
+                                    "11_feedback_failed.png",
+                                    "Feedback submission failed",
+                                )
                                 return False, created_users, test_feedback_content
                     else:
                         print("X Submit button not found")
@@ -297,10 +352,14 @@ def test_features():
                 logout_link.click()
                 page.wait_for_timeout(1000)
                 print("✓ Logged out successfully")
-                take_screenshot(page, '12_logout_success.png', 'Logged out successfully')
+                take_screenshot(
+                    page, "12_logout_success.png", "Logged out successfully"
+                )
 
                 # Navigate back to home to continue other tests
-                home_link = page.locator('a:has-text("Home"), a:has-text("Inicio")').first
+                home_link = page.locator(
+                    'a:has-text("Home"), a:has-text("Inicio")'
+                ).first
 
                 # Verify logout
                 login_link = page.locator('a:has-text("Log In")').first
@@ -314,14 +373,17 @@ def test_features():
             print("\n" + "=" * 70)
             print("ALL TESTS PASSED!")
             print("=" * 70)
-            take_screenshot(page, '13_all_tests_complete.png', 'All tests completed successfully')
+            take_screenshot(
+                page, "13_all_tests_complete.png", "All tests completed successfully"
+            )
             return True, created_users, test_feedback_content
 
         except Exception as e:
             print(f"\nX TEST FAILED: {e}")
             import traceback
+
             traceback.print_exc()
-            take_screenshot(page, 'error_test_failed.png', 'Test failed with error')
+            take_screenshot(page, "error_test_failed.png", "Test failed with error")
             return False, created_users, test_feedback_content
 
         finally:
@@ -335,12 +397,15 @@ def cleanup_test_data(usernames, feedback_content):
     print("=" * 70)
 
     try:
-        import django
         import os
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
+
+        import django
+
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
         django.setup()
 
         from django.contrib.auth.models import User
+
         from feedback.models import Feedback
 
         for username in usernames:
@@ -352,7 +417,9 @@ def cleanup_test_data(usernames, feedback_content):
                 print(f"X Test user not found: {username}")
 
         try:
-            feedback_count = Feedback.objects.filter(message__contains=feedback_content).count()
+            feedback_count = Feedback.objects.filter(
+                message__contains=feedback_content
+            ).count()
             print(f"Feedback entries in database: {feedback_count}")
         except Exception as e:
             print(f"X Could not check feedback: {e}")
@@ -364,7 +431,7 @@ def cleanup_test_data(usernames, feedback_content):
 
 
 if __name__ == "__main__":
-    os.makedirs('test_results', exist_ok=True)
+    os.makedirs("test_results", exist_ok=True)
 
     print("PREREQUISITES:")
     print("Django server: python manage.py runserver")

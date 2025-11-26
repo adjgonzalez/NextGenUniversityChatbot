@@ -1,10 +1,10 @@
+from django.conf import settings
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import redirect, render
-from django.conf import settings
 from django.core.mail import send_mail
+from django.shortcuts import redirect, render
 
-from .forms import UserRegistrationForm  
+from .forms import UserRegistrationForm
 
 
 def send_welcome_resources_email(user):
@@ -37,7 +37,7 @@ def send_welcome_resources_email(user):
         subject,
         message,
         settings.DEFAULT_FROM_EMAIL,
-        [user.email],   
+        [user.email],
         fail_silently=False,
     )
 

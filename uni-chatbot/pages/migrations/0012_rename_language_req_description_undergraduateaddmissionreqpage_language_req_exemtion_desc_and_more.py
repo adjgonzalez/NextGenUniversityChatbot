@@ -4,20 +4,22 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('pages', '0011_rename_admission_requirement_description_undergraduateaddmissionreqpage_admission_req_description_an'),
+        (
+            "pages",
+            "0011_rename_admission_requirement_description_undergraduateaddmissionreqpage_admission_req_description_an",
+        ),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='undergraduateaddmissionreqpage',
-            old_name='language_req_description',
-            new_name='language_req_exemtion_desc',
+            model_name="undergraduateaddmissionreqpage",
+            old_name="language_req_description",
+            new_name="language_req_exemtion_desc",
         ),
         migrations.RenameField(
-            model_name='undergraduateaddmissionreqpage',
-            old_name='language_req_heading',
-            new_name='language_req_exemtion_heading',
+            model_name="undergraduateaddmissionreqpage",
+            old_name="language_req_heading",
+            new_name="language_req_exemtion_heading",
         ),
     ]

@@ -5,10 +5,10 @@ This document serves as a template designed for a rapid and comprehensive unders
 This section provides a high-level overview of the project's directory and file structure, categorised by architectural layer or major functional area. It is essential for quickly navigating the codebase, locating relevant files, and understanding the overall organization and separation of concerns.
 
 
-[uni-chatbot]/ 
+[uni-chatbot]/
 ├── mychatbot/                       # Contains all server-side code and APIs
 │   ├── migrations/                  # Main source code for backend services
-│   │   └── __init__.py/             # 
+│   │   └── __init__.py/             #
 │   ├── static/                      # Frontend configuration files
 │   │  ├── images/                   # Frontend configuration files
 │   │  │  ├── group.png              # Frontend configuration files
@@ -86,10 +86,10 @@ This section provides a high-level overview of the project's directory and file 
 
 ## 2. High-Level System Diagram
 The project’s objective is to create a website that’ll allow a prospective student to find a program of their liking in our University’s website via website navigation or the help of a chatbot. We aim to assist the student in their initial process of enrolling and adjusting to university life so we will send useful resources to the student depending on their enrolled program upon registration and upon request to the chatbot. We will also implement a localization feature that will translate the entire website (including the chatbot) to different languages and a feedback feature where the student can communicate issues and comments directly to the admins.
- 
+
 [User] <--> [Frontend Application] <--> [Backend Service 1] <--> [Database 1]
                                     |
-                                    +--> [Backend Service 2] <--> [External API]                           
+                                    +--> [Backend Service 2] <--> [External API]
 
 ## 3. Core Components
 
@@ -99,13 +99,13 @@ Website - A centralized web platform that presents all academic programs offered
 
 Chatbot - An interactive chatbot designed to guide the student to a program appropriate to their preferences.
 
-User enrollment - An account management that includes student registration (sign-up), login (sign-in) and password recovery.  
+User enrollment - An account management that includes student registration (sign-up), login (sign-in) and password recovery.
 
 User Feedback System
 
 ### 3.2. Backend Services
 
-Localization - Students can select their preferred interface language. 
+Localization - Students can select their preferred interface language.
 
 Feedback Mechanism - The system will include a feature that allows students to provide feedback on the enrollment process.
 

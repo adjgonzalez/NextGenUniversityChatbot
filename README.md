@@ -4,7 +4,7 @@ This project aims to create a website that contains education programs that a st
 
 # Version: Iteration 3
 
-As of Iteration 3, our pages are now dynamically populated and localized in 3 different languages, we also support the enrollment of new students. 
+As of Iteration 3, our pages are now dynamically populated and localized in 3 different languages, we also support the enrollment of new students.
 
 # Prerequisites
 
@@ -139,7 +139,7 @@ Extract translation strings:
 
 ```
 # python manage.py compilemessages -l es
-# python manage.py compilemessages -l fr  
+# python manage.py compilemessages -l fr
 ```
 # 8\. Collect Static Files
 
@@ -206,7 +206,7 @@ black .
 # Check code style
 ruff check .
 
-# Fix auto-fixable issues  
+# Fix auto-fixable issues
 ruff check --fix .
 ```
 # Troubleshooting and common issues

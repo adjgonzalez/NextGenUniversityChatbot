@@ -4,42 +4,41 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('pages', '0005_alter_homepage_body'),
+        ("pages", "0005_alter_homepage_body"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='homepage',
-            old_name='main_image',
-            new_name='hero_image',
+            model_name="homepage",
+            old_name="main_image",
+            new_name="hero_image",
         ),
         migrations.RenameField(
-            model_name='homepage',
-            old_name='main_subtitle',
-            new_name='hero_subtitle',
+            model_name="homepage",
+            old_name="main_subtitle",
+            new_name="hero_subtitle",
         ),
         migrations.RenameField(
-            model_name='homepage',
-            old_name='main_title',
-            new_name='hero_title',
+            model_name="homepage",
+            old_name="main_title",
+            new_name="hero_title",
         ),
         migrations.RemoveField(
-            model_name='homepage',
-            name='main_title_part1',
+            model_name="homepage",
+            name="main_title_part1",
         ),
         migrations.RemoveField(
-            model_name='homepage',
-            name='main_title_part2',
+            model_name="homepage",
+            name="main_title_part2",
         ),
         migrations.RemoveField(
-            model_name='homepage',
-            name='main_title_part3',
+            model_name="homepage",
+            name="main_title_part3",
         ),
         migrations.AddField(
-            model_name='homepage',
-            name='page_title',
+            model_name="homepage",
+            name="page_title",
             field=models.CharField(blank=True, max_length=100),
         ),
     ]

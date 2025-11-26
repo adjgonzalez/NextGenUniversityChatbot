@@ -4,30 +4,29 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('pages', '0003_homepage'),
+        ("pages", "0003_homepage"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='homepage',
-            name='body',
+            model_name="homepage",
+            name="body",
             field=models.CharField(blank=True, max_length=250),
         ),
         migrations.AlterField(
-            model_name='homepage',
-            name='main_image',
+            model_name="homepage",
+            name="main_image",
             field=models.CharField(blank=True, max_length=200),
         ),
         migrations.AlterField(
-            model_name='homepage',
-            name='main_subtitle',
+            model_name="homepage",
+            name="main_subtitle",
             field=models.CharField(blank=True, max_length=250),
         ),
         migrations.AlterField(
-            model_name='homepage',
-            name='main_title',
+            model_name="homepage",
+            name="main_title",
             field=models.CharField(blank=True, max_length=200),
         ),
     ]

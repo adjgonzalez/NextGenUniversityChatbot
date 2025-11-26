@@ -4,43 +4,42 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('pages', '0010_undergraduateaddmissionreqpage_alter_homepage_body_and_more'),
+        ("pages", "0010_undergraduateaddmissionreqpage_alter_homepage_body_and_more"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='undergraduateaddmissionreqpage',
-            old_name='admission_requirement_description',
-            new_name='admission_req_description',
+            model_name="undergraduateaddmissionreqpage",
+            old_name="admission_requirement_description",
+            new_name="admission_req_description",
         ),
         migrations.RenameField(
-            model_name='undergraduateaddmissionreqpage',
-            old_name='admission_requirement_heading',
-            new_name='admission_req_heading',
+            model_name="undergraduateaddmissionreqpage",
+            old_name="admission_requirement_heading",
+            new_name="admission_req_heading",
         ),
         migrations.RenameField(
-            model_name='undergraduateaddmissionreqpage',
-            old_name='english_requirements_description',
-            new_name='english_req_description',
+            model_name="undergraduateaddmissionreqpage",
+            old_name="english_requirements_description",
+            new_name="english_req_description",
         ),
         migrations.AddField(
-            model_name='undergraduateaddmissionreqpage',
-            name='application_heading',
-            field=models.CharField(default='Requirements', max_length=255),
+            model_name="undergraduateaddmissionreqpage",
+            name="application_heading",
+            field=models.CharField(default="Requirements", max_length=255),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='undergraduateaddmissionreqpage',
-            name='english_req_heading',
-            field=models.CharField(default='English Requirements', max_length=255),
+            model_name="undergraduateaddmissionreqpage",
+            name="english_req_heading",
+            field=models.CharField(default="English Requirements", max_length=255),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='undergraduateaddmissionreqpage',
-            name='language_req_heading',
-            field=models.CharField(default='anythin', max_length=255),
+            model_name="undergraduateaddmissionreqpage",
+            name="language_req_heading",
+            field=models.CharField(default="anythin", max_length=255),
             preserve_default=False,
         ),
     ]

@@ -1,11 +1,13 @@
 import json
-from django.http import Http404, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
-from django.template.loader import render_to_string
-from users.services import enroll_user_in_program
-from pages.models import Program
-from django.shortcuts import get_object_or_404
+
 import django.conf
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django.template.loader import render_to_string
+
+from pages.models import Program
+from users.services import enroll_user_in_program
+
 
 # Home page
 def index(request):
@@ -57,7 +59,9 @@ def programs(request):
     programs = Program.objects.all()
     categories = set(program.program_type.name for program in programs)
 
-    return render(request, "base/programs.html", {"programs": programs, "categories": categories })
+    return render(
+        request, "base/programs.html", {"programs": programs, "categories": categories}
+    )
 
 
 PROGRAMS = {
@@ -173,14 +177,14 @@ PROGRAMS = {
 
 def programs_detail(request, program_slug):
     """Loads program information based on slug
-    
-        Input: 
-            program_slug: slug to search program from
+
+    Input:
+        program_slug: slug to search program from
     """
     program = get_object_or_404(Program, slug=program_slug)
     category = program.program_type.name
-    
-    #Create dictionary of program to handle JSON serialization
+
+    # Create dictionary of program to handle JSON serialization
     program_dict = {
         "id": str(program.id),
         "name": program.name,
@@ -197,26 +201,24 @@ def programs_detail(request, program_slug):
     program_json = json.dumps(program_dict, ensure_ascii=False)
 
     return render(
-                    request,
-                    "base/programs_detail1.html",
-                    {"program": program
-                     , "program_json": program_json   
-                     , "category": category},
-                )
+        request,
+        "base/programs_detail1.html",
+        {"program": program, "program_json": program_json, "category": category},
+    )
 
-def apply_now(request):        
+
+def apply_now(request):
     if not request.user.is_authenticated:
         return JsonResponse({"message": "You must be logged in"}, status=401)
 
     try:
         # Get program that user wants to apply for
         data = json.loads(request.body)
-        program = data.get("program")        
+        program = data.get("program")
         enroll_user_in_program(request.user, program)
-        return JsonResponse({"message": "Application successful"})                      
+        return JsonResponse({"message": "Application successful"})
 
-    except Exception as e:        
-        return JsonResponse({"message": "Something went wrong. Application Cancelled"}, status=500)
-
-    
-    
+    except Exception:
+        return JsonResponse(
+            {"message": "Something went wrong. Application Cancelled"}, status=500
+        )
