@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 
-from pages.models import Program
+from pages.models import Faculty, Program
 from users.services import enroll_user_in_program
 
 
@@ -51,7 +51,12 @@ def contact(request):
 
 # Faculty page
 def faculty(request):
-    return render(request, "base/faculty.html")
+    faculties = Faculty.objects.all()
+    return render(
+        request,
+        "base/faculty.html",
+        {"faculties": faculties, "page_title": "Faculty", "heading": "Our Faculties"},
+    )
 
 
 def programs(request):
