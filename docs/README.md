@@ -19,7 +19,7 @@ As of Iteration 3, our pages are now dynamically populated and localized in 3 di
 ```
 # 1. Clone the repository
 
-# git clone https://github.com/adjgonzalez/NextGenUniversityChatbot/
+git clone https://github.com/adjgonzalez/NextGenUniversityChatbot/
 
 # 2. Create and activate virtual environment
 python -m venv venv
@@ -31,23 +31,26 @@ cd uni-chatbot
 # 4. Install dependencies
 pip install -r requirements.txt
 
-# 5. Generate environment file
+# 5. Install pre-commit hooks
+pip install pre-commit
+
+# 6. Generate environment file
 python -c "import secrets; key = secrets.token_urlsafe(50); open('.env', 'w', encoding='utf-8').write(f'DEBUG=True\nSECRET_KEY={key}\nALLOWED_HOSTS=localhost,127.0.0.1,::1')"
 
-# 6. Set up database
+# 7. Set up database
 python manage.py migrate
 
-# 7. Create superuser (follow prompts)
+# 8. Create superuser (follow prompts)
 python manage.py createsuperuser
 
-# 8. Set up translations
+# 9. Set up translations
 python manage.py makemessages -l es -l fr
 python manage.py compilemessages -l es -l fr
 
-# 9. Collect static files
+# 10. Collect static files
 python manage.py collectstatic --noinput
 
-# 10. Run development server
+# 11. Run development server
 python manage.py runserver
 ```
 # Installation \& Setup
