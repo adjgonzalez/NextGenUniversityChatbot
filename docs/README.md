@@ -13,44 +13,45 @@ As of Iteration 3, our pages are now dynamically populated and localized in 3 di
  \- pip (Python package manager)
 
  \- Git
+ 
+ \- A Clone of the repository
+```
+git clone https://github.com/adjgonzalez/NextGenUniversityChatbot/
+```
 
-# For easy copy-pasting and, here's the Quick Start setup sequence:
+# For easy copy-pasting and, here's the Quick Start setup sequence that can be applied once our repository has been cloned:
 
 ```
-# 1. Clone the repository
-
-git clone https://github.com/adjgonzalez/NextGenUniversityChatbot/
-
-# 2. Create and activate virtual environment
+# 1. Create and activate virtual environment
 python -m venv venv
 venv\Scripts\activate
 
-# 3. Navigate to Django project root (where manage.py is)
+# 2. Navigate to Django project root (where manage.py is)
 cd uni-chatbot
 
-# 4. Install dependencies
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# 5. Install pre-commit hooks
+# 4. Install pre-commit hooks
 pip install pre-commit
 
-# 6. Generate environment file
+# 5. Generate environment file
 python -c "import secrets; key = secrets.token_urlsafe(50); open('.env', 'w', encoding='utf-8').write(f'DEBUG=True\nSECRET_KEY={key}\nALLOWED_HOSTS=localhost,127.0.0.1,::1')"
 
-# 7. Set up database
+# 6. Set up database
 python manage.py migrate
 
-# 8. Create superuser (follow prompts)
+# 7. Create superuser (follow prompts)
 python manage.py createsuperuser
 
-# 9. Set up translations
+# 8. Set up translations
 python manage.py makemessages -l es -l fr
 python manage.py compilemessages -l es -l fr
 
-# 10. Collect static files
+# 9. Collect static files
 python manage.py collectstatic --noinput
 
-# 11. Run development server
+# 10. Run development server
 python manage.py runserver
 ```
 # Installation \& Setup
