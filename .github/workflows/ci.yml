@@ -5,7 +5,7 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:  # ← ADD THIS: Allows manual triggering
+  workflow_dispatch:
 
 jobs:
   # ===== UNIT TESTS & BASIC CHECKS =====
@@ -31,11 +31,11 @@ jobs:
         cd uni-chatbot
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install coverage
 
     - name: Setup test environment
       run: |
         cd uni-chatbot
-        # Auto-generate secure settings
         python -c "
         import secrets
         with open('.env', 'w') as f:
@@ -46,10 +46,17 @@ jobs:
         python manage.py migrate
         python manage.py collectstatic --noinput
 
-    - name: Run Django tests
+    - name: Run Django tests with coverage
       run: |
         cd uni-chatbot
-        python manage.py test
+        coverage run manage.py test
+        coverage xml
+
+    - name: Upload coverage to Coveralls
+      uses: coverallsapp/github-action@v2.3.6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: uni-chatbot/coverage.xml
 
   # ===== E2E TESTS WITH ETHEREAL EMAIL =====
   e2e-smoke:
@@ -82,7 +89,6 @@ jobs:
     - name: Setup test environment with Ethereal
       run: |
         cd uni-chatbot
-        # Auto-generate secure settings
         python -c "
         import secrets
         with open('.env', 'w') as f:
@@ -105,17 +111,10 @@ jobs:
     - name: Run smoke tests
       run: |
         cd uni-chatbot
-        # Start Django server in background
         python manage.py runserver &
         SERVER_PID=$!
-
-        # Wait for server to start
         sleep 10
-
-        # Run smoke tests
         npx playwright test --grep="@smoke" --timeout=30000
-
-        # Stop server
         kill $SERVER_PID
 
     - name: Upload Playwright report
