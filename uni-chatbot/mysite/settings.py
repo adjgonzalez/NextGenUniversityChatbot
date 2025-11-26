@@ -5,19 +5,18 @@ Production-ready with secure defaults for localhost development.
 
 import os
 import secrets
-import sys
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load environment variables from .env file
-load_dotenv(BASE_DIR / '.env')
+load_dotenv(BASE_DIR / ".env")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / ".env")
 
 # Generate SECRET_KEY if not provided (secure by default)
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -26,14 +25,15 @@ if not SECRET_KEY:
 
 # Debug mode - safe defaults
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+STATIC_URL = "/static/"
 
-# Security: Disable debug mode if using a custom secret key
-if SECRET_KEY and not SECRET_KEY.startswith("django-insecure-"):
-    DEBUG = False
+if not DEBUG:
+    # In prod, collectstatic will copy everything here.
+    STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Configure allowed hosts
-DEFAULT_ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1', 'testserver']
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',') or DEFAULT_ALLOWED_HOSTS
+DEFAULT_ALLOWED_HOSTS = ["localhost", "127.0.0.1", "::1", "testserver"]
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") or DEFAULT_ALLOWED_HOSTS
 ALLOWED_HOSTS = [h for h in ALLOWED_HOSTS if h]
 
 # ===== SECURITY SETTINGS =====
@@ -41,7 +41,7 @@ ALLOWED_HOSTS = [h for h in ALLOWED_HOSTS if h]
 # Security headers
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
+X_FRAME_OPTIONS = "DENY"
 
 # HTTPS settings (disabled for localhost)
 SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "False").lower() == "true"
@@ -50,14 +50,14 @@ CSRF_COOKIE_SECURE = SECURE_SSL_REDIRECT
 
 # CSRF settings
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:8000',
-    'http://127.0.0.1:8000',
-    'https://localhost:8000',
-    'https://127.0.0.1:8000',
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "https://localhost:8000",
+    "https://127.0.0.1:8000",
 ]
 
 # Add environment CSRF origins
-env_csrf_origins = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
+env_csrf_origins = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
 CSRF_TRUSTED_ORIGINS.extend([origin for origin in env_csrf_origins if origin])
 
 # Session settings
@@ -75,7 +75,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "mychatbot",
     "users",
     "pages",
@@ -98,7 +97,7 @@ ROOT_URLCONF = "mysite.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates'],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -109,7 +108,7 @@ TEMPLATES = [
                 "pages.context_processors.navbar_items",
                 "pages.context_processors.admissions_sidebar",
             ],
-            'string_if_invalid': 'INVALID_EXPRESSION' if DEBUG else '',
+            "string_if_invalid": "INVALID_EXPRESSION" if DEBUG else "",
         },
     },
 ]
@@ -122,13 +121,13 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
-        'OPTIONS': {'timeout': 20},
+        "OPTIONS": {"timeout": 20},
     }
 }
 
 # Use separate test database
-if TESTING:
-    DATABASES['default']['NAME'] = BASE_DIR / 'test_db.sqlite3'
+# if TESTING:
+#     DATABASES['default']['NAME'] = BASE_DIR / 'test_db.sqlite3'
 
 # ===== SECURITY & AUTHENTICATION =====
 
@@ -150,14 +149,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 PASSWORD_HASHERS = [
-    'django.contrib.auth.haschers.Argon2PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    "django.contrib.auth.haschers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
 ]
 
-LOGIN_URL = '/admin/login/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = "/admin/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 # ===== INTERNATIONALIZATION =====
 
@@ -180,8 +179,7 @@ LOCALE_PATHS = [
 # ===== EMAIL CONFIGURATION =====
 
 EMAIL_BACKEND = os.getenv(
-    "EMAIL_BACKEND",
-    "django.core.mail.backends.console.EmailBackend"
+    "EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend"
 )
 
 EMAIL_HOST = os.getenv("EMAIL_HOST", "")
@@ -191,14 +189,16 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
 if EMAIL_HOST and EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
     EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
     EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() == "true"
-    DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@nextgenuniversity.com")
+    DEFAULT_FROM_EMAIL = os.getenv(
+        "DEFAULT_FROM_EMAIL", "noreply@nextgenuniversity.com"
+    )
     SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 # ===== STATIC FILES =====
 
-STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+# STATIC_URL = "/static/"
+# STATIC_ROOT = BASE_DIR / "staticfiles"
+# STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Security: File upload limits
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760
@@ -209,25 +209,25 @@ FILE_UPLOAD_DIRECTORY_PERMISSIONS = 0o755
 # ===== LOGGING =====
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
         },
     },
-    'handlers': {
-        'console': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO' if DEBUG else 'WARNING',
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO" if DEBUG else "WARNING",
         },
     },
 }

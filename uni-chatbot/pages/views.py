@@ -1,155 +1,67 @@
 import json
-from django.http import Http404, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, get_object_or_404
+
+import django.conf
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
+
+from pages.models import Program
 from users.services import enroll_user_in_program
-from pages.models import (
-    Program, HomePage, AdmissionSidebarItem, UndergraduateAddmissionReqPage,
-    GraduateAdmissionPage, OnlineCoursesPage, FundingPage, ContactPage,
-    Faculty, Department, DepartmentPage
-)
-from django.utils.translation import gettext as _
+
 
 # Home page
 def index(request):
-    homepage = HomePage.objects.first() 
-    page_title = _(homepage.page_title)
-    hero_title = homepage.hero_title.split()
-    title_part1 = _(hero_title[0])
-    title_highlight = _(hero_title[1])
-    title_part2 = _(hero_title[2])
-    subtitle = _(homepage.hero_subtitle)
-    body = _(homepage.body)
-    context = {
-        "page_title": page_title,
-        "title_part1": title_part1,
-        "title_highlight": title_highlight,
-        "title_part2": title_part2,
-        "subtitle": subtitle,
-        "body": body,
-        "homepage": homepage,
-    }
-    return render(request, "pages/home.html", context)
+    print(django.conf.settings.DEBUG)
+    return render(request, "pages/home.html")
 
 
 # Admissions full page view (reload-safe, works with dynamic sidebar)
-def admissions_page(request, page_slug='undergraduate'):
-    sidebar_items = AdmissionSidebarItem.objects.filter(is_active=True).order_by('order')
-
-    # Determine the main page object based on slug
-    if page_slug == "undergraduate":
-        page = get_object_or_404(UndergraduateAddmissionReqPage, page_title__iexact="Undergraduate")
-        exemption_bullets = page.exemption_bullets.all()
-        page_context = {"page": page, "exemption_bullets": exemption_bullets}
-
-    elif page_slug == "graduate":
-        page = get_object_or_404(GraduateAdmissionPage, page_title__iexact="Graduate")
-        requirement_bullets = page.requirement_bullets.all()
-        page_context = {"page": page, "requirement_bullets": requirement_bullets}
-
-    elif page_slug == "online_course":
-        page = get_object_or_404(OnlineCoursesPage, page_title__iexact="Online Courses")
-        online_bullets = page.online_bullets.all()
-        page_context = {"page": page, "online_bullets": online_bullets}
-
-    elif page_slug == "funding":
-        page = get_object_or_404(FundingPage, page_title__iexact="Funding & Scholarships")
-        page_context = {"page": page}
-
-    else:
-        # Default fallback
-        page_context = {}
+def admissions_page(request, page_name="undergraduate"):
+    allowed_pages = ["undergraduate", "graduate", "online_course", "funding"]
+    if page_name not in allowed_pages:
+        page_name = "undergraduate"
 
     context = {
-        "current_page": page_slug,
-        "admissions_sidebar_items": sidebar_items,
-        **page_context,
+        "current_page": page_name,
+        "page_title": page_name.replace("_", " ").title(),  # e.g., "Undergraduate"
     }
-
     return render(request, "admissions/admission.html", context)
 
 
 # Load sidebar content dynamically via AJAX
 def load_sidebar_content(request, page_name):
-    try:
-        if page_name == "undergraduate":
-            page = UndergraduateAddmissionReqPage.objects.first()
-            exemption_bullets = page.exemption_bullets.all()
-            html = render_to_string(
-                "admissions/undergraduate.html",
-                {"page": page, "exemption_bullets": exemption_bullets},
-                request=request
-            )
+    template_map = {
+        "undergraduate": "admissions/undergraduate.html",
+        "graduate": "admissions/graduate.html",
+        "online_course": "admissions/online_course.html",
+        "funding": "admissions/funding.html",
+    }
 
-        elif page_name == "graduate":
-            page = GraduateAdmissionPage.objects.first()
-            requirement_bullets = page.requirement_bullets.all()
-            html = render_to_string(
-                "admissions/graduate.html",
-                {"page": page, "requirement_bullets": requirement_bullets},
-                request=request
-            )
-
-        elif page_name == "online_course":
-            page = OnlineCoursesPage.objects.first()
-            online_bullets = page.online_bullets.all()
-            html = render_to_string(
-                "admissions/online_course.html",
-                {"page": page, "online_bullets": online_bullets},
-                request=request
-            )
-
-        elif page_name == "funding":
-            page = FundingPage.objects.first()
-            html = render_to_string(
-                "admissions/funding.html",
-                {"page": page},
-                request=request
-            )
-
-        else:
-            html = "<p>Page not found</p>"
-
+    template_name = template_map.get(page_name)
+    if template_name:
+        html = render_to_string(template_name, request=request)
         return JsonResponse({"html": html})
-
-    except Exception:
-        return JsonResponse({"html": "<p>Page not found</p>"}, status=404)
+    return JsonResponse({"html": "<p>Page not found</p>"}, status=404)
 
 
 # Contact page
 def contact(request):
-    page = get_object_or_404(ContactPage)
-    context = {
-        "page": page,
-        "page_title": page.page_title
-    }
-    return render(request, "base/contact.html", context)
+    return render(request, "base/contact.html")
 
 
 # Faculty page
 def faculty(request):
-    faculties = Faculty.objects.prefetch_related("departments").all()
+    return render(request, "base/faculty.html")
 
-    return render(request, "base/faculty.html", {
-        "faculties": faculties,
-        "page_title": "Faculties & Departments",
-        "heading": "Faculties and Departments"
-    })
 
-# Department Pages
-def department_page(request, dept_url):
-    department = get_object_or_404(Department, url=dept_url)
-    department_page = get_object_or_404(DepartmentPage, department=department)
-    
-    context = {
-        "department": department,
-        "department_page": department_page
-    }
-    return render(request, "base/departments.html", context)
-
-# Program Pages
 def programs(request):
-    return render(request, "base/programs.html", {"programs": PROGRAMS})
+    """Displays all programs with categories"""
+    programs = Program.objects.all()
+    categories = set(program.program_type.name for program in programs)
+
+    return render(
+        request, "base/programs.html", {"programs": programs, "categories": categories}
+    )
 
 
 PROGRAMS = {
@@ -264,33 +176,49 @@ PROGRAMS = {
 
 
 def programs_detail(request, program_slug):
-    for category, programs in PROGRAMS.items():
-        for program in programs:
-            if program["slug"] == program_slug:
-                program_json = json.dumps(program, ensure_ascii=False)
-                print("Found json program:", program_json)                
+    """Loads program information based on slug
 
-                return render(
-                    request,
-                    "base/programs_detail1.html",
-                    {"program": program, "program_json": program_json, "category": category},
-                )
-    raise Http404("Program not found")
+    Input:
+        program_slug: slug to search program from
+    """
+    program = get_object_or_404(Program, slug=program_slug)
+    category = program.program_type.name
+
+    # Create dictionary of program to handle JSON serialization
+    program_dict = {
+        "id": str(program.id),
+        "name": program.name,
+        "slug": program.slug,
+        "degree": program.degree,
+        "duration": program.duration,
+        "description": program.description,
+        "routes": program.routes,
+        "enrollment_status": program.enrollment_status,
+        "campus": program.campus,
+        "joint_programs": program.joint_programs,
+    }
+    # Create JSON object from dictionary
+    program_json = json.dumps(program_dict, ensure_ascii=False)
+
+    return render(
+        request,
+        "base/programs_detail1.html",
+        {"program": program, "program_json": program_json, "category": category},
+    )
 
 
-def apply_now(request):        
+def apply_now(request):
     if not request.user.is_authenticated:
         return JsonResponse({"message": "You must be logged in"}, status=401)
 
     try:
         # Get program that user wants to apply for
         data = json.loads(request.body)
-        program = data.get("program")        
+        program = data.get("program")
         enroll_user_in_program(request.user, program)
-        return JsonResponse({"message": "Application successful"})                      
+        return JsonResponse({"message": "Application successful"})
 
-    except Exception as e:        
-        return JsonResponse({"message": "Something went wrong. Application Cancelled"}, status=500)
-
-    
-    
+    except Exception:
+        return JsonResponse(
+            {"message": "Something went wrong. Application Cancelled"}, status=500
+        )

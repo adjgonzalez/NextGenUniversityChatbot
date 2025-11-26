@@ -4,20 +4,27 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('feedback', '0001_initial'),
+        ("feedback", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='anonymousfeedback',
-            name='type',
-            field=models.CharField(choices=[('Bug', 'bug'), ('Issue', 'issue')], max_length=255, verbose_name='Type'),
+            model_name="anonymousfeedback",
+            name="type",
+            field=models.CharField(
+                choices=[("Bug", "bug"), ("Issue", "issue")],
+                max_length=255,
+                verbose_name="Type",
+            ),
         ),
         migrations.AlterField(
-            model_name='feedback',
-            name='type',
-            field=models.CharField(choices=[('Bug', 'bug'), ('Issue', 'issue')], max_length=255, verbose_name='Type'),
+            model_name="feedback",
+            name="type",
+            field=models.CharField(
+                choices=[("Bug", "bug"), ("Issue", "issue")],
+                max_length=255,
+                verbose_name="Type",
+            ),
         ),
     ]
