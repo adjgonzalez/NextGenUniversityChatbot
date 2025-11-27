@@ -48,10 +48,7 @@ python manage.py createsuperuser
 python manage.py makemessages -l es -l fr
 python manage.py compilemessages -l es -l fr
 
-# 9. Collect static files
-python manage.py collectstatic --noinput
-
-# 10. Run development server
+# 9. Run development server
 python manage.py runserver
 ```
 # Installation \& Setup
@@ -208,10 +205,6 @@ Solution: Ensure .env file exists with DEBUG=True and ALLOWED\_HOSTS set
 - Translations not showing
 ```
 Solution: Run python manage.py compilemessages for each language
-```
-- Static files not loading
-```
-Solution: Run python manage.py collectstatic
 ```
 - Database errors
 ```
