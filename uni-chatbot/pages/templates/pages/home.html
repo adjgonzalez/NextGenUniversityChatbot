@@ -1,10 +1,8 @@
 {% extends "base/base.html" %}
-{% comment %} Extends needs to be first line {% endcomment %}
 {% load static %}
-{% comment %} Tells django to use the css styles from static {% endcomment %}
 {% load i18n %}
 {% block title %}
-{% trans "Home Page" %}  {% comment %} Translate the title {% endcomment %}
+{% trans "Home Page" %}
 {% endblock %}
 
 {% block content %}
@@ -12,8 +10,6 @@
         <div class="row align-items-center">
           <!-- Left Side -->
           <div class="col-lg-6 col-md-12 hero-content">
-            <!-- Enroll Now button -->
-            <a href="#" class="enroll-btn">{% trans "Enroll Now" %}</a>  {% comment %} Translate button {% endcomment %}
 
             <h1>
               {% trans "YOUR" %} <span class="swatch-word">{% trans "COMEBACK" %}</span> {% trans "STARTS" %}<br>
