@@ -42,10 +42,8 @@ jobs:
             f.write(f'DEBUG=True\\n')
             f.write(f'SECRET_KEY=django-insecure-{secrets.token_urlsafe(50)}\\n')
             f.write(f'ALLOWED_HOSTS=localhost,127.0.0.1,::1\\n')
-            f.write(f'STATIC_ROOT=staticfiles\\n')
         "
         python manage.py migrate
-        python manage.py collectstatic --noinput
 
     - name: Run Django tests with coverage
       run: |
