@@ -8,23 +8,23 @@ class PagesSectionTests(TestCase):
     def setUp(self):
         """Prepare test client and common URLs before each test."""
         self.client = Client()
-        self.index_url = reverse("mychatbot:index")
-        self.admissions_url = reverse("mychatbot:admissions")
-        self.contact_url = reverse("mychatbot:contact")
-        self.faculty_url = reverse("mychatbot:faculty")
-        self.programs_url = reverse("mychatbot:programs")
+        self.index_url = reverse("pages:index")
+        self.admissions_url = reverse("pages:admissions")
+        self.contact_url = reverse("pages:contact")
+        self.faculty_url = reverse("pages:faculty")
+        self.programs_url = reverse("pages:programs")
         self.admissions_page = lambda name: reverse(
-            "mychatbot:admissions_page", args=[name]
+            "pages:admissions_page", args=[name]
         )
         self.program_detail = lambda slug: reverse(
-            "mychatbot:program_detail", kwargs={"program_slug": slug}
+            "pages:program_detail", kwargs={"program_slug": slug}
         )
 
     def test_index_page_200_and_template(self):
         """Index page returns 200 and uses the correct template."""
         res = self.client.get(self.index_url)
         self.assertEqual(res.status_code, 200)
-        self.assertTemplateUsed(res, "home.html")
+        self.assertTemplateUsed(res, "pages/home.html")
 
     def test_admissions_default_is_undergraduate(self):
         """/admissions/ defaults to 'undergraduate' with proper context."""
