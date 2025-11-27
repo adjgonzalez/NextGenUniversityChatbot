@@ -26,7 +26,9 @@ class UserRegistrationTests(TestCase):
 
     def test_registration_duplicate_username(self):
         # Create a user with the same username (and some email)
-        User.objects.create_user(username="existinguser", email="existing@email.com", password="testpass123")
+        User.objects.create_user(
+            username="existinguser", email="existing@email.com", password="testpass123"
+        )
         data = {
             "username": "existinguser",  # Already taken
             "email": "different@email.com",
@@ -36,7 +38,9 @@ class UserRegistrationTests(TestCase):
         response = self.client.post(self.registration_url, data)
         self.assertEqual(response.status_code, 200)
         form = response.context["form"]
-        self.assertFormError(form, "username", "A user with that username already exists.")
+        self.assertFormError(
+            form, "username", "A user with that username already exists."
+        )
 
     def test_registration_password_mismatch(self):
         data = {
