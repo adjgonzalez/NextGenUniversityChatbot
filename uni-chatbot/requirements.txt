@@ -1,18 +1,28 @@
-﻿# Django Core
-Django==4.2.25
 asgiref==3.10.0
-sqlparse==0.5.3
-
-# Environment Variables
-python-dotenv==1.0.0
-
-# Styling
-django-bootstrap5==25.2
-
-# Code quality (included in main for CI/CD)
 black==25.11.0
-ruff==0.14.4
-
-# Testing
+cfgv==3.5.0
+click==8.3.1
+colorama==0.4.6
+distlib==0.4.0
+Django==5.2.8
+django-bootstrap5==25.2
+filelock==3.20.0
+identify==2.6.15
+iniconfig==2.3.0
+mypy_extensions==1.1.0
+nodeenv==1.9.1
+packaging==25.0
+pathspec==0.12.1
+platformdirs==4.5.0
+pluggy==1.6.0
+pre_commit==4.5.0
+Pygments==2.19.2
+pytest==9.0.1
 pytest-django==4.5.2
-
+python-dotenv==1.0.0
+pytokens==0.3.0
+PyYAML==6.0.3
+ruff==0.14.4
+sqlparse==0.5.3
+tzdata==2025.2
+virtualenv==20.35.4
