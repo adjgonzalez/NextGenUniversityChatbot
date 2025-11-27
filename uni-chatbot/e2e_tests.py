@@ -1,7 +1,19 @@
 import os
 import random
 
+import pytest
 from playwright.sync_api import sync_playwright
+
+
+@pytest.mark.smoke
+def test_homepage_loads():
+    """Basic smoke test: homepage responds"""
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        page.goto("http://127.0.0.1:8000")
+        assert "Django" in page.title() or page.content() != ""
+        browser.close()
 
 
 def generate_test_username():
