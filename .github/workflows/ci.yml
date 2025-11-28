@@ -7,7 +7,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-env: 
+env:
   DJANGO_SETTINGS_MODULE: mysite.settings
   PYTHONPATH: "${{ github.workspace }}/uni-chatbot"
   DEBUG: "False"
@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     name: E2E Smoke Tests
-    env: 
+    env:
       ETHEREAL_USER: ${{ secrets.ETHEREAL_USER }}
       ETHEREAL_PASSWORD: ${{ secrets.ETHEREAL_PASSWORD }}
 
@@ -114,7 +114,7 @@ jobs:
         python manage.py runserver 0.0.0.0:8000 &
         SERVER_PID=$!
         npx wait-on http://127.0.0.1:8000
-        npx playwright test --grep="@smoke" --timeout=30000
+        pytest -v e2e_tests.py --report-dir=playwright-report
         kill $SERVER_PID
 
     - name: Upload Playwright report
