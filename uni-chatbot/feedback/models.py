@@ -15,7 +15,7 @@ class BaseFeedback(models.Model):
         ordering = ("time",)
         abstract = True
 
-    def _str_(self) -> str:
+    def __str__(self) -> str:
         return self.message
 
 

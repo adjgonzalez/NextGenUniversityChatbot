@@ -1,30 +1,26 @@
 {% extends "base/base.html" %}
-{% load i18n %}
-{% block title %}{% trans "Leave Feedback" %}{% endblock %}
+{% block title %}Feedback{% endblock %}
 
 {% block content %}
 <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-12 col-md-10 col-lg-8 col-xl-7">
-
-      <!-- We'll put the form in a "card" with a shadow -->
+      
+     
       <div class="card shadow-lg border-0" style="border-radius: 1rem;">
         <div class="card-body p-4 p-md-5">
 
-          <h1 class="h2 text-center mb-4">{% trans "Leave Your Feedback" %}</h1>
-          <p class="text-center text-muted mb-5">{% trans "We value your opinion and will use it to improve our services." %}</p>
+          <h1 class="h2 text-center mb-4">Leave Your Feedback</h1>
+          <p class="text-center text-muted mb-5">We value your opinion and will use it to improve our services.</p>
 
           <form action="{% url 'feedback_form' %}" method="POST">
             {% csrf_token %}
 
-            <!--
-              This is the new layout for the 'type' field.
-              The 'form-floating' class gives it a nice effect.
-            -->
+           
             <div class="form-floating mb-4">
               {{ form.type }}
               <label for="{{ form.type.id_for_label }}">{{ form.type.label }}</label>
-              <!-- This will show any errors for this field -->
+             
               {% if form.type.errors %}
                 <div class="invalid-feedback d-block">
                   {% for error in form.type.errors %}
@@ -34,7 +30,7 @@
               {% endif %}
             </div>
 
-            <!-- This is the new layout for the 'message' field -->
+            
             <div class="form-floating mb-4">
               {{ form.message }}
               <label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
@@ -47,10 +43,10 @@
               {% endif %}
             </div>
 
-            <!-- This is the new button -->
+            
             <div class="d-grid">
               <button class="btn btn-primary btn-lg" type="submit">
-                <i class="bi bi-send-fill me-2"></i> {% trans "Leave Feedback" %}
+                <i class="bi bi-send-fill me-2"></i> {%trans "Leave Feedback" %}
               </button>
             </div>
 
