@@ -36,6 +36,12 @@ def clear_browser_data(page):
 
 def take_screenshot(page, filename, description):
     """Take screenshot and log description"""
+    # Ensure folder exists if script is invoked non-interactively
+    try:
+        os.makedirs("test_results", exist_ok=True)
+    except Exception:
+        pass
+
     page.screenshot(path=f"test_results/{filename}")
     print(f"✓ {description} - saved as {filename}")
 
@@ -54,9 +60,28 @@ def test_features():
     test_feedback_content = f"Automated test feedback {random.randint(1000, 9999)}"
 
     with sync_playwright() as p:
+        # Detect CI environment (GitHub Actions or generic CI)
+        is_ci = (
+            os.environ.get("GITHUB_ACTIONS", "").lower() == "true"
+            or os.environ.get("CI", "").lower() in ("1", "true", "yes")
+        )
+
+        # Allow overriding headless with E2E_HEADLESS env var (1/true/yes -> headless)
+        e2e_headless_env = os.environ.get("E2E_HEADLESS")
+        if e2e_headless_env is not None:
+            headless = e2e_headless_env.lower() in ("1", "true", "yes")
+        else:
+            # default to headless in CI, headed locally
+            headless = is_ci
+
+        # Common launch args; add CI-specific args for headless operation in containers
+        launch_args = ["--incognito", "--disable-extensions", "--disable-plugins"]
+        if is_ci:
+            launch_args += ["--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"]
+
         browser = p.chromium.launch(
-            headless=False,
-            args=["--incognito", "--disable-extensions", "--disable-plugins"],
+            headless=headless,
+            args=launch_args,
         )
 
         context = browser.new_context(
@@ -71,7 +96,8 @@ def test_features():
         try:
             # ===== SETUP =====
             print("SETUP: Starting with clean browser session...")
-            page.goto("http://localhost:8000/")
+            # Use 127.0.0.1 to match CI wait-on usage
+            page.goto("http://127.0.0.1:8000/")
             clear_browser_data(page)
             page.reload(wait_until="networkidle")
             page.wait_for_selector("body")
@@ -143,7 +169,7 @@ def test_features():
                             current_url = page.url
                             if (
                                 "program" in current_url.lower()
-                                or current_url != "http://localhost:8000/"
+                                or current_url != "http://127.0.0.1:8000/"
                             ):
                                 print(
                                     f"✓ Successfully redirected to program page: {current_url}"
@@ -169,7 +195,7 @@ def test_features():
                                     )
                                 else:
                                     # Fallback: navigate to root URL
-                                    page.goto("http://localhost:8000/")
+                                    page.goto("http://127.0.0.1:8000/")
                                     print("✓ Navigated back to home page")
                             else:
                                 print("X No redirect occurred after program selection")
@@ -212,7 +238,7 @@ def test_features():
                     submit_btn.click()
                     page.wait_for_timeout(3000)
 
-                    if page.url == "http://localhost:8000/":
+                    if page.url == "http://127.0.0.1:8000/":
                         created_users.append(test_username)
                         print("✓ Registration successful! (auto-logged in)")
                         take_screenshot(
@@ -269,8 +295,12 @@ def test_features():
                                 break
 
                         if not valid_option_found:
-                            type_select.select_option(index=1)
-                            print("✓ Selected first available option")
+                            # Fallback: pick first available option by index
+                            try:
+                                type_select.select_option(index=1)
+                                print("✓ Selected first available option")
+                            except Exception:
+                                print("X Could not select fallback option")
 
                     # Fill message
                     message_area = feedback_form.locator("#id_message").first
@@ -311,7 +341,7 @@ def test_features():
                                 "Feedback submission error",
                             )
                             return False, created_users, test_feedback_content
-                        elif current_url != "http://localhost:8000/feedback/":
+                        elif current_url != "http://127.0.0.1:8000/feedback/":
                             print(f"✓ Redirected to: {current_url}")
                             take_screenshot(
                                 page,
@@ -383,11 +413,17 @@ def test_features():
             import traceback
 
             traceback.print_exc()
-            take_screenshot(page, "error_test_failed.png", "Test failed with error")
+            try:
+                take_screenshot(page, "error_test_failed.png", "Test failed with error")
+            except Exception:
+                pass
             return False, created_users, test_feedback_content
 
         finally:
-            browser.close()
+            try:
+                browser.close()
+            except Exception:
+                pass
 
 
 def cleanup_test_data(usernames, feedback_content):
@@ -397,8 +433,6 @@ def cleanup_test_data(usernames, feedback_content):
     print("=" * 70)
 
     try:
-        import os
-
         import django
 
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
