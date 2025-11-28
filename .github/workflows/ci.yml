@@ -86,6 +86,7 @@ jobs:
     - name: Install Playwright browsers + system deps
       run: |
         npx playwright install --with-deps
+        playwright install
 
     - name: Install gettext (for compilemessages)
       run: sudo apt-get update && sudo apt-get install -y gettext
