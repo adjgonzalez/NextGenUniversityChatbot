@@ -47,11 +47,7 @@ python manage.py loaddata fixtures/pages_data.json
 # 8. Create superuser (follow prompts)
 python manage.py createsuperuser
 
-# 9. Set up translations
-python manage.py makemessages -l es -l fr
-python manage.py compilemessages -l es -l fr
-
-# 10. Run development server
+# 9. Run development server
 python manage.py runserver
 ```
 # Installation \& Setup
@@ -127,23 +123,7 @@ Load Seed Data to populate application
 ```
 Follow the prompts to create an admin account for accessing the Django admin panel.
 
-# 6\. Set Up Translations
-
-Extract translation strings:
-
-```
-# python manage.py makemessages -l es  # Spanish
-
-# python manage.py makemessages -l fr  # French
-```
-
-# Compile translations:
-
-```
-# python manage.py compilemessages -l es
-# python manage.py compilemessages -l fr
-```
-# 7\.Run the Development Server
+# 6\.Run the Development Server
 
 ```
 # python manage.py runserver
