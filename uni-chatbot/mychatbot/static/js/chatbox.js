@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- Select important HTML elements ---
+
+  let pendingEmail = null;
+  let resourceRequestInProgress = false;
   const chatToggle = document.getElementById("chatToggle"); // Floating button to open chat
   const chatBox = document.getElementById("chatBox"); // Entire chat window
   const closeChat = document.getElementById("closeChat"); // Small close button (×)

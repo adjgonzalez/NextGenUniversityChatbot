@@ -6,7 +6,6 @@ Production-ready with secure defaults for localhost development.
 import os
 import secrets
 from pathlib import Path
-
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'
@@ -123,12 +122,6 @@ DATABASES = {
     }
 }
 
-# Use separate test database
-# if TESTING:
-#     DATABASES['default']['NAME'] = BASE_DIR / 'test_db.sqlite3'
-
-# ===== SECURITY & AUTHENTICATION =====
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -156,7 +149,7 @@ LOGIN_URL = "/admin/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-# ===== INTERNATIONALIZATION =====
+# Localization
 
 LANGUAGE_CODE = "en"
 TIME_ZONE = "UTC"
@@ -174,7 +167,7 @@ LOCALE_PATHS = [
     BASE_DIR / "locale",
 ]
 
-# ===== EMAIL CONFIGURATION =====
+# Email Config
 
 EMAIL_BACKEND = os.getenv(
     "EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend"
