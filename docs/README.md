@@ -8,7 +8,7 @@ As of Iteration 3, our pages are now dynamically populated and localized in 3 di
 
 # Prerequisites
 
- \- Python 3.8+
+ \- Python 3.12 (IMPORTANT!!!, Django does not work with 3.14+)
 
  \- pip (Python package manager)
 
