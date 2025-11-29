@@ -8,21 +8,20 @@
       <img src="{% static 'images/logo.png' %}" alt="Logo" width="120" class="d-inline-block align-text-top">
     </a>
     <!-- Language Switcher - Moved inside the main nav -->
+      <div id="google_translate_element" style="display:none;"></div>
     <div class="navbar-nav ms-auto">
-      <form action="{% url 'set_language' %}" method="post" class="d-flex" id="languageForm">
-        {% csrf_token %}
-        <input name="next" type="hidden" value="{{ request.path }}">
-        <select name="language" class="form-select form-select-sm" onchange="this.form.submit()">
-          {% get_current_language as CURRENT_LANGUAGE %}
-          {% get_available_languages as AVAILABLE_LANGUAGES %}
-          {% for lang_code, lang_name in AVAILABLE_LANGUAGES %}
-            <option value="{{ lang_code }}" {% if lang_code == CURRENT_LANGUAGE %}selected{% endif %}>
-              {{ lang_name }}
-            </option>
-          {% endfor %}
-        </select>
-      </form>
-    </div>
+  <select name="language" id="googleLangSelect" class="form-select form-select-sm" style="width:auto;">
+    <option value="en">English</option>
+  <option value="fr">Français</option>
+  <option value="es">Español</option>
+  <option value="it">Italiano</option>
+  <option value="mn">Монгол</option>
+  <option value="de">Deutsch</option>
+  <option value="zh-CN">中文</option>
+  <option value="ru">Русский</option>
+  <option value="ar">العربية</option>
+  </select>
+</div>
     <!-- End Language Switcher -->
   </div>
 </nav>

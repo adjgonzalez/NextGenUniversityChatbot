@@ -8,7 +8,7 @@ As of Iteration 3, our pages are now dynamically populated and localized in 3 di
 
 # Prerequisites
 
- \- Python 3.12 (IMPORTANT!!!, Django does not work with 3.14+)
+ \- Python 3.12 (IMPORTANT!!!, Django has compability issues with Python 3.14+)
 
  \- pip (Python package manager)
 
@@ -42,7 +42,7 @@ python -c "import secrets; key = secrets.token_urlsafe(50); open('.env', 'w', en
 python manage.py migrate
 
 # 7. Load fixtures (baseline data)
-python manage.py loaddata pages_data.json
+python manage.py loaddata fixtures/pages_data.json
 
 # 8. Create superuser (follow prompts)
 python manage.py createsuperuser

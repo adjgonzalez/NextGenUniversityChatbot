@@ -10,6 +10,7 @@ class UserProfile(models.Model):
     program = models.ForeignKey(
         Program, on_delete=models.SET_NULL, null=True, blank=True
     )
+    enrolled = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user.username}'s profile"

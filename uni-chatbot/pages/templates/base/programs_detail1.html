@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block title %}{{ program.name }}{% endblock %}
 
@@ -9,7 +10,9 @@
   <!-- Breadcrumb -->
   <nav aria-label="breadcrumb" class="breadcrumb-nav mb-4">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'pages:programs' %}">Programs</a></li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'pages:programs' %}">{% trans "Programs" %}</a>
+      </li>
       <li class="breadcrumb-item active" aria-current="page">{{ program.name }}</li>
     </ol>
   </nav>
@@ -19,28 +22,30 @@
 
     <!-- LEFT COLUMN: Program Details -->
     <div class="col-md-8">
-        <div class="card p-4 shadow-sm">
+      <div class="card p-4 shadow-sm">
         <h2 class="fw-bold">{{ program.name }}</h2>
-        <p><strong>Duration:</strong> {{ program.duration }}</p>
+        <p><strong>{% trans "Duration:" %}</strong> {{ program.duration }}</p>
         <p>{{ program.description }}</p>
 
         {% if program.joint_programs %}
-        <h5 class="mt-4">Joint Programs:</h5>
+        <h5 class="mt-4">{% trans "Joint Programs:" %}</h5>
         <ul>
-            {% for joint in program.joint_programs %}
-            <li>{{ joint }}</li>
-            {% endfor %}
+          {% for joint in program.joint_programs %}
+          <li>{{ joint }}</li>
+          {% endfor %}
         </ul>
         {% endif %}
 
         <div class="mt-4">
-          <h5>Admission Requirements:</h5>
+          <h5>{% trans "Admission Requirements:" %}</h5>
           <p>
-            Applicants must have completed high school with a strong background in mathematics and science.
-            Prior programming experience is an asset but not required.
-            Admission decisions are based on academic performance and available program capacity.
+            {% blocktrans %}
+              Applicants must have completed high school with a strong background in mathematics and science.
+              Prior programming experience is an asset but not required.
+              Admission decisions are based on academic performance and available program capacity.
+            {% endblocktrans %}
           </p>
-          <button class="btn btn-outline-secondary mt-2">Admission Requirements</button>
+          <button class="btn btn-outline-secondary mt-2">{% trans "Admission Requirements" %}</button>
         </div>
       </div>
     </div>
@@ -48,26 +53,27 @@
     <!-- RIGHT COLUMN: Program Information -->
     <div class="col-md-4">
       <div class="card shadow-sm p-3">
-        <h5 class="fw-bold mb-3">Program Information</h5>
-        <p><strong>Degrees Offered:</strong> {{ program.degree }}</p>
-        <p><strong>Routes:</strong> Course-based</p>
-        <p><strong>Enrollment Status:</strong> Full-time</p>
-        <p><strong>Campus:</strong> St. John’s</p>
-        <p><strong>Application Deadline:</strong><br>
-          April 1 (International) for Fall admission<br>
-          May 1 (Canadian) for Fall admission
+        <h5 class="fw-bold mb-3">{% trans "Program Information" %}</h5>
+        <p><strong>{% trans "Degrees Offered:" %}</strong> {{ program.degree }}</p>
+        <p><strong>{% trans "Routes:" %}</strong> {% trans "Course-based" %}</p>
+        <p><strong>{% trans "Enrollment Status:" %}</strong> {% trans "Full-time" %}</p>
+        <p><strong>{% trans "Campus:" %}</strong> {% trans "St. John’s" %}</p>
+        <p><strong>{% trans "Application Deadline:" %}</strong><br>
+          {% trans "April 1 (International) for Fall admission" %}<br>
+          {% trans "May 1 (Canadian) for Fall admission" %}
         </p>
         <form id="apply-form" method="POST" action="{% url 'pages:apply_now' %}">
           {% csrf_token %}
           <input type="hidden" name="program" value='{{ program_json |safe }}'>
-          <button type="submit" class="btn btn-outline-secondary w-100" aria-label="Apply Now" title="Apply Now">Apply Now</button>
+          <button type="submit" class="btn btn-outline-secondary w-100" aria-label="{% trans 'Apply Now' %}" title="{% trans 'Apply Now' %}">{% trans "Apply Now" %}</button>
         </form>
       </div>
     </div>
 
   </div> <!-- end row -->
-<!-- Floating Chat Button -->
-      {% include "base/chatbox.html" %}
+
+  <!-- Floating Chat Button -->
+  {% include "base/chatbox.html" %}
 </div> <!-- end container -->
 
 <script>
@@ -100,10 +106,9 @@
     })
     .catch(err => {
       console.error("Error:", err);
-      alert("Something went wrong.");
+      alert("{% trans 'Something went wrong.' %}");
     });
   });
 </script>
 
 {% endblock %}
-
