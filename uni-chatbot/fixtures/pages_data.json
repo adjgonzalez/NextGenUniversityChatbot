@@ -1,0 +1,125 @@
+[
+{
+  "model": "pages.programtype",
+  "pk": "49503c27-4a73-407c-9e46-acc3a74fe624",
+  "fields": {
+    "name": "Undergraduate"
+  }
+},
+{
+  "model": "pages.programtype",
+  "pk": "d5b6fdce-9a73-487c-8da4-4f6224f77447",
+  "fields": {
+    "name": "Online Courses"
+  }
+},
+{
+  "model": "pages.programtype",
+  "pk": "f6bb4ea6-df0f-46ef-9003-0faefc2d5339",
+  "fields": {
+    "name": "Graduate"
+  }
+},
+{
+  "model": "pages.program",
+  "pk": "0e78e2f0-1f8d-43ad-a213-c22965d34545",
+  "fields": {
+    "name": "Introduction to AI",
+    "slug": "introduction-to-ai",
+    "degree": "AI",
+    "duration": "3 months",
+    "description": "Beginner-friendly AI concepts and tools. The Introduction to Artificial Intelligence course provides a comprehensive foundation in the core principles and applications of AI. Designed for beginners and aspiring professionals, this program explores how machines can simulate human intelligence through problem-solving, learning, and decision-making. Students will gain hands-on experience with key AI techniques such as machine learning, natural language processing, and computer vision. The course also covers the ethical implications of AI and its growing impact across industries including healthcare, finance, and technology. By the end of the course, learners will understand fundamental AI concepts, develop basic models using Python-based tools, and be prepared to pursue advanced studies or careers in AI-driven fields.",
+    "program_type": "d5b6fdce-9a73-487c-8da4-4f6224f77447",
+    "routes": null,
+    "enrollment_status": null,
+    "campus": null,
+    "joint_programs": []
+  }
+},
+{
+  "model": "pages.program",
+  "pk": "80cffecc-f9fb-4671-969b-2bfc9bc496bb",
+  "fields": {
+    "name": "MDSc in Data Science",
+    "slug": "mdsc-in-data-science",
+    "degree": "MDSc",
+    "duration": "2 years",
+    "description": "Master data analytics, machine learning, and AI. Data science is one of the most sought-after professions of the 21st century. With lives increasingly being lived online, nearly every individual leaves behind a data trail that is as valuable as gold in this digital age. With this increasing generation of data, there is also an ever-increasing demand for specialists who are able to structure, analyse and process it. This work is done by data scientists. Given the continuing demand for data scientists, and the expected accelerated growth of this profession over the next few decades, Memorial has developed the Master of Data Science (MDSc). Jointly offered by the Departmnts of Mathematics and Statistics and Computer Science, it is a one-year program aiming to equip students with the foundations of data science and provide them with practical techniques needed to effectively translate data into knowledge, communicate the findings, and help in the decision-making process.",
+    "program_type": "f6bb4ea6-df0f-46ef-9003-0faefc2d5339",
+    "routes": null,
+    "enrollment_status": "Full-time",
+    "campus": "St. Johns",
+    "joint_programs": []
+  }
+},
+{
+  "model": "pages.program",
+  "pk": "9a3bdf64-ea1b-4d41-baae-98d05f0f0d01",
+  "fields": {
+    "name": "BA in Economics",
+    "slug": "ba-in-economics",
+    "degree": "BA",
+    "duration": "3 years",
+    "description": "Study economics, finance, and market theory. Economics is a versatile field that deals with the analysis and management of production, distribution and consumption of goods and services. Economics gives us the analytical tools to understand questions such as how prices are determined, why some people are unemployed, why interest rates rise and fall, and why product is traded between nations.",
+    "program_type": "49503c27-4a73-407c-9e46-acc3a74fe624",
+    "routes": null,
+    "enrollment_status": "Full-time",
+    "campus": "St. Johns",
+    "joint_programs": []
+  }
+},
+{
+  "model": "pages.program",
+  "pk": "ac7bce36-ead6-47d5-8367-0d01607c417c",
+  "fields": {
+    "name": "BSc in Computer Science",
+    "slug": "bsc-in-computer-science",
+    "degree": "BSc",
+    "duration": "4 years",
+    "description": "Learn programming, algorithms, AI, and software development. Computer science deals with the theoretical foundations of information and computation, and with practical techniques for their implementation and application. Virtually every discipline û practical, theoretical or creative û is experiencing the influence of computers. The ever-increasing dependence on computer technology in our daily lives presents rich opportunities for those interested in the design of new applications and systems. Every career can benefit from a deeper understanding of computing. The technology skills a major in computer science helps develop will make you indispensable and relevant no matter your position. We offer individual courses and full programs so any student can develop their computer skills and interest regardless of their career trajectory. MemorialÆs Co-operative Internship in Computer Science (CICS) provides an opportunity for you to obtain rewarding placements in computer industries. The internship program includes a paid placement of eight to 16 months so you can explore career options and develop workplace skills at the same time. We offer major, minor and honours programs leading to either a bachelor of arts (BA) or bachelor of science (B.Sc.) in Computer Science. Joint programs are available in:",
+    "program_type": "49503c27-4a73-407c-9e46-acc3a74fe624",
+    "routes": "Course-based",
+    "enrollment_status": "Full-time",
+    "campus": "St. Johns",
+    "joint_programs": [
+      "Applied Mathematics and Computer Science (B.Sc. major)",
+      "Computer Science and Economics (B.Sc. major)",
+      "Computer Science and Physics (B.Sc. major and honours)",
+      "Computer Science and Pure Mathematics (B.Sc. major and honours)",
+      "Computer Science and Statistics (B.Sc. major and honours)"
+    ]
+  }
+},
+{
+  "model": "pages.program",
+  "pk": "d5452001-0a32-4c90-bc0a-313da552d665",
+  "fields": {
+    "name": "MBA",
+    "slug": "mba",
+    "degree": "MBA",
+    "duration": "2 years",
+    "description": "Advanced business management, leadership, and strategy. The MBA program is made up of 20 courses to be completed on a part-time or full-time basis. Our MBA program is offered on campus in St. JohnÆs and is not available online. Required courses include business ethics, leadership skills and international business as well as business fundamentals such as economics, finance, accounting, organizational behaviour, operations management, statistics, marketing, information systems, human resources and strategic management. Students can focus their studies through electives, including up to two graduate courses from other faculties, and self-directed, faculty supervised research projects. One elective must be a designated course in any area of international business.",
+    "program_type": "f6bb4ea6-df0f-46ef-9003-0faefc2d5339",
+    "routes": null,
+    "enrollment_status": "Full-time",
+    "campus": "St. Johns",
+    "joint_programs": []
+  }
+},
+{
+  "model": "pages.program",
+  "pk": "e1cce514-98c5-4a86-b08d-d78db4a7d6e5",
+  "fields": {
+    "name": "Web Development Bootcamp",
+    "slug": "web-development-bootcamp",
+    "degree": "Web development",
+    "duration": "6 months",
+    "description": "Learn full stack web development with hands-on projects. The Web Development Bootcamp is an intensive, hands-on program designed to help learners master the essential skills required to build modern, responsive websites and web applications. Through a practical, project-based approach, students gain experience in front-end technologies such as HTML, CSS, JavaScript, and React, as well as back-end development using Node.js, Express, and databases like MongoDB. Whether youÆre a complete beginner or looking to enhance your existing skills, this bootcamp prepares you for a successful career as a Full-Stack Web Developer. By the end of the course, participants will have built multiple real-world projects, developed a professional portfolio, and gained the confidence to pursue freelance work or entry-level developer roles.",
+    "program_type": "d5b6fdce-9a73-487c-8da4-4f6224f77447",
+    "routes": null,
+    "enrollment_status": "Full-time",
+    "campus": null,
+    "joint_programs": []
+  }
+}
+]

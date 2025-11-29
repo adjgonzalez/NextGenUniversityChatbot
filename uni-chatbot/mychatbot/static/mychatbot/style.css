@@ -78,13 +78,7 @@ body {
   font-weight: bold;
   text-decoration: none;
   display: inline-block;
-  cursor: pointer;
-  transition: background-color 0.3s;
   margin-bottom: 10px;
-}
-
-.enroll-btn:hover {
-  background-color: #a6534e; /* slightly darker on hover */
 }
 
 .hero-content h1 {
