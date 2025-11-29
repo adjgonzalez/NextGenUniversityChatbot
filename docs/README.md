@@ -13,7 +13,7 @@ As of Iteration 3, our pages are now dynamically populated and localized in 3 di
  \- pip (Python package manager)
 
  \- Git
- 
+
  \- A Clone of the repository
 ```
 git clone https://github.com/adjgonzalez/NextGenUniversityChatbot/
@@ -41,14 +41,17 @@ python -c "import secrets; key = secrets.token_urlsafe(50); open('.env', 'w', en
 # 6. Set up database
 python manage.py migrate
 
-# 7. Create superuser (follow prompts)
+# 7. Load fixtures (baseline data)
+python manage.py loaddata pages_data.json
+
+# 8. Create superuser (follow prompts)
 python manage.py createsuperuser
 
-# 8. Set up translations
+# 9. Set up translations
 python manage.py makemessages -l es -l fr
 python manage.py compilemessages -l es -l fr
 
-# 9. Run development server
+# 10. Run development server
 python manage.py runserver
 ```
 # Installation \& Setup
@@ -102,7 +105,6 @@ Create a .env file in the project root (same directory as manage.py):
 
 # 4\. Database Setup
 
-
 ```
 python manage.py makemigrations
 ```
@@ -111,6 +113,13 @@ python manage.py makemigrations
 ```
 # python manage.py migrate
 ```
+
+# Load Base Data
+```
+# python manage.py loaddata pages_data.json
+```
+Load Seed Data to populate application
+
 # 5\. Create Superuser (Admin Account)
 
 ```
