@@ -107,7 +107,6 @@ jobs:
           f'DEFAULT_FROM_EMAIL=noreply@nextgenuniversity.com\n')"
         python manage.py migrate
         python manage.py collectstatic --noinput
-        python manage.py compilemessages -l es -l fr
 
     - name: Run smoke tests
       run: |
