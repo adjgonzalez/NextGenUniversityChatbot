@@ -3,8 +3,8 @@ from django.core import mail
 from django.test import Client, TestCase
 from django.urls import reverse
 
-# Import Program and ProgramType from the correct location: pages.models
 from pages.models import Program, ProgramType
+from users.models import UserProfile
 
 User = get_user_model()
 
@@ -138,7 +138,6 @@ class UserEnrollmentTests(TestCase):
         )
         self.client.login(username=self.username, password=self.password)
         self.program_type = ProgramType.objects.create(name="Undergraduate")
-        # Create Program instance
         self.program = Program.objects.create(
             name="Some Program",
             slug="some-program",
@@ -147,6 +146,7 @@ class UserEnrollmentTests(TestCase):
             description="Sample Program for testing.",
             program_type=self.program_type,
         )
+        self.user_profile = UserProfile.objects.create(user=self.user)
 
     def test_apply_now_sends_email(self):
         import json
