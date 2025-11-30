@@ -1,9 +1,10 @@
 import json
+
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Student
+
 
 @csrf_exempt
 def send_chatbot_transcript(request):
@@ -43,23 +44,19 @@ def send_chatbot_transcript(request):
 
     return JsonResponse({"success": False, "error": "Invalid request method"})
 
+
 @csrf_exempt
 def send_program_resources(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         try:
             data = json.loads(request.body)
-            email = data.get('email')
+            email = data.get("email")
             if not email:
-                return JsonResponse({'success': False, 'error': 'Email is required.'})
-
-            # Query the database for enrolled student
-            student = Student.objects.filter(email=email, enrolled=True).first()
-            if not student:
-                return JsonResponse({'success': False, 'error': 'No enrolled student found with that email.'})
+                return JsonResponse({"success": False, "error": "Email is required."})
 
             # Compose your email message here
             subject = "Your Requested Program Resources"
-            message = f"Hello{f' {student.name}' if student.name else ''},\n\nHere are your resources for your enrolled program at NextGen University."
+            message = "Here are your resources for your enrolled program at NextGen University."
             send_mail(
                 subject,
                 message,
@@ -67,7 +64,7 @@ def send_program_resources(request):
                 [email],
                 fail_silently=False,
             )
-            return JsonResponse({'success': True})
+            return JsonResponse({"success": True})
         except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)})
-    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+            return JsonResponse({"success": False, "error": str(e)})
+    return JsonResponse({"success": False, "error": "Invalid request method"})

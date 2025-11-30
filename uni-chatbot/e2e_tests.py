@@ -66,10 +66,9 @@ def test_features():
 
     with sync_playwright() as p:
         # Detect CI environment (GitHub Actions or generic CI)
-        is_ci = (
-            os.environ.get("GITHUB_ACTIONS", "").lower() == "true"
-            or os.environ.get("CI", "").lower() in ("1", "true", "yes")
-        )
+        is_ci = os.environ.get(
+            "GITHUB_ACTIONS", ""
+        ).lower() == "true" or os.environ.get("CI", "").lower() in ("1", "true", "yes")
 
         # Allow overriding headless with E2E_HEADLESS env var (1/true/yes -> headless)
         e2e_headless_env = os.environ.get("E2E_HEADLESS")

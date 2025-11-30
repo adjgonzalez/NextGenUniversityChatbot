@@ -89,8 +89,20 @@ const TRANSLATIONS = {
     contactAdminMessage: "{% trans 'I want to contact an administrator' %}",
     transcriptSent: "{% trans 'Transcript sent to your email!' %}",
     failedToSend: "{% trans 'Failed to send transcript.' %}",
-    includeEmail: "{% trans 'Please include your email above to receive program resources' %}"
+    includeEmail: "{% trans 'Please include your email above to receive program resources' %}",
+    selectProgram: "{% trans 'Please select a program' %}",
+    programSent: "{% trans 'Program resources sent to your email!' %}"
 };
+
+// Hard-coded program list (slug + display name) - edit if you want to change
+const HARD_CODED_PROGRAMS = [
+    { slug: 'bsc-computer-science', name: TRANSLATIONS.bscComputerScience },
+    { slug: 'ba-economics', name: TRANSLATIONS.baEconomics },
+    { slug: 'mba', name: TRANSLATIONS.mba },
+    { slug: 'mdsc-data-science', name: TRANSLATIONS.mdscDataScience },
+    { slug: 'web-development-bootcamp', name: TRANSLATIONS.webDevelopment },
+    { slug: 'introduction-to-ai', name: TRANSLATIONS.introductionAI }
+];
 
 let conversationHistory = [
     { sender: "assistant", message: TRANSLATIONS.welcome },
@@ -99,7 +111,29 @@ let conversationHistory = [
 
 let isAdminContactMode = false;
 let pendingEmail = null;
+let pendingProgram = null;
 let resourceRequestInProgress = false;
+
+// Helper: get cookie (for CSRF)
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Preferred CSRF getter: hidden input if present, else cookie
+function getCSRFToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]')?.value || getCookie('csrftoken') || '';
+}
 
 // Message and UI helpers
 function addToConversation(sender, message) {
@@ -134,12 +168,14 @@ function toggleFooter(show) {
     isAdminContactMode = show;
 }
 
-// --- EMAIL RESOURCE NEW FLOW ---
+// --- EMAIL RESOURCE NEW FLOW: show program dropdown + email input ---
+// Replaces the prior enrollment check flow; we will send resources immediately
 function showEmailOption() {
     hideAllButtons();
     toggleFooter(false);
     resourceRequestInProgress = true;
     pendingEmail = null;
+    pendingProgram = null;
     addToConversation('assistant', TRANSLATIONS.pleaseProvideEmail);
     showEmailCollectionForm();
 }
@@ -152,81 +188,109 @@ function showEmailCollectionForm() {
     const formDiv = document.createElement('div');
     formDiv.id = 'programEmailForm';
     formDiv.className = 'mt-2';
+
+    // Build select options from hard-coded list
+    let optionsHtml = '<option value="">' + TRANSLATIONS.selectProgram + '</option>';
+    HARD_CODED_PROGRAMS.forEach(function (p) {
+        optionsHtml += `<option value="${p.slug}">${p.name}</option>`;
+    });
+
     formDiv.innerHTML = `
-        <input type="email" class="form-control mb-2" id="programEmailInput"
-            required placeholder="${TRANSLATIONS.includeEmail}">
-        <button class="btn btn-success" type="button" onclick="submitProgramEmail()">Submit Email</button>
+        <div class="mb-2">
+            <label for="programSelect" class="form-label visually-hidden">${TRANSLATIONS.selectProgram}</label>
+            <select id="programSelect" class="form-select mb-2">${optionsHtml}</select>
+        </div>
+        <div class="mb-2">
+            <input type="email" class="form-control" id="programEmailInput"
+                required placeholder="${TRANSLATIONS.includeEmail}">
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-success" type="button" id="programEmailSubmit">Send</button>
+            <button class="btn btn-secondary" type="button" id="programEmailCancel">Cancel</button>
+        </div>
     `;
     chatMessages.appendChild(formDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    document.getElementById('programEmailCancel').addEventListener('click', function () {
+        document.getElementById('programEmailForm')?.remove();
+    });
+
+    document.getElementById('programEmailSubmit').addEventListener('click', function () {
+        submitProgramEmail();
+    });
+
+    // allow Enter to submit quickly
+    const emailInput = document.getElementById('programEmailInput');
+    emailInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            submitProgramEmail();
+        }
+    });
 }
 
 function submitProgramEmail() {
     const emailInput = document.getElementById('programEmailInput');
-    const email = emailInput.value.trim();
+    const programSelect = document.getElementById('programSelect');
+    const email = emailInput?.value?.trim();
+    const programSlug = programSelect?.value;
+    const programName = programSelect?.options[programSelect.selectedIndex]?.text || '';
+
     if (!email) {
-        showAlert('Please enter a valid email address.', 'danger');
+        showAlert('{% trans "Please enter a valid email address." %}', 'danger');
         return;
     }
+    if (!programSlug) {
+        showAlert(TRANSLATIONS.selectProgram, 'danger');
+        return;
+    }
+
     pendingEmail = email;
+    pendingProgram = { slug: programSlug, name: programName };
+
+    // reflect in conversation, then send immediately (no enrollment confirmation)
     addToConversation('user', `My email: ${email}`);
-    document.getElementById('programEmailForm').remove();
-    addToConversation('assistant', `Your email is ${email}. Is that correct?`);
-    showEmailConfirmationButtons(email);
-}
+    addToConversation('user', `Program: ${programName}`);
 
-function showEmailConfirmationButtons(email) {
-    hideAllButtons();
-    const chatMessages = document.getElementById('chatMessages');
-    const buttonDiv = document.createElement('div');
-    buttonDiv.className = "gap-2 mt-2";
-    buttonDiv.id = "emailConfirmBtns";
-    buttonDiv.innerHTML = `
-        <button class="btn btn-outline-success" type="button" onclick="emailConfirmed()">✅ Yes</button>
-        <button class="btn btn-outline-danger" type="button" onclick="emailDenied()">❌ No</button>
-    `;
-    chatMessages.appendChild(buttonDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
+    // Remove the form from UI
+    document.getElementById('programEmailForm')?.remove();
 
-function emailConfirmed() {
-    document.getElementById('emailConfirmBtns').remove();
-    addToConversation('user', '✅ Yes, my email is correct.');
-    addToConversation('assistant', 'Checking enrollment...');
+    // Send request to server (no enrollment check)
     fetch('/send-program-resources/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCSRFToken()
         },
-        body: JSON.stringify({ email: pendingEmail })
+        body: JSON.stringify({
+            email: pendingEmail,
+            program_slug: pendingProgram.slug,
+            program_name: pendingProgram.name
+        })
     })
-    .then(response => response.json())
+    .then(response => response.json().catch(()=>({})))
     .then(data => {
-        if (data.success) {
-            addToConversation('assistant', 'Program resources sent to your email!');
-            showAlert('Program resources sent to your email!', 'success');
+        if (data && data.success) {
+            addToConversation('assistant', TRANSLATIONS.programSent);
+            showAlert(TRANSLATIONS.programSent, 'success');
         } else {
-            addToConversation('assistant', 'You are not enrolled. Please contact an administrator if this is an error.');
-            showAlert(data.error || 'Failed to send program resources.', 'danger');
+            addToConversation('assistant', data.message || '{% trans "Failed to send program resources." %}');
+            showAlert(data.message || '{% trans "Failed to send program resources." %}', 'danger');
         }
         resourceRequestInProgress = false;
         pendingEmail = null;
+        pendingProgram = null;
     })
     .catch(() => {
-        addToConversation('assistant', 'Could not send your resources due to a technical issue. Please try again later.');
+        addToConversation('assistant', '{% trans "There was an error sending your resources. Please try again later." %}');
+        showAlert('{% trans "There was an error sending your resources. Please try again later." %}', 'danger');
         resourceRequestInProgress = false;
         pendingEmail = null;
+        pendingProgram = null;
     });
 }
 
-function emailDenied() {
-    document.getElementById('emailConfirmBtns').remove();
-    addToConversation('user', '❌ No, let me try again.');
-    showEmailCollectionForm();
-}
-
-// Button click handlers
+// Button click handlers (unchanged besides calling new showEmailOption)
 function yesListener(){
     hideAllButtons();
     toggleFooter(false);
@@ -264,6 +328,7 @@ function noListener(){
     showButtons(studyTypeButtonsHTML);
 }
 
+// rest of handlers unchanged
 function underGradListener(){
     hideAllButtons();
     toggleFooter(false);
@@ -377,10 +442,6 @@ function sendTranscript() {
     }
 }
 
-function getCSRFToken() {
-    return document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
-}
-
 function showAlert(message, type) {
     const alertDiv = document.createElement('div');
     alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} mt-2`;
@@ -418,6 +479,7 @@ function resetChatbotVisibility() {
     isAdminContactMode = false;
     resourceRequestInProgress = false;
     pendingEmail = null;
+    pendingProgram = null;
     chatMessages.scrollTop = 0;
 }
 
