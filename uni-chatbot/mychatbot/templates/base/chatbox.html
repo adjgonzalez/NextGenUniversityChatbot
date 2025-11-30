@@ -1,9 +1,4 @@
-{% load i18n static %}
-
-<!-- Assign translation with apostrophe to a variable for safe JS use -->
-{% trans "I'm interested in:" as interested_in_str %}
-
-<!-- Bootstrap Chat Widget -->
+<!-- Floating chat button to open modal -->
 <button class="btn btn-primary rounded-circle chatbot-btn"
         data-bs-toggle="modal"
         data-bs-target="#chatbotModal">
@@ -15,36 +10,42 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{% trans "University Assistant" %}</h5>
+                <!-- Chatbot modal header -->
+                <h5 class="modal-title">University Assistant</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" style="height: 300px; overflow-y: auto;" id="chatMessages">
+                <!-- Initial chatbot introduction message -->
                 <div class="alert alert-info">
-                    <p>{% trans "Hello! Welcome to the NextGen university chatbot." %}</p>
-                    <strong>{% trans "Assistant:" %}</strong> {% trans "Are you already a student?" %}
+                    <p>Hello! Welcome to the NextGen university chatbot.</p>
+                    <strong>Assistant:</strong> Are you already a student?
                 </div>
                 <div class="gap-2" id="initialDecision">
                     <button class="btn btn-outline-primary" id='yesButton' onclick="yesListener()">
-                        ✅ {% trans "Yes" %}
+                        ✅ Yes
                     </button>
                     <button class="btn btn-outline-primary" id='noButton' onclick="noListener()">
-                        ❌ {% trans "No" %}
+                        ❌ No
                     </button>
                 </div>
             </div>
 
+            <!-- Footer area for follow-up input like email, transcript, or questions -->
             <div class="modal-footer" id="chatbotFooter" style="display: none;">
                 <div class="w-100 mb-2">
                     <div class="form-check">
+                        <!-- Checkbox to trigger sending the transcript -->
                         <input class="form-check-input" type="checkbox" id="sendTranscript">
                         <label class="form-check-label" for="sendTranscript">
-                            📧 {% trans "Email me this conversation" %}
+                            📧 Email me this conversation
                         </label>
                     </div>
-                    <input type="email" class="form-control mt-2" id="userEmail" placeholder="{% trans 'Your email address' %}" style="display: none;">
+                    <!-- Email input for transcript sending -->
+                    <input type="email" class="form-control mt-2" id="userEmail" placeholder="Your email address" style="display: none;">
                 </div>
-                <input type="text" class="form-control" placeholder="{% trans 'Type your question...' %}" id="userInput">
-                <button class="btn btn-primary" onclick="sendMessage()">{% trans "Send" %}</button>
+                <!-- Main chat input for questions -->
+                <input type="text" class="form-control" placeholder="Type your question..." id="userInput">
+                <button class="btn btn-primary" onclick="sendMessage()">Send</button>
             </div>
         </div>
     </div>
@@ -52,61 +53,62 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-const TRANSLATIONS = {
-    assistant: "{% trans 'Assistant' %}",
-    you: "{% trans 'You' %}",
-    yes: "{% trans 'Yes' %}",
-    no: "{% trans 'No' %}",
-    welcome: "{% trans 'Hello! Welcome to the NextGen university chatbot.' %}",
-    studentQuestion: "{% trans 'Are you already a student?' %}",
-    whatWouldYouLike: "{% trans 'What would you like to do?' %}",
-    whatTypeOfProgram: "{% trans 'What type of program are you interested in?' %}",
-    whichUndergraduate: "{% trans 'Which undergraduate program interests you?' %}",
-    whichGraduate: "{% trans 'Which graduate program interests you?' %}",
-    whichOnline: "{% trans 'Which online course interests you?' %}",
-    pleaseProvideEmail: "{% trans 'Please provide your email address and we will send your program resources.' %}",
-    describeIssue: "{% trans 'Please use the message box below to describe your issue. Check the box to receive a transcript of this conversation.' %}",
-    thankYouMessage: "{% trans 'Thank you for your message. An administrator will contact you shortly. Please ensure your email is correct to receive updates.' %}",
-    takingYouTo: "{% trans 'Taking you to the' %}",
-    page: "{% trans 'page...' %}",
-    interestedIn: "{{ interested_in_str }}",  // This is now safe
-    emailResources: "{% trans 'Email me my program resources' %}",
-    contactAdministrator: "{% trans 'Contact Administrator' %}",
-    undergraduate: "{% trans 'Undergraduate' %}",
-    graduate: "{% trans 'Graduate' %}",
-    onlineCourses: "{% trans 'Online Courses' %}",
-    bscComputerScience: "{% trans 'BSc in Computer Science' %}",
-    baEconomics: "{% trans 'BA in Economics' %}",
-    mba: "{% trans 'MBA' %}",
-    mdscDataScience: "{% trans 'MDSc in Data Science' %}",
-    webDevelopment: "{% trans 'Web Development Bootcamp' %}",
-    introductionAI: "{% trans 'Introduction to AI' %}",
-    yesStudent: "{% trans 'Yes, I am a student' %}",
-    noStudent: "{% trans 'No, I am not a student' %}",
-    undergraduatePrograms: "{% trans 'Undergraduate programs' %}",
-    graduatePrograms: "{% trans 'Graduate programs' %}",
-    onlineCourses: "{% trans 'Online courses' %}",
-    contactAdminMessage: "{% trans 'I want to contact an administrator' %}",
-    transcriptSent: "{% trans 'Transcript sent to your email!' %}",
-    failedToSend: "{% trans 'Failed to send transcript.' %}",
-    includeEmail: "{% trans 'Please include your email above to receive program resources' %}",
-    selectProgram: "{% trans 'Please select a program' %}",
-    programSent: "{% trans 'Program resources sent to your email!' %}"
+// Text responses, button labels, and other strings used by the chatbot throughout the UI
+const CHATBOT_TEXT = {
+    assistant: "Assistant",
+    you: "You",
+    yes: "Yes",
+    no: "No",
+    welcome: "Hello! Welcome to the NextGen university chatbot.",
+    studentQuestion: "Are you already a student?",
+    whatWouldYouLike: "What would you like to do?",
+    whatTypeOfProgram: "What type of program are you interested in?",
+    whichUndergraduate: "Which undergraduate program interests you?",
+    whichGraduate: "Which graduate program interests you?",
+    whichOnline: "Which online course interests you?",
+    pleaseProvideEmail: "Please provide your email address and we will send your program resources.",
+    describeIssue: "Please use the message box below to describe your issue. Check the box to receive a transcript of this conversation.",
+    thankYouMessage: "Thank you for your message. An administrator will contact you shortly. Please ensure your email is correct to receive updates.",
+    takingYouTo: "Taking you to the",
+    page: "page...",
+    emailResources: "Email me my program resources",
+    contactAdministrator: "Contact Administrator",
+    undergraduate: "Undergraduate",
+    graduate: "Graduate",
+    onlineCourses: "Online Courses",
+    bscComputerScience: "BSc in Computer Science",
+    baEconomics: "BA in Economics",
+    mba: "MBA",
+    mdscDataScience: "MDSc in Data Science",
+    webDevelopment: "Web Development Bootcamp",
+    introductionAI: "Introduction to AI",
+    yesStudent: "Yes, I am a student",
+    noStudent: "No, I am not a student",
+    undergraduatePrograms: "Undergraduate programs",
+    graduatePrograms: "Graduate programs",
+    onlineCourses: "Online courses",
+    contactAdminMessage: "I want to contact an administrator",
+    transcriptSent: "Transcript sent to your email!",
+    failedToSend: "Failed to send transcript.",
+    includeEmail: "Please include your email above to receive program resources",
+    selectProgram: "Please select a program",
+    programSent: "Program resources sent to your email!"
 };
 
-// Hard-coded program list (slug + display name) - edit if you want to change
+// List of available programs for resource requests
 const HARD_CODED_PROGRAMS = [
-    { slug: 'bsc-computer-science', name: TRANSLATIONS.bscComputerScience },
-    { slug: 'ba-economics', name: TRANSLATIONS.baEconomics },
-    { slug: 'mba', name: TRANSLATIONS.mba },
-    { slug: 'mdsc-data-science', name: TRANSLATIONS.mdscDataScience },
-    { slug: 'web-development-bootcamp', name: TRANSLATIONS.webDevelopment },
-    { slug: 'introduction-to-ai', name: TRANSLATIONS.introductionAI }
+    { slug: 'bsc-computer-science', name: CHATBOT_TEXT.bscComputerScience },
+    { slug: 'ba-economics', name: CHATBOT_TEXT.baEconomics },
+    { slug: 'mba', name: CHATBOT_TEXT.mba },
+    { slug: 'mdsc-data-science', name: CHATBOT_TEXT.mdscDataScience },
+    { slug: 'web-development-bootcamp', name: CHATBOT_TEXT.webDevelopment },
+    { slug: 'introduction-to-ai', name: CHATBOT_TEXT.introductionAI }
 ];
 
+// Conversation history log
 let conversationHistory = [
-    { sender: "assistant", message: TRANSLATIONS.welcome },
-    { sender: "assistant", message: TRANSLATIONS.studentQuestion }
+    { sender: "assistant", message: CHATBOT_TEXT.welcome },
+    { sender: "assistant", message: CHATBOT_TEXT.studentQuestion }
 ];
 
 let isAdminContactMode = false;
@@ -114,7 +116,7 @@ let pendingEmail = null;
 let pendingProgram = null;
 let resourceRequestInProgress = false;
 
-// Helper: get cookie (for CSRF)
+// Helper to get CSRF token for AJAX in Django
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -129,23 +131,22 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-
-// Preferred CSRF getter: hidden input if present, else cookie
 function getCSRFToken() {
     return document.querySelector('[name=csrfmiddlewaretoken]')?.value || getCookie('csrftoken') || '';
 }
 
-// Message and UI helpers
+// Add a message to the chat window and scroll to bottom
 function addToConversation(sender, message) {
     conversationHistory.push({ sender: sender, message: message });
     const chatMessages = document.getElementById('chatMessages');
     const messageDiv = document.createElement('div');
     messageDiv.className = `alert ${sender === 'user' ? 'alert-primary' : 'alert-info'}`;
-    messageDiv.innerHTML = `<strong>${sender === 'user' ? TRANSLATIONS.you : TRANSLATIONS.assistant}:</strong> ${message}`;
+    messageDiv.innerHTML = `<strong>${sender === 'user' ? CHATBOT_TEXT.you : CHATBOT_TEXT.assistant}:</strong> ${message}`;
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+// Helper to show button groups
 function showButtons(buttonHTML) {
     const chatMessages = document.getElementById('chatMessages');
     const buttonContainer = document.createElement('div');
@@ -155,6 +156,7 @@ function showButtons(buttonHTML) {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+// Remove all button groups from chat
 function hideAllButtons() {
     const buttonContainers = document.querySelectorAll('#chatMessages .gap-2');
     buttonContainers.forEach(container => {
@@ -162,24 +164,25 @@ function hideAllButtons() {
     });
 }
 
+// Show or hide the modal footer (used for admin contact mode)
 function toggleFooter(show) {
     const footer = document.getElementById('chatbotFooter');
     footer.style.display = show ? 'block' : 'none';
     isAdminContactMode = show;
 }
 
-// --- EMAIL RESOURCE NEW FLOW: show program dropdown + email input ---
-// Replaces the prior enrollment check flow; we will send resources immediately
+// Show the email resource request form
 function showEmailOption() {
     hideAllButtons();
     toggleFooter(false);
     resourceRequestInProgress = true;
     pendingEmail = null;
     pendingProgram = null;
-    addToConversation('assistant', TRANSLATIONS.pleaseProvideEmail);
+    addToConversation('assistant', CHATBOT_TEXT.pleaseProvideEmail);
     showEmailCollectionForm();
 }
 
+// Allow user to choose program and enter email
 function showEmailCollectionForm() {
     const existingForm = document.getElementById('programEmailForm');
     if (existingForm) existingForm.remove();
@@ -189,20 +192,19 @@ function showEmailCollectionForm() {
     formDiv.id = 'programEmailForm';
     formDiv.className = 'mt-2';
 
-    // Build select options from hard-coded list
-    let optionsHtml = '<option value="">' + TRANSLATIONS.selectProgram + '</option>';
+    let optionsHtml = '<option value="">' + CHATBOT_TEXT.selectProgram + '</option>';
     HARD_CODED_PROGRAMS.forEach(function (p) {
         optionsHtml += `<option value="${p.slug}">${p.name}</option>`;
     });
 
     formDiv.innerHTML = `
         <div class="mb-2">
-            <label for="programSelect" class="form-label visually-hidden">${TRANSLATIONS.selectProgram}</label>
+            <label for="programSelect" class="form-label visually-hidden">${CHATBOT_TEXT.selectProgram}</label>
             <select id="programSelect" class="form-select mb-2">${optionsHtml}</select>
         </div>
         <div class="mb-2">
             <input type="email" class="form-control" id="programEmailInput"
-                required placeholder="${TRANSLATIONS.includeEmail}">
+                required placeholder="${CHATBOT_TEXT.includeEmail}">
         </div>
         <div class="d-flex gap-2">
             <button class="btn btn-success" type="button" id="programEmailSubmit">Send</button>
@@ -220,7 +222,6 @@ function showEmailCollectionForm() {
         submitProgramEmail();
     });
 
-    // allow Enter to submit quickly
     const emailInput = document.getElementById('programEmailInput');
     emailInput.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
@@ -229,6 +230,7 @@ function showEmailCollectionForm() {
     });
 }
 
+// Handle sending program resources to given email
 function submitProgramEmail() {
     const emailInput = document.getElementById('programEmailInput');
     const programSelect = document.getElementById('programSelect');
@@ -237,25 +239,22 @@ function submitProgramEmail() {
     const programName = programSelect?.options[programSelect.selectedIndex]?.text || '';
 
     if (!email) {
-        showAlert('{% trans "Please enter a valid email address." %}', 'danger');
+        showAlert("Please enter a valid email address.", 'danger');
         return;
     }
     if (!programSlug) {
-        showAlert(TRANSLATIONS.selectProgram, 'danger');
+        showAlert(CHATBOT_TEXT.selectProgram, 'danger');
         return;
     }
 
     pendingEmail = email;
     pendingProgram = { slug: programSlug, name: programName };
 
-    // reflect in conversation, then send immediately (no enrollment confirmation)
     addToConversation('user', `My email: ${email}`);
     addToConversation('user', `Program: ${programName}`);
 
-    // Remove the form from UI
     document.getElementById('programEmailForm')?.remove();
 
-    // Send request to server (no enrollment check)
     fetch('/send-program-resources/', {
         method: 'POST',
         headers: {
@@ -271,38 +270,38 @@ function submitProgramEmail() {
     .then(response => response.json().catch(()=>({})))
     .then(data => {
         if (data && data.success) {
-            addToConversation('assistant', TRANSLATIONS.programSent);
-            showAlert(TRANSLATIONS.programSent, 'success');
+            addToConversation('assistant', CHATBOT_TEXT.programSent);
+            showAlert(CHATBOT_TEXT.programSent, 'success');
         } else {
-            addToConversation('assistant', data.message || '{% trans "Failed to send program resources." %}');
-            showAlert(data.message || '{% trans "Failed to send program resources." %}', 'danger');
+            addToConversation('assistant', data.message || "Failed to send program resources.");
+            showAlert(data.message || "Failed to send program resources.", 'danger');
         }
         resourceRequestInProgress = false;
         pendingEmail = null;
         pendingProgram = null;
     })
     .catch(() => {
-        addToConversation('assistant', '{% trans "There was an error sending your resources. Please try again later." %}');
-        showAlert('{% trans "There was an error sending your resources. Please try again later." %}', 'danger');
+        addToConversation('assistant', "There was an error sending your resources. Please try again later.");
+        showAlert("There was an error sending your resources. Please try again later.", 'danger');
         resourceRequestInProgress = false;
         pendingEmail = null;
         pendingProgram = null;
     });
 }
 
-// Button click handlers (unchanged besides calling new showEmailOption)
+// Handlers for student's initial Yes/No responses
 function yesListener(){
     hideAllButtons();
     toggleFooter(false);
-    addToConversation('user', `✅ ${TRANSLATIONS.yesStudent}`);
-    addToConversation('assistant', TRANSLATIONS.whatWouldYouLike);
+    addToConversation('user', `✅ ${CHATBOT_TEXT.yesStudent}`);
+    addToConversation('assistant', CHATBOT_TEXT.whatWouldYouLike);
 
     const studentButtonsHTML = `
-        <button class="btn btn-outline-primary program-option" onclick="addToConversation('user', '📧 ${TRANSLATIONS.emailResources}'); showEmailOption()">
-            📧 ${TRANSLATIONS.emailResources}
+        <button class="btn btn-outline-primary program-option" onclick="addToConversation('user', '📧 ${CHATBOT_TEXT.emailResources}'); showEmailOption()">
+            📧 ${CHATBOT_TEXT.emailResources}
         </button>
         <button class="btn btn-outline-primary program-option" onclick="contactAdmin()">
-            👨‍💼 ${TRANSLATIONS.contactAdministrator}
+            👨‍💼 ${CHATBOT_TEXT.contactAdministrator}
         </button>
     `;
     showButtons(studentButtonsHTML);
@@ -311,36 +310,35 @@ function yesListener(){
 function noListener(){
     hideAllButtons();
     toggleFooter(false);
-    addToConversation('user', `❌ ${TRANSLATIONS.noStudent}`);
-    addToConversation('assistant', TRANSLATIONS.whatTypeOfProgram);
+    addToConversation('user', `❌ ${CHATBOT_TEXT.noStudent}`);
+    addToConversation('assistant', CHATBOT_TEXT.whatTypeOfProgram);
 
     const studyTypeButtonsHTML = `
         <button class="btn btn-outline-primary program-option" onclick="underGradListener()">
-            🎓 ${TRANSLATIONS.undergraduate}
+            🎓 ${CHATBOT_TEXT.undergraduate}
         </button>
         <button class="btn btn-outline-primary program-option" onclick="gradListener()">
-            📖 ${TRANSLATIONS.graduate}
+            📖 ${CHATBOT_TEXT.graduate}
         </button>
         <button class="btn btn-outline-primary program-option" onclick="onlineStudiesListener()">
-            🌐 ${TRANSLATIONS.onlineCourses}
+            🌐 ${CHATBOT_TEXT.onlineCourses}
         </button>
     `;
     showButtons(studyTypeButtonsHTML);
 }
 
-// rest of handlers unchanged
 function underGradListener(){
     hideAllButtons();
     toggleFooter(false);
-    addToConversation('user', `🎓 ${TRANSLATIONS.undergraduatePrograms}`);
-    addToConversation('assistant', TRANSLATIONS.whichUndergraduate);
+    addToConversation('user', `🎓 ${CHATBOT_TEXT.undergraduatePrograms}`);
+    addToConversation('assistant', CHATBOT_TEXT.whichUndergraduate);
 
     const undergradButtonsHTML = `
-        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/bsc-in-computer-science/', '🎓 ${TRANSLATIONS.bscComputerScience}')">
-            🖥️ ${TRANSLATIONS.bscComputerScience}
+        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/bsc-in-computer-science/', '🎓 ${CHATBOT_TEXT.bscComputerScience}')">
+            🖥️ ${CHATBOT_TEXT.bscComputerScience}
         </button>
-        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/ba-in-economics/', '🎓 ${TRANSLATIONS.baEconomics}')">
-            📈 ${TRANSLATIONS.baEconomics}
+        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/ba-in-economics/', '🎓 ${CHATBOT_TEXT.baEconomics}')">
+            📈 ${CHATBOT_TEXT.baEconomics}
         </button>
     `;
     showButtons(undergradButtonsHTML);
@@ -349,15 +347,15 @@ function underGradListener(){
 function gradListener(){
     hideAllButtons();
     toggleFooter(false);
-    addToConversation('user', `🎯 ${TRANSLATIONS.graduatePrograms}`);
-    addToConversation('assistant', TRANSLATIONS.whichGraduate);
+    addToConversation('user', `🎯 ${CHATBOT_TEXT.graduatePrograms}`);
+    addToConversation('assistant', CHATBOT_TEXT.whichGraduate);
 
     const gradButtonsHTML = `
-        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/mba/', '🎯 ${TRANSLATIONS.mba}')">
-            💼 ${TRANSLATIONS.mba}
+        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/mba/', '🎯 ${CHATBOT_TEXT.mba}')">
+            💼 ${CHATBOT_TEXT.mba}
         </button>
-        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/mdsc-in-data-science/', '🎯 ${TRANSLATIONS.mdscDataScience}')">
-            📊 ${TRANSLATIONS.mdscDataScience}
+        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/mdsc-in-data-science/', '🎯 ${CHATBOT_TEXT.mdscDataScience}')">
+            📊 ${CHATBOT_TEXT.mdscDataScience}
         </button>
     `;
     showButtons(gradButtonsHTML);
@@ -366,48 +364,49 @@ function gradListener(){
 function onlineStudiesListener(){
     hideAllButtons();
     toggleFooter(false);
-    addToConversation('user', `🌐 ${TRANSLATIONS.onlineCourses}`);
-    addToConversation('assistant', TRANSLATIONS.whichOnline);
+    addToConversation('user', `🌐 ${CHATBOT_TEXT.onlineCourses}`);
+    addToConversation('assistant', CHATBOT_TEXT.whichOnline);
 
     const onlineButtonsHTML = `
-        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/web-development-bootcamp/', '🌐 ${TRANSLATIONS.webDevelopment}')">
-            🌐 ${TRANSLATIONS.webDevelopment}
+        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/web-development-bootcamp/', '🌐 ${CHATBOT_TEXT.webDevelopment}')">
+            🌐 ${CHATBOT_TEXT.webDevelopment}
         </button>
-        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/introduction-to-ai/', '🌐 ${TRANSLATIONS.introductionAI}')">
-            🤖 ${TRANSLATIONS.introductionAI}
+        <button class="btn btn-outline-primary program-option" onclick="redirect('/programs/introduction-to-ai/', '🌐 ${CHATBOT_TEXT.introductionAI}')">
+            🤖 ${CHATBOT_TEXT.introductionAI}
         </button>
     `;
     showButtons(onlineButtonsHTML);
 }
 
+// Redirects user to program detail page after selection
 function redirect(path, programName){
     hideAllButtons();
     toggleFooter(false);
-    addToConversation('user', `${TRANSLATIONS.interestedIn} ${programName}`);
-    addToConversation('assistant', `${TRANSLATIONS.takingYouTo} ${programName} ${TRANSLATIONS.page}`);
+    addToConversation('user', `${programName}`);
+    addToConversation('assistant', `${CHATBOT_TEXT.takingYouTo} ${programName} ${CHATBOT_TEXT.page}`);
     setTimeout(() => {
         window.location.href = path;
     }, 1500);
 }
 
-// Student option function for contacting admin
+// Student option for contacting admin
 function contactAdmin() {
     hideAllButtons();
     toggleFooter(true);
-    addToConversation('user', `👨‍💼 ${TRANSLATIONS.contactAdminMessage}`);
-    addToConversation('assistant', TRANSLATIONS.describeIssue);
-
+    addToConversation('user', `👨‍💼 ${CHATBOT_TEXT.contactAdminMessage}`);
+    addToConversation('assistant', CHATBOT_TEXT.describeIssue);
     document.getElementById('sendTranscript').checked = true;
     document.getElementById('userEmail').style.display = 'block';
 }
 
+// Send message in admin contact mode, and send transcript if needed
 function sendMessage() {
     if (!isAdminContactMode) return;
     const userInput = document.getElementById('userInput');
     const message = userInput.value.trim();
     if (message) {
         addToConversation('user', message);
-        addToConversation('assistant', TRANSLATIONS.thankYouMessage);
+        addToConversation('assistant', CHATBOT_TEXT.thankYouMessage);
         userInput.value = '';
         const userEmail = document.getElementById('userEmail').value;
         if (userEmail) {
@@ -416,6 +415,7 @@ function sendMessage() {
     }
 }
 
+// Sends transcript via AJAX (POST)
 function sendTranscript() {
     const sendTranscriptCheckbox = document.getElementById('sendTranscript').checked;
     const userEmailInput = document.getElementById('userEmail').value;
@@ -434,14 +434,15 @@ function sendTranscript() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showAlert(TRANSLATIONS.transcriptSent, 'success');
+                showAlert(CHATBOT_TEXT.transcriptSent, 'success');
             } else {
-                showAlert(TRANSLATIONS.failedToSend, 'error');
+                showAlert(CHATBOT_TEXT.failedToSend, 'error');
             }
         });
     }
 }
 
+// Shows alert message in modal footer
 function showAlert(message, type) {
     const alertDiv = document.createElement('div');
     alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} mt-2`;
@@ -450,24 +451,25 @@ function showAlert(message, type) {
     setTimeout(() => alertDiv.remove(), 3000);
 }
 
+// Resets chatbot UI each time the widget is closed/reopened
 function resetChatbotVisibility() {
     conversationHistory = [
-        { sender: "assistant", message: TRANSLATIONS.welcome },
-        { sender: "assistant", message: TRANSLATIONS.studentQuestion }
+        { sender: "assistant", message: CHATBOT_TEXT.welcome },
+        { sender: "assistant", message: CHATBOT_TEXT.studentQuestion }
     ];
 
     const chatMessages = document.getElementById('chatMessages');
     chatMessages.innerHTML = `
         <div class="alert alert-info">
-            <p>${TRANSLATIONS.welcome}</p>
-            <strong>${TRANSLATIONS.assistant}:</strong> ${TRANSLATIONS.studentQuestion}
+            <p>${CHATBOT_TEXT.welcome}</p>
+            <strong>${CHATBOT_TEXT.assistant}:</strong> ${CHATBOT_TEXT.studentQuestion}
         </div>
         <div class="gap-2" id="initialDecision">
             <button class="btn btn-outline-primary" id='yesButton' onclick="yesListener()">
-                ✅ ${TRANSLATIONS.yes}
+                ✅ ${CHATBOT_TEXT.yes}
             </button>
             <button class="btn btn-outline-primary" id='noButton' onclick="noListener()">
-                ❌ ${TRANSLATIONS.no}
+                ❌ ${CHATBOT_TEXT.no}
             </button>
         </div>
     `;
@@ -483,6 +485,7 @@ function resetChatbotVisibility() {
     chatMessages.scrollTop = 0;
 }
 
+// On page ready, reset chatbot modal and setup input behaviors
 document.addEventListener('DOMContentLoaded', function () {
     const chatbotModal = document.getElementById('chatbotModal');
     chatbotModal.addEventListener('hidden.bs.modal', function () {
