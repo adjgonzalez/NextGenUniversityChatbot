@@ -43,3 +43,28 @@ def send_chatbot_transcript(request):
             return JsonResponse({"success": False, "error": str(e)})
 
     return JsonResponse({"success": False, "error": "Invalid request method"})
+
+
+@csrf_exempt
+def send_program_resources(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            email = data.get("email")
+            if not email:
+                return JsonResponse({"success": False, "error": "Email is required."})
+
+            # Compose your email message here
+            subject = "Your Requested Program Resources"
+            message = "Here are your resources for your enrolled program at NextGen University."
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+            return JsonResponse({"success": True})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+    return JsonResponse({"success": False, "error": "Invalid request method"})
