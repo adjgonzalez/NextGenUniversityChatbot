@@ -1,0 +1,95 @@
+name: E2E Regression (nightly - 03:00 NST fixed)
+
+# Fixed schedule: 03:00 Newfoundland Standard Time (UTC-03:30)
+on:
+  schedule:
+    - cron: '30 6 * * *'
+  workflow_dispatch:
+
+env:
+  DJANGO_SETTINGS_MODULE: mysite.settings
+  BASE_URL: "http://127.0.0.1:8000"
+  E2E_RESULTS_DIR: "test_results"
+
+concurrency:
+  group: e2e-regression
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    name: Nightly E2E Regression (03:00 NST fixed)
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install OS dependencies (gettext used by Django compilemessages)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext
+
+      - name: Install Python dependencies and Playwright browsers
+        run: |
+          cd uni-chatbot
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-playwright pytest-xdist
+          # Install Playwright Python browsers and system deps
+          python -m playwright install --with-deps
+
+      - name: Run Django migrations & collectstatic
+        run: |
+          cd uni-chatbot
+          python manage.py migrate --noinput
+          python manage.py collectstatic --noinput
+
+      - name: Start Django server in background
+        run: |
+          cd uni-chatbot
+          # Start server on 0.0.0.0:8000 (must match BASE_URL)
+          nohup python manage.py runserver 0.0.0.0:8000 > server.log 2>&1 &
+          echo "Django server started (see uni-chatbot/server.log)"
+
+      - name: Wait for server to be ready
+        run: |
+          # Wait up to ~60s for the app to respond
+          for i in {1..30}; do
+            if curl --fail --silent "${{ env.BASE_URL }}/" >/dev/null 2>&1; then
+              echo "server is up"
+              break
+            fi
+            echo "waiting for server... ($i)"
+            sleep 2
+          done
+
+      - name: Run regression tests
+        run: |
+          cd uni-chatbot
+          mkdir -p ../${E2E_RESULTS_DIR}
+          # Run only tests marked as regression; parallelize with xdist
+          pytest -m "regression" -n auto --base-url ${BASE_URL} --results-dir ../${E2E_RESULTS_DIR} --headless true --junitxml=../${E2E_RESULTS_DIR}/junit_regression.xml -q
+
+      - name: Upload regression artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-regression-artifacts
+          path: |
+            test_results/
+            uni-chatbot/test_results/
+            uni-chatbot/server.log
+            uni-chatbot/*.log
+
+      - name: Upload junit XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-regression
+          path: test_results/junit_regression.xml
