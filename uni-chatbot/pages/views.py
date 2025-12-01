@@ -113,10 +113,8 @@ def apply_now(request):
             # Get program that user wants to apply for
             data = json.loads(request.body)
             program = data.get("program")
-            print(f"User {request.user.username} applied for program: {program}")
             prog: Program = Program.objects.get(name=program["name"])
-            
-            
+
             # Have to update user to reflect chosen program
             profile = UserProfile.objects.get(user=request.user)
             profile.program = prog
