@@ -4,11 +4,6 @@ import random
 from playwright.sync_api import sync_playwright
 
 
-def test_two_plus_two_equals_four():
-    result = 2 + 2
-    assert result == 4
-
-
 def generate_test_username():
     """Generate unique test username"""
     return f"testuser{random.randint(1000, 9999)}"
@@ -108,8 +103,8 @@ def test_features():
             print("✓ Fresh session started")
             take_screenshot(page, "00_setup_complete.png", "Fresh session started")
 
-            # ===== TEST 1: ENHANCED CHATBOT TEST =====
-            print("\n1. ENHANCED CHATBOT TEST")
+            # ===== TEST 1: CHATBOT TEST =====
+            print("\n1. CHATBOT TEST")
             print("-" * 40)
 
             chatbot_btn = page.locator(".chatbot-btn").first

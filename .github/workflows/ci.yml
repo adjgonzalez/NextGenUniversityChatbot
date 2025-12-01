@@ -91,14 +91,14 @@ jobs:
     - name: Install gettext (for compilemessages)
       run: sudo apt-get update && sudo apt-get install -y gettext
 
-    - name: Setup test environment with Ethereal
+    - name: Setup test environment with Ethereal host and in-memory email backend CI to avoid sending real SMTP messages
       run: |
         cd uni-chatbot
         python -c "import os, secrets; open('.env','w').write(
           f'DEBUG=True\n'
           f'SECRET_KEY=django-insecure-{secrets.token_urlsafe(50)}\n'
           f'ALLOWED_HOSTS=localhost,127.0.0.1,::1\n'
-          f'EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend\n'
+          f'EMAIL_BACKEND=django.core.mail.backends.locmem.EmailBackend\n'
           f'EMAIL_HOST=smtp.ethereal.email\n'
           f'EMAIL_HOST_USER={os.environ[\"ETHEREAL_USER\"]}\n'
           f'EMAIL_HOST_PASSWORD={os.environ[\"ETHEREAL_PASSWORD\"]}\n'
@@ -110,11 +110,11 @@ jobs:
 
     - name: Run smoke tests
       run: |
-        cd uni-chatbot/system_tests
+        cd uni-chatbot
         python manage.py runserver 0.0.0.0:8000 &
         SERVER_PID=$!
         npx wait-on http://127.0.0.1:8000
-        python e2e_tests.py
+        python ./system_tests/e2e_tests.py
         kill $SERVER_PID
 
     - name: Upload Playwright report
@@ -125,7 +125,7 @@ jobs:
         path: uni-chatbot/test_results/
         retention-days: 7
 
-  # ===== CODE QUALITY =====
+  # ===== CODE QUALITY (Formatter/Linter) =====
   code-quality:
     runs-on: ubuntu-latest
     name: Code Quality
@@ -153,7 +153,7 @@ jobs:
       run: |
         ruff check uni-chatbot
 
-  # ===== SECURITY SCAN =====
+  # ===== SECURITY SCAN (Bandit) =====
   security:
     runs-on: ubuntu-latest
     name: Security Scan

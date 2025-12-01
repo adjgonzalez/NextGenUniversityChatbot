@@ -157,7 +157,7 @@ LOGIN_URL = "/admin/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-# ===== INTERNATIONALIZATION =====
+# ===== LOCALIZATION =====
 
 LANGUAGE_CODE = "en"
 TIME_ZONE = "UTC"

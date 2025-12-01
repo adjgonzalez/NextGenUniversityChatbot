@@ -44,10 +44,15 @@ python manage.py migrate
 # 7. Load fixtures (baseline data)
 python manage.py loaddata fixtures/pages_data.json
 
-# 8. Create superuser (follow prompts)
+# 8. Install Playwright
+pip install pytest-playwright
+npx playwright install --with-deps
+playwright install
+
+# 9. Create superuser (follow prompts)
 python manage.py createsuperuser
 
-# 9. Run development server
+# 10. Run development server
 python manage.py runserver
 ```
 # Installation \& Setup
