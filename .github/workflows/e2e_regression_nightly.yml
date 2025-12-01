@@ -74,7 +74,8 @@ jobs:
           cd uni-chatbot
           mkdir -p ../${E2E_RESULTS_DIR}
           # Run only tests marked as regression; parallelize with xdist
-          pytest -m "regression" -n auto --base-url ${BASE_URL} --results-dir ../${E2E_RESULTS_DIR} --headless true --junitxml=../${E2E_RESULTS_DIR}/junit_regression.xml -q
+          # Removed unsupported --results-dir and --headless true flags
+          pytest -m "regression" -n auto --base-url ${BASE_URL} --junitxml=../${E2E_RESULTS_DIR}/junit_regression.xml -q
 
       - name: Upload regression artifacts
         if: always()
