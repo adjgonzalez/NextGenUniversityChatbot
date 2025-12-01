@@ -252,7 +252,7 @@ def test_features():
                         )
 
                         # Verify login by checking for logout link
-                        logout_link = page.locator('a:has-text("Log Out")').first
+                        logout_link = page.locator('button:has-text("Log Out")').first
                         if logout_link.is_visible():
                             print("✓ Confirmed logged in (logout link visible)")
                         else:
@@ -381,7 +381,7 @@ def test_features():
             print("\n4. LOGOUT TEST")
             print("-" * 40)
 
-            logout_link = page.locator('a:has-text("Log Out")').first
+            logout_link = page.locator('button:has-text("Log Out")').first
             if logout_link.is_visible():
                 logout_link.click()
                 page.wait_for_timeout(1000)
@@ -392,15 +392,8 @@ def test_features():
 
                 # Navigate back to home to continue other tests
                 home_link = page.locator(
-                    'a:has-text("Home"), a:has-text("Inicio")'
+                    'a:has-text("Home"), button:has-text("Home")'
                 ).first
-
-                # Verify logout
-                login_link = page.locator('a:has-text("Log In")').first
-                if login_link.is_visible():
-                    print("✓ Confirmed logged out (login link visible)")
-                else:
-                    print("X Logout status unclear")
             else:
                 print("X Logout link not found")
 

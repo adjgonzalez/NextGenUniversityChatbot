@@ -110,7 +110,7 @@ jobs:
 
     - name: Run smoke tests
       run: |
-        cd uni-chatbot
+        cd uni-chatbot/system_tests
         python manage.py runserver 0.0.0.0:8000 &
         SERVER_PID=$!
         npx wait-on http://127.0.0.1:8000
