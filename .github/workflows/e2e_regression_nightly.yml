@@ -53,21 +53,45 @@ jobs:
       - name: Start Django server in background
         run: |
           cd uni-chatbot
-          # Start server on 0.0.0.0:8000 (must match BASE_URL)
-          nohup python manage.py runserver 0.0.0.0:8000 > server.log 2>&1 &
-          echo "Django server started (see uni-chatbot/server.log)"
+          # Ensure environment variable is exported for manage.py
+          export DJANGO_SETTINGS_MODULE="${{ env.DJANGO_SETTINGS_MODULE }}"
+          # Use --noreload to avoid dev-reloader fork behavior in CI
+          # Run with unbuffered output so logs appear predictably
+          nohup python -u manage.py runserver 0.0.0.0:8000 --noreload > server.log 2>&1 &
+          echo $! > server.pid
+          echo "Django server started (PID $(cat server.pid)) — see uni-chatbot/server.log"
 
-      - name: Wait for server to be ready
+      - name: Wait for server to be ready (fail if not up)
         run: |
-          # Wait up to ~60s for the app to respond
+          # Wait up to ~60s for the app to respond; fail if not reachable
           for i in {1..30}; do
             if curl --fail --silent "${{ env.BASE_URL }}/" >/dev/null 2>&1; then
-              echo "server is up"
-              break
+              echo "server is up (attempt $i)"
+              exit 0
             fi
             echo "waiting for server... ($i)"
             sleep 2
           done
+
+          echo "ERROR: Server did not respond within expected time. Server log:"
+          echo "---- BEGIN server.log ----"
+          # Print server log to make CI failure obvious
+          sed -n '1,200p' uni-chatbot/server.log || true
+          echo "---- END server.log ----"
+          # Show running processes for debugging
+          echo "Process list (grep manage.py):"
+          ps aux | egrep 'manage.py|python' || true
+          exit 1
+
+      - name: Debug server log and processes (on failure)
+        if: failure()
+        run: |
+          echo "=== server.log ==="
+          sed -n '1,400p' uni-chatbot/server.log || true
+          echo "=== last 200 lines ==="
+          tail -n 200 uni-chatbot/server.log || true
+          echo "=== ps aux ==="
+          ps aux | egrep 'manage.py|python' || true
 
       - name: Run regression tests
         run: |
