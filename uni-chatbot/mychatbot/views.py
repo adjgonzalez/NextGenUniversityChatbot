@@ -3,10 +3,8 @@ import json
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 
 
-@csrf_exempt
 def send_chatbot_transcript(request):
     if request.method == "POST":
         try:
@@ -27,7 +25,7 @@ def send_chatbot_transcript(request):
 
             transcript += "\n\nThank you for contacting NextGen University!\n"
 
-            # Send email (will print to console in development)
+            # Send email
             send_mail(
                 "Your Chatbot Conversation Transcript - NextGen University",
                 transcript,
@@ -45,18 +43,21 @@ def send_chatbot_transcript(request):
     return JsonResponse({"success": False, "error": "Invalid request method"})
 
 
-@csrf_exempt
 def send_program_resources(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
             email = data.get("email")
+            program_name = data.get("program_name", "your program")
+
             if not email:
                 return JsonResponse({"success": False, "error": "Email is required."})
 
-            # Compose your email message here
+            # Compose email message
             subject = "Your Requested Program Resources"
-            message = "Here are your resources for your enrolled program at NextGen University."
+            message = (
+                f"Here are your resources for {program_name} at NextGen University."
+            )
             send_mail(
                 subject,
                 message,
