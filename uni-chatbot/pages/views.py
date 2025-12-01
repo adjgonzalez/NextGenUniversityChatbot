@@ -113,8 +113,10 @@ def apply_now(request):
             # Get program that user wants to apply for
             data = json.loads(request.body)
             program = data.get("program")
+            print(f"User {request.user.username} applied for program: {program}")
             prog: Program = Program.objects.get(name=program["name"])
-
+            
+            
             # Have to update user to reflect chosen program
             profile = UserProfile.objects.get(user=request.user)
             profile.program = prog
@@ -130,10 +132,10 @@ def apply_now(request):
 
         except UserProfile.DoesNotExist:
             print("No profile found for user", request.user.username)
-            return
-        except Exception:
+            return JsonResponse({"message": "User profile not found"}, status=401)  
+        except Exception as e:
             return JsonResponse(
-                {"message": "Something went wrong. Application Cancelled"}, status=500
+                {"message": f"Something went wrong. {e}"}, status=500
             )
     return JsonResponse({"success": False, "error": "Invalid request method"})
 

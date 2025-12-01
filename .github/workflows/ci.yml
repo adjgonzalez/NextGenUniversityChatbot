@@ -114,7 +114,7 @@ jobs:
         python manage.py runserver 0.0.0.0:8000 &
         SERVER_PID=$!
         npx wait-on http://127.0.0.1:8000
-        python e2e_tests.py
+        python e2e_tests.py -v 2
         kill $SERVER_PID
 
     - name: Upload Playwright report

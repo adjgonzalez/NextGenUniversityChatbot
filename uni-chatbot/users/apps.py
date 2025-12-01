@@ -8,4 +8,5 @@ class UsersConfig(AppConfig):
     # Registering the signal to the app
     def ready(self):
         # Import signals so they get registered
-        pass
+        import users.signals # IF THIS DISSAPEARS FOR THE 5TH TIME, ILL LOSE IT
+        print(users.signals)

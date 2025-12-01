@@ -106,7 +106,7 @@
     })
     .catch(err => {
       console.error("Error:", err);
-      alert("{% trans 'Something went wrong.' %}");
+      alert(`{% trans 'Something went wrong.' %} ${err}`);
     });
   });
 </script>
