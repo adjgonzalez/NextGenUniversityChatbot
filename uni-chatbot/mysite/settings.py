@@ -1,6 +1,6 @@
 """
 Django settings for mysite project.
-Production-ready with secure defaults for localhost development.
+Secure defaults for localhost development.
 """
 
 import os
@@ -34,8 +34,18 @@ if not DEBUG:
 
 # Configure allowed hosts
 DEFAULT_ALLOWED_HOSTS = ["localhost", "127.0.0.1", "::1", "testserver"]
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") or DEFAULT_ALLOWED_HOSTS
-ALLOWED_HOSTS = [h for h in ALLOWED_HOSTS if h]
+
+# Parsing of ALLOWED_HOSTS env var:
+# - If ALLOWED_HOSTS is not set or is empty, fall back to DEFAULT_ALLOWED_HOSTS.
+# - If set, split on commas, strip whitespace, and ignore empty items.
+_raw_allowed = os.getenv("ALLOWED_HOSTS")
+if _raw_allowed is None:
+    # Env var not set at all -> use defaults
+    ALLOWED_HOSTS = DEFAULT_ALLOWED_HOSTS
+else:
+    # Env var present (may be empty string). Parse and fall back if empty after parsing.
+    parsed_hosts = [h.strip() for h in _raw_allowed.split(",") if h.strip()]
+    ALLOWED_HOSTS = parsed_hosts if parsed_hosts else DEFAULT_ALLOWED_HOSTS
 
 # ===== SECURITY SETTINGS =====
 
