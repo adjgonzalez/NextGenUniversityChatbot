@@ -8,4 +8,4 @@ class UsersConfig(AppConfig):
     # Registering the signal to the app
     def ready(self):
         # Import signals so they get registered
-        pass
+        import users.signals  # noqa: F401

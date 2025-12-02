@@ -32,11 +32,11 @@
     <div class="collapse navbar-collapse">
       <!-- Left-aligned navigation links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">"Home"</a></li>
-        <li class="nav-item"><a class="nav-link {% if request.path == '/admissions/' %}active{% endif %}" href="/admissions/">"Admissions"</a></li>
-        <li class="nav-item"><a class="nav-link {% if request.path == '/programs/' %}active{% endif %}" href="/programs/">"Programs"</a></li>
-        <li class="nav-item"><a class="nav-link {% if request.path == '/contact/' %}active{% endif %}" href="/contact/">"Contact Us"</a></li>
-        <li class="nav-item"><a class="nav-link {% if request.path == '/feedback/' %}active{% endif %}" href="{% url 'feedback_form' %}">"Leave Feedback"</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == '/admissions/' %}active{% endif %}" href="/admissions/">Admissions</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == '/programs/' %}active{% endif %}" href="/programs/">Programs</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == '/contact/' %}active{% endif %}" href="/contact/">Contact Us</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path == '/feedback/' %}active{% endif %}" href="{% url 'feedback_form' %}">Leave Feedback</a></li>
       </ul>
 
       <!-- Right-aligned user buttons -->
@@ -44,26 +44,26 @@
         {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" aria-label="Current User" title="Current User">
-              "Hello"{{ user.username }}
+              Hello {{ user.username }}
             </a>
           </li>
           <li class="nav-item">
             <form class="logout d-inline" action="{% url 'users:logout' %}" method="post">
               {% csrf_token %}
               <button class="btn btn-primary ms-2" aria-label="Log Out" title="Log Out">
-                "Log Out"
+                Log Out
               </button>
             </form>
           </li>
         {% else %}
           <li class="nav-item">
             <a href="{% url 'users:register' %}" class="btn btn-primary me-2" aria-label="User Registration" title="User Registration">
-              "Register" %}
+              Register
             </a>
           </li>
           <li class="nav-item">
             <a href="{% url 'users:login' %}" class="btn btn-primary" aria-label="User Log In" title="User Log In">
-              "Log In"
+              Log In
             </a>
           </li>
         {% endif %}

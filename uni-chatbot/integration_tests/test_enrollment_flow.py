@@ -46,7 +46,7 @@ class UserEnrollmentResourceTest(TestCase):
         self.assertTrue(any("Welcome" in subject for subject in welcome_subjects))
 
         # 3. Create their UserProfile and enroll them in the program
-        profile = UserProfile.objects.create(user=user)
+        profile, _created = UserProfile.objects.get_or_create(user=user)
         profile.program = self.program
         profile.save()
 
