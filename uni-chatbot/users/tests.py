@@ -146,7 +146,7 @@ class UserEnrollmentTests(TestCase):
             description="Sample Program for testing.",
             program_type=self.program_type,
         )
-        self.user_profile = UserProfile.objects.create(user=self.user)
+        self.user_profile, _created = UserProfile.objects.get_or_create(user=self.user)
 
     def test_apply_now_sends_email(self):
         import json
