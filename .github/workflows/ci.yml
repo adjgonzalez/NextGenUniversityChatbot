@@ -57,6 +57,46 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: uni-chatbot/coverage.xml
 
+# ===== INTEGRATION TESTS =====
+  integration-tests:
+    runs-on: ubuntu-latest
+    name: Integration Tests (integration_tests folder)
+    timeout-minutes: 15
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        cd uni-chatbot
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run migrations
+      run: |
+        cd uni-chatbot
+        python manage.py migrate --noinput
+
+    - name: Run integration tests (explicit path)
+      run: |
+        cd uni-chatbot
+        # Explicitly run the integration_tests folder (the discovery that works for you)
+        python manage.py test -v 2 integration_tests
+
+    - name: Upload test artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: integration-test-logs
+        path: uni-chatbot/test_results/
+        retention-days: 7
+
   # ===== E2E TESTS WITH ETHEREAL EMAIL =====
   e2e-smoke:
     runs-on: ubuntu-latest

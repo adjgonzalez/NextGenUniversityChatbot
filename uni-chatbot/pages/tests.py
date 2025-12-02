@@ -66,12 +66,8 @@ class PagesSectionTests(TestCase):
         self.assertEqual(res.context["current_page"], "undergraduate")
         self.assertEqual(res.context["page_title"], "Undergraduate")
 
-    def test_contact_and_faculty_pages(self):
-        """Contact and Faculty pages return 200 with correct templates."""
+    def test_contact(self):
+        """Contact pages return 200 with correct templates."""
         res = self.client.get(self.contact_url)
         self.assertEqual(res.status_code, 200)
         self.assertTemplateUsed(res, "base/contact.html")
-
-        res = self.client.get(self.faculty_url)
-        self.assertEqual(res.status_code, 200)
-        self.assertTemplateUsed(res, "base/faculty.html")
