@@ -1,0 +1,169 @@
+/* === TOP NAVBAR === */
+.navbar-logo,
+.navbar-brand img {
+  max-height: 110px !important;
+  width: auto !important;
+  height: auto !important;
+  margin-right: 16px;
+  display: inline-block;
+  vertical-align: top;
+  background: transparent !important;
+  box-shadow: none;
+  transition: max-height 0.18s;
+}
+
+.navbar,
+.navbar .container,
+.navbar-brand,
+.d-flex.flex-column.flex-grow-1.align-items-end,
+.navbar-nav {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* --- TOP NAVBAR LAYOUT --- */
+.navbar .container {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  flex-wrap: nowrap;
+  gap: 32px;
+}
+
+.navbar-brand {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: flex-start;
+  padding: 0;
+  position: relative;
+  z-index: 11;
+}
+
+.d-flex.flex-column.flex-grow-1.align-items-end {
+  align-items: flex-start !important;
+  justify-content: flex-start;
+  height: auto;
+  width: 100%;
+}
+
+.navbar-nav {
+  display: flex !important;
+  align-items: flex-start !important;
+  flex-direction: row !important;
+  gap: 14px;
+}
+
+/* --- Register/Login buttons --- */
+.navbar-nav .btn,
+.navbar-nav .btn-primary,
+.navbar-nav .btn-secondary {
+  font-size: 0.95rem !important;
+  padding: 5px 18px !important;
+  border-radius: 10px !important;
+  line-height: 1.1 !important;
+  height: auto !important;
+  margin-left: 6px !important;
+  margin-right: 0 !important;
+}
+
+.navbar-nav .btn:last-child,
+.navbar-nav .btn-primary:last-child,
+.navbar-nav .btn-secondary:last-child {
+  margin-right: 0;
+}
+
+.navbar-nav .nav-item {
+  align-self: flex-start !important;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.navbar-nav .nav-link {
+  padding: 10px 24px;
+  margin: 0 4px;
+  border-radius: 24px;
+  font-weight: 600;
+  color: #fff !important;
+  transition: background 0.18s, color 0.12s;
+  align-self: flex-start !important;
+}
+
+#googleLangSelect.form-select-sm {
+  height: 40px;
+  align-self: flex-start !important;
+  margin-right: 8px;
+}
+
+/* === BOTTOM NAVBAR === */
+.custom-bottom-navbar {
+  box-sizing: border-box;
+  min-height: unset !important;
+  height: auto !important;
+  position: relative;
+  z-index: 1;
+  margin-top: -50px !important;
+  background: linear-gradient(100deg, #556FB5 60%, #A9B5D3 100%);
+}
+
+.custom-bottom-navbar .container,
+.custom-bottom-navbar .navbar-collapse {
+  display: flex !important;
+  align-items: flex-start !important;
+  flex-wrap: nowrap !important;
+  justify-content: flex-end !important;
+}
+
+.custom-bottom-navbar .navbar-nav {
+  margin-left: auto !important;
+  justify-content: flex-end !important;
+  align-items: flex-start !important;
+  flex-direction: row !important;
+}
+
+.custom-bottom-navbar .nav-item,
+.custom-bottom-navbar .nav-link {
+  align-self: flex-start !important;
+}
+
+.main-content {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.navbar-logo,
+.navbar-brand img {
+  position: relative;
+  z-index: 12;
+}
+
+.navbar,
+.navbar .container {
+  overflow: visible !important;
+}
+
+@media (max-width: 992px) {
+  .navbar-logo,
+  .navbar-brand img {
+    max-height: 72px !important;
+  }
+}
+@media (max-width: 600px) {
+  .navbar-logo,
+  .navbar-brand img {
+    max-height: 40px !important;
+  }
+  .navbar .container {
+    gap: 10px;
+  }
+  #googleLangSelect.form-select-sm {
+    height: 28px;
+    margin-right: 4px;
+  }
+  .custom-bottom-navbar {
+    margin-top: -24px !important;
+  }
+}

@@ -1,119 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-  {% load static %}
-  {% load i18n %}
+{% load static %}
+{% load i18n %}
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'mychatbot/navbar-logo.css' %}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>
+    {% block title %}Programs{% endblock %}
+  </title>
+  {% block head %}{% endblock %}
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Modern CSS (after Bootstrap for override power) -->
+  <link rel="stylesheet" href="{% static 'mychatbot/modern-university.css' %}">
+  <!-- Other Custom CSS Files (these can come before or after modern-university.css;
+       but if you want modern-university.css to have top precedence, put these before it) -->
+  <link rel="stylesheet" href="{% static 'mychatbot/style.css' %}">
+  <link rel="stylesheet" href="{% static 'mychatbot/admissions.css' %}">
+  <link rel="stylesheet" href="{% static 'mychatbot/pages.css' %}">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
   <div id="google_translate_element" style="display:none;"></div>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {% include "./navbar.html" %}
+  <div class="main-content container py-4">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
-    <title>
-      {% block title %}Programs{% endblock %}
-    </title>
-
-    <title>Programs</title>
-    {% block head %}{% endblock %}
-
-
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS files-->
-    <link rel="stylesheet" href="{% static 'mychatbot/style.css' %}">
-    <link rel="stylesheet" href="{% static 'mychatbot/admissions.css' %}">
-    <link rel="stylesheet" href="{% static 'mychatbot/pages.css' %}">
-    <!-- Bootstrap Icons (for arrow icons) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Bootstrap JS (for collapse functionality) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
-  </head>
-  <body>
-    {% include "./navbar.html" %}
-    <div class="main-content container py-4">
-        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-
-      {% if messages %}
-      <div class="container position-fixed"
-           style="top: 80px; right: 20px; z-index: 1050; width: auto;">
-
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-flex align-items-center" role="alert" id="message-alert-{{ forloop.counter }}">
-            <div class="flex-grow-1">
-              {{ message }}
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {% if messages %}
+    <div class="container position-fixed"
+         style="top: 80px; right: 20px; z-index: 1050; width: auto;">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-flex align-items-center" role="alert" id="message-alert-{{ forloop.counter }}">
+          <div class="flex-grow-1">
+            {{ message }}
           </div>
-        {% endfor %}
-
-      </div>
-      {% endif %}
-
-      <script>
-      // Automatically close the success alerts after 4 seconds
-      document.addEventListener('DOMContentLoaded', (event) => {
-        // Find all alerts with the 'alert-success' class
-        const successAlerts = document.querySelectorAll('.alert-success');
-
-        successAlerts.forEach((alert) => {
-          // Set a timeout to remove the 'show' class, triggering the fade-out
-          setTimeout(() => {
-            // We use the Bootstrap Alert instance to properly close it
-            const bsAlert = new bootstrap.Alert(alert);
-            bsAlert.close();
-          }, 4000); // 4000 milliseconds = 4 seconds
-        });
-      });
-      </script>
-
-      {% block content %}
-      {% endblock %}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
     </div>
-    {% include "./footer.html" %}
-    <!-- Optional Bootstrap JS  -->
+    {% endif %}
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
-    <script src="{% static 'js/chatbox.js' %}"></script>
-    {% block extra_js %}{% endblock %}
+    <script>
+    // Automatically close the success alerts after 4 seconds
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const successAlerts = document.querySelectorAll('.alert-success');
+      successAlerts.forEach((alert) => {
+        setTimeout(() => {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        }, 4000);
+      });
+    });
+    </script>
+
+    {% block content %}
+    {% endblock %}
+  </div>
+  {% include "./footer.html" %}
+
+  <!-- Optional JavaScript (Bootstrap, jQuery etc) -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+  <script src="{% static 'js/chatbox.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+
+  <!-- Google Translate Widget -->
   <script type="text/javascript">
-  function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-      pageLanguage: 'en',             // Change if your base language is not English
-      includedLanguages: 'en,fr,es,it,mn,de,zh-CN,ru,ar',  // Add or remove languages as needed
-      autoDisplay: false
-    }, 'google_translate_element');
-  }
-</script>
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <script>
-  document.getElementById('googleLangSelect').addEventListener('change', function() {
-    var lang = this.value;
-    var cookieName = 'googtrans';
-    document.cookie = cookieName + '=/' + 'en' + '/' + lang + ';path=/';
-    location.reload(); // Forces Google Translate to take effect
-  });
-</script>
-  <script>
-  // On page load, set the dropdown to the current Google Translate language
-  document.addEventListener('DOMContentLoaded', function() {
-    var select = document.getElementById('googleLangSelect');
-    var cookie = document.cookie.match(/googtrans=\/en\/(\w+)/);
-    if (select && cookie && cookie[1]) {
-      select.value = cookie[1];
-    } else if (select) {
-      select.value = 'en'; // default to English
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,fr,es,it,mn,de,zh-CN,ru,ar',
+        autoDisplay: false
+      }, 'google_translate_element');
     }
-  });
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script>
+    document.getElementById('googleLangSelect').addEventListener('change', function() {
+      var lang = this.value;
+      var cookieName = 'googtrans';
+      document.cookie = cookieName + '=/' + 'en' + '/' + lang + ';path=/';
+      location.reload();
+    });
 
-  // When user selects a language, set the cookie and reload
-  document.getElementById('googleLangSelect').addEventListener('change', function() {
-    var lang = this.value;
-    document.cookie = 'googtrans=/en/' + lang + ';path=/';
-    location.reload();
-  });
-</script>
-  </body>
+    document.addEventListener('DOMContentLoaded', function() {
+      var select = document.getElementById('googleLangSelect');
+      var cookie = document.cookie.match(/googtrans=\/en\/(\w+)/);
+      if (select && cookie && cookie[1]) {
+        select.value = cookie[1];
+      } else if (select) {
+        select.value = 'en';
+      }
+    });
+
+    document.getElementById('googleLangSelect').addEventListener('change', function() {
+      var lang = this.value;
+      document.cookie = 'googtrans=/en/' + lang + ';path=/';
+      location.reload();
+    });
+  </script>
+</body>
 </html>

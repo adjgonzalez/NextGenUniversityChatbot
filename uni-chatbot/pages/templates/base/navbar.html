@@ -2,71 +2,59 @@
 {% load i18n %}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
-  <div class="container">
-    <!-- Logo -->
-    <a class="navbar-brand" href="/">
-      <img src="{% static 'images/logo.png' %}" alt="Logo" width="120" class="d-inline-block align-text-top">
+  <div class="container d-flex flex-row align-items-start" style="gap:32px;">
+    <!-- Left column: Logo -->
+    <a class="navbar-brand align-self-start" href="/" style="padding:0;">
+      <img src="{% static 'images/logo.png' %}" alt="Logo" class="navbar-logo d-inline-block align-text-top">
     </a>
-    <!-- Language Switcher - Moved inside the main nav -->
-      <div id="google_translate_element" style="display:none;"></div>
-    <div class="navbar-nav ms-auto">
-  <select name="language" id="googleLangSelect" class="form-select form-select-sm" style="width:auto;">
-    <option value="en">English</option>
-  <option value="fr">Français</option>
-  <option value="es">Español</option>
-  <option value="it">Italiano</option>
-  <option value="mn">Монгол</option>
-  <option value="de">Deutsch</option>
-  <option value="zh-CN">中文</option>
-  <option value="ru">Русский</option>
-  <option value="ar">العربية</option>
-  </select>
-</div>
-    <!-- End Language Switcher -->
+    <!-- Right column -->
+    <div class="d-flex flex-column flex-grow-1 align-items-end" style="width:100%;">
+      <div class="mb-2" id="google_translate_element" style="display:none;"></div>
+      <div class="navbar-nav ms-auto flex-row" style="gap:14px;">
+        <select name="language" id="googleLangSelect" class="form-select form-select-sm" style="width:auto;">
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="es">Español</option>
+          <option value="it">Italiano</option>
+          <option value="mn">Монгол</option>
+          <option value="de">Deutsch</option>
+          <option value="zh-CN">中文</option>
+          <option value="ru">Русский</option>
+          <option value="ar">العربية</option>
+        </select>
+        {% if user.is_authenticated %}
+          <a class="nav-link" aria-label="Current User" title="Current User" style="padding-top: 4px;">
+            Hello {{ user.username }}
+          </a>
+          <form class="logout d-inline" action="{% url 'users:logout' %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-primary ms-1" aria-label="Log Out" title="Log Out">
+              Log Out
+            </button>
+          </form>
+        {% else %}
+          <a href="{% url 'users:register' %}" class="btn btn-primary" aria-label="User Registration" title="User Registration">
+            Register
+          </a>
+          <a href="{% url 'users:login' %}" class="btn btn-primary" aria-label="User Log In" title="User Log In" style="margin-right:0;">
+            Log In
+          </a>
+        {% endif %}
+      </div>
+    </div>
   </div>
 </nav>
 
 <!-- Bottom Navbar -->
 <nav class="navbar navbar-expand-lg custom-bottom-navbar">
-  <div class="container">
-    <div class="collapse navbar-collapse">
-      <!-- Left-aligned navigation links -->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  <div class="container d-flex flex-row align-items-start justify-content-end" style="padding-top:0; padding-bottom:0;">
+    <div class="collapse navbar-collapse justify-content-end align-items-start" style="padding-top:0; padding-bottom:0;">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0" style="align-items:flex-start;">
         <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Home</a></li>
         <li class="nav-item"><a class="nav-link {% if request.path == '/admissions/' %}active{% endif %}" href="/admissions/">Admissions</a></li>
         <li class="nav-item"><a class="nav-link {% if request.path == '/programs/' %}active{% endif %}" href="/programs/">Programs</a></li>
         <li class="nav-item"><a class="nav-link {% if request.path == '/contact/' %}active{% endif %}" href="/contact/">Contact Us</a></li>
         <li class="nav-item"><a class="nav-link {% if request.path == '/feedback/' %}active{% endif %}" href="{% url 'feedback_form' %}">Leave Feedback</a></li>
-      </ul>
-
-      <!-- Right-aligned user buttons -->
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" aria-label="Current User" title="Current User">
-              Hello {{ user.username }}
-            </a>
-          </li>
-          <li class="nav-item">
-            <form class="logout d-inline" action="{% url 'users:logout' %}" method="post">
-              {% csrf_token %}
-              <button class="btn btn-primary ms-2" aria-label="Log Out" title="Log Out">
-                Log Out
-              </button>
-            </form>
-          </li>
-        {% else %}
-          <li class="nav-item">
-            <a href="{% url 'users:register' %}" class="btn btn-primary me-2" aria-label="User Registration" title="User Registration">
-              Register
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'users:login' %}" class="btn btn-primary" aria-label="User Log In" title="User Log In">
-              Log In
-            </a>
-          </li>
-        {% endif %}
       </ul>
     </div>
   </div>
