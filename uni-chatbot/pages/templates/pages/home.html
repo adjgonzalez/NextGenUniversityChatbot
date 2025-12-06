@@ -8,27 +8,87 @@ Home Page
 {% endblock %}
 
 {% block content %}
-    <section class="hero-section container-fluid">
+<div class="container-fluid hero-section">
+  <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+    <div class="carousel-inner">
+
+      <!-- Slide 1 -->
+      <div class="carousel-item active">
         <div class="row align-items-center">
-          <!-- Left Side -->
+          <!-- Left: Text Content -->
           <div class="col-lg-6 col-md-12 hero-content">
-            <!-- Enroll Now button -->
             <span class="enroll-btn">Enroll Now</span>
             <h1>
               YOUR <span class="swatch-word">COMEBACK</span> STARTS<br>
               <small>NOW WITH NextGen University</small>
             </h1>
-
             <p>Reignite your career with hands-on learning and expert mentorship. Start your journey today.</p>
           </div>
-
-          <!-- Right Side -->
+          <!-- Right: Image -->
           <div class="col-lg-6 col-md-12 hero-image text-center">
-            <img src="{% static 'images/group.png' %}" alt="'Hero Banner'" class="img-fluid">
+            <img src="{% static 'images/group.png' %}" class="img-fluid" alt="Hero Image 1">
           </div>
         </div>
-    </section>
+      </div>
+      <!-- Slide 2 -->
+      <div class="carousel-item">
+        <div class="row align-items-center">
+          <div class="col-lg-6 col-md-12 hero-content">
+            <span class="enroll-btn">Apply Today</span>
+            <h1>
+              UNLOCK <span class="swatch-word">YOUR POTENTIAL</span><br>
+              <small>Personalized Learning Paths</small>
+            </h1>
+            <p>Discover flexible programs tailored for busy professionals. Find your fit and succeed at your own pace!</p>
+          </div>
+          <div class="col-lg-6 col-md-12 hero-image text-center">
+            <img src="{% static 'images/group2.jpg' %}" class="img-fluid" alt="Hero Image 2">
+          </div>
+        </div>
+      </div>
+      <!-- Slide 3 -->
+      <div class="carousel-item">
+        <div class="row align-items-center">
+          <div class="col-lg-6 col-md-12 hero-content">
+            <span class="enroll-btn">Get Started</span>
+            <h1>
+              EXPLORE <span class="swatch-word">NEW FIELDS</span><br>
+              <small>NextGen University Programs</small>
+            </h1>
+            <p>Advance in high-demand industries with expert faculty and a supportive community.</p>
+          </div>
+          <div class="col-lg-6 col-md-12 hero-image text-center">
+            <img src="{% static 'images/sample3.jpg' %}" class="img-fluid" alt="Hero Image 3">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Controls (arrows) -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+    <!-- Indicators (dots) -->
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+  </div>
+</div>
 
-    <!-- Floating Chat Button -->
-    {% include "base/chatbox.html" %}
+<!-- Floating Chat Button -->
+{% include "base/chatbox.html" %}
 {% endblock %}
+
+<!-- Optional: Add this CSS snippet in your static/mychatbot/pages.css file for better image sizing -->
+<style>
+.hero-image .carousel-inner img {
+  max-height: 400px;
+  object-fit: cover;
+}
+</style>

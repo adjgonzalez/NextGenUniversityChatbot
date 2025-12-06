@@ -23,7 +23,6 @@
   padding-bottom: 0 !important;
 }
 
-/* --- TOP NAVBAR LAYOUT --- */
 .navbar .container {
   display: flex !important;
   flex-direction: row !important;
@@ -55,7 +54,6 @@
   gap: 14px;
 }
 
-/* --- Register/Login buttons --- */
 .navbar-nav .btn,
 .navbar-nav .btn-primary,
 .navbar-nav .btn-secondary {
@@ -67,7 +65,6 @@
   margin-left: 6px !important;
   margin-right: 0 !important;
 }
-
 .navbar-nav .btn:last-child,
 .navbar-nav .btn-primary:last-child,
 .navbar-nav .btn-secondary:last-child {
@@ -79,7 +76,6 @@
   margin-right: 0;
   margin-left: 0;
 }
-
 .navbar-nav .nav-link {
   padding: 10px 24px;
   margin: 0 4px;
@@ -90,9 +86,36 @@
   align-self: flex-start !important;
 }
 
+/* --- Translate selector adjustments for alignment --- */
+#googleLangSelect.form-select-sm,
+#googleLangSelect {
+  height: 38px !important;
+  min-width: 110px;
+  font-size: 1rem !important;
+  padding: 6px 18px !important;
+  border-radius: 10px !important;
+  line-height: 1.1 !important;
+  vertical-align: middle !important;
+  margin-left: 8px !important;
+  margin-right: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  background-color: #fff !important;
+  color: #212529 !important;
+  border: 1px solid #ced4da !important;
+  box-sizing: border-box;
+  display: inline-block;
+  appearance: none;
+}
+
+#googleLangSelect:focus {
+  border-color: #86b7fe !important;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+}
 #googleLangSelect.form-select-sm {
-  height: 40px;
-  align-self: flex-start !important;
+  height: 38px !important;
+  align-self: center !important;
   margin-right: 8px;
 }
 
@@ -145,6 +168,77 @@
   overflow: visible !important;
 }
 
+/* === MAIN NAVBAR LINKS WITH SOLID COLOR === */
+.main-navbar-links {
+  border: 3px solid #4c79f5;
+  border-radius: 18px;
+  box-shadow: 0 0 14px 0 rgba(76,121,245,0.09);
+  background: #c6655f;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.main-navbar-links > ul {
+  display: flex;
+  flex: 1 1 0%;
+  gap: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.main-navbar-links .nav-link {
+  background: none !important;         /* Transparent, use parent's color */
+  color: #fff !important;
+  font-weight: 600;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  padding: 14px 36px;
+  transition: background 0.18s, color 0.12s, font-weight 0.12s, text-decoration 0.12s;
+  flex: 1 1 0;
+  text-align: center;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Remove underline/bold for 'active' nav-links */
+.main-navbar-links .nav-link.active {
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Left-most and right-most links get parent's border-radius */
+.main-navbar-links .nav-link:first-child {
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+.main-navbar-links .nav-link:last-child {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+/* Slight overlay effect for hover/focus/active (not gradient) */
+.main-navbar-links .nav-link:hover,
+.main-navbar-links .nav-link:focus,
+.main-navbar-links .nav-link.active:hover,
+.main-navbar-links .nav-link.active:focus {
+  background: rgba(250,114,104,0.15);
+  color: #fff !important;
+  font-weight: 700;
+  text-decoration: none;
+}
+
 @media (max-width: 992px) {
   .navbar-logo,
   .navbar-brand img {
@@ -159,11 +253,30 @@
   .navbar .container {
     gap: 10px;
   }
-  #googleLangSelect.form-select-sm {
-    height: 28px;
-    margin-right: 4px;
+  #googleLangSelect.form-select-sm,
+  #googleLangSelect {
+    height: 32px !important;
+    font-size: 0.92rem !important;
+    min-width: 70px;
+    padding: 4px 10px !important;
   }
   .custom-bottom-navbar {
     margin-top: -24px !important;
+  }
+  .main-navbar-links {
+    border-radius: 12px;
+    border-width: 2px;
+  }
+  .main-navbar-links .nav-link {
+    padding: 8px 10px;
+    font-size: 1rem;
+  }
+  .main-navbar-links .nav-link:first-child {
+    border-top-left-radius: 9px;
+    border-bottom-left-radius: 9px;
+  }
+  .main-navbar-links .nav-link:last-child {
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
   }
 }
