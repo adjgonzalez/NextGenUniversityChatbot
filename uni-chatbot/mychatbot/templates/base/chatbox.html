@@ -1,51 +1,107 @@
-<!-- Floating chat button to open modal -->
-<button class="btn btn-primary rounded-circle chatbot-btn"
+{% load static %}
+<style>
+:root {
+  --squash-bg: #f4b942;
+  --squash-hover: #e8a521;
+  --squash-text: #473a20;
+}
+.chatbot-vertical-tab {
+  position: fixed;
+  right: 0;
+  top: 70%;      /* Move further down -- change as needed */
+  z-index: 1050;
+  width: 140px;  /* "Chat" side tab width (adjust as needed) */
+  height: 46px;  /* Tab height (adjust as needed) */
+  background: var(--squash-bg);
+  color: var(--squash-text);
+  border: none;
+  border-radius: 12px 12px 0 0;
+  font-size: 1.15rem;
+  font-weight: bold;
+  box-shadow: 0 2px 18px rgba(80,60,0,0.14);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  transition: background 0.16s, box-shadow 0.18s;
+  outline: none;
+  /* Rotate to vertical */
+  transform: rotate(-90deg);
+  transform-origin: right bottom;
+}
+.chatbot-vertical-tab:hover, .chatbot-vertical-tab:focus {
+  background: var(--squash-hover);
+  color: #fff;
+  box-shadow: 0 4px 28px 2px rgba(80,60,0,0.25);
+}
+@media (max-width:560px) {
+  .chatbot-vertical-tab {
+    width: 94px;
+    height: 33px;
+    font-size: 0.99rem;
+    top: auto;
+    bottom: 56px;
+  }
+}
+.btn-close-custom {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #7a592c;
+  background: transparent;
+  border: none;
+  padding: 0 .6rem;
+  line-height: 1;
+}
+.btn-close-custom:hover, .btn-close-custom:focus {
+  color: #b94c26;
+  background: #f6e0b8;
+}
+</style>
+
+<!-- ROTATED VERTICAL TAB WITH HAMBURGER ICON -->
+<button class="chatbot-vertical-tab"
         data-bs-toggle="modal"
-        data-bs-target="#chatbotModal">
-    💬
+        data-bs-target="#chatbotModal"
+        aria-label="Open chatbot">
+  <span style="font-size: 1.3em; margin-right: .6em;">&#9776;</span> Chat
 </button>
 
 <!-- Chatbot Modal -->
 <div class="modal fade" id="chatbotModal" tabindex="-1">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content chatbot-modern">
             <div class="modal-header">
-                <!-- Chatbot modal header -->
                 <h5 class="modal-title">University Assistant</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn btn-light btn-close-custom" data-bs-dismiss="modal" aria-label="Close">✖</button>
             </div>
             <div class="modal-body" style="height: 300px; overflow-y: auto;" id="chatMessages">
-                <!-- Initial chatbot introduction message -->
                 <div class="alert alert-info">
                     <p>Hello! Welcome to the NextGen university chatbot.</p>
                     <strong>Assistant:</strong> Are you already a student?
                 </div>
                 <div class="gap-2" id="initialDecision">
-                    <button class="btn btn-outline-primary" id='yesButton' onclick="yesListener()">
+                    <button class="btn btn-outline-primary" id="yesButton" onclick="yesListener()">
                         ✅ Yes
                     </button>
-                    <button class="btn btn-outline-primary" id='noButton' onclick="noListener()">
+                    <button class="btn btn-outline-primary" id="noButton" onclick="noListener()">
                         ❌ No
                     </button>
                 </div>
             </div>
-
-            <!-- Footer area for follow-up input like email, transcript, or questions -->
             <div class="modal-footer" id="chatbotFooter" style="display: none;">
                 <div class="w-100 mb-2">
-                    <div class="form-check">
-                        <!-- Checkbox to trigger sending the transcript -->
-                        <input class="form-check-input" type="checkbox" id="sendTranscript">
-                        <label class="form-check-label" for="sendTranscript">
-                            📧 Email me this conversation
-                        </label>
-                    </div>
-                    <!-- Email input for transcript sending -->
-                    <input type="email" class="form-control mt-2" id="userEmail" placeholder="Your email address" style="display: none;">
+                  <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="showFooterDetails">
+                      <label class="form-check-label" for="showFooterDetails">
+                          📧 Email me this conversation
+                      </label>
+                  </div>
+                  <div id="footerDetails" style="display:none;">
+                      <input type="email" class="form-control mt-2" id="userEmail" placeholder="Your email address">
+                  </div>
                 </div>
-                <!-- Main chat input for questions -->
-                <input type="text" class="form-control" placeholder="Type your question..." id="userInput">
-                <button class="btn btn-primary" onclick="sendMessage()">Send</button>
             </div>
         </div>
     </div>
@@ -53,12 +109,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// Text responses, button labels, and other strings used by the chatbot throughout the UI
 const CHATBOT_TEXT = {
-    assistant: "Assistant",
-    you: "You",
-    yes: "Yes",
-    no: "No",
+    assistant: "Assistant", you: "You", yes: "Yes", no: "No",
     welcome: "Hello! Welcome to the NextGen university chatbot.",
     studentQuestion: "Are you already a student?",
     whatWouldYouLike: "What would you like to do?",
@@ -73,20 +125,12 @@ const CHATBOT_TEXT = {
     page: "page...",
     emailResources: "Email me my program resources",
     contactAdministrator: "Contact Administrator",
-    undergraduate: "Undergraduate",
-    graduate: "Graduate",
-    onlineCourses: "Online Courses",
-    bscComputerScience: "BSc in Computer Science",
-    baEconomics: "BA in Economics",
-    mba: "MBA",
-    mdscDataScience: "MDSc in Data Science",
-    webDevelopment: "Web Development Bootcamp",
+    undergraduate: "Undergraduate", graduate: "Graduate", onlineCourses: "Online Courses",
+    bscComputerScience: "BSc in Computer Science", baEconomics: "BA in Economics",
+    mba: "MBA", mdscDataScience: "MDSc in Data Science", webDevelopment: "Web Development Bootcamp",
     introductionAI: "Introduction to AI",
-    yesStudent: "Yes, I am a student",
-    noStudent: "No, I am not a student",
-    undergraduatePrograms: "Undergraduate programs",
-    graduatePrograms: "Graduate programs",
-    onlineCourses: "Online courses",
+    yesStudent: "Yes, I am a student", noStudent: "No, I am not a student",
+    undergraduatePrograms: "Undergraduate programs", graduatePrograms: "Graduate programs", onlineCourses: "Online courses",
     contactAdminMessage: "I want to contact an administrator",
     transcriptSent: "Transcript sent to your email!",
     failedToSend: "Failed to send transcript.",
@@ -94,8 +138,6 @@ const CHATBOT_TEXT = {
     selectProgram: "Please select a program",
     programSent: "Program resources sent to your email!"
 };
-
-// List of available programs for resource requests
 const HARD_CODED_PROGRAMS = [
     { slug: 'bsc-computer-science', name: CHATBOT_TEXT.bscComputerScience },
     { slug: 'ba-economics', name: CHATBOT_TEXT.baEconomics },
@@ -105,18 +147,15 @@ const HARD_CODED_PROGRAMS = [
     { slug: 'introduction-to-ai', name: CHATBOT_TEXT.introductionAI }
 ];
 
-// Conversation history log
 let conversationHistory = [
     { sender: "assistant", message: CHATBOT_TEXT.welcome },
     { sender: "assistant", message: CHATBOT_TEXT.studentQuestion }
 ];
-
 let isAdminContactMode = false;
 let pendingEmail = null;
 let pendingProgram = null;
 let resourceRequestInProgress = false;
 
-// Helper to get CSRF token for AJAX in Django
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -134,8 +173,6 @@ function getCookie(name) {
 function getCSRFToken() {
     return document.querySelector('[name=csrfmiddlewaretoken]')?.value || getCookie('csrftoken') || '';
 }
-
-// Add a message to the chat window and scroll to bottom
 function addToConversation(sender, message) {
     conversationHistory.push({ sender: sender, message: message });
     const chatMessages = document.getElementById('chatMessages');
@@ -145,8 +182,6 @@ function addToConversation(sender, message) {
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
-
-// Helper to show button groups
 function showButtons(buttonHTML) {
     const chatMessages = document.getElementById('chatMessages');
     const buttonContainer = document.createElement('div');
@@ -155,23 +190,17 @@ function showButtons(buttonHTML) {
     chatMessages.appendChild(buttonContainer);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
-
-// Remove all button groups from chat
 function hideAllButtons() {
     const buttonContainers = document.querySelectorAll('#chatMessages .gap-2');
     buttonContainers.forEach(container => {
         container.remove();
     });
 }
-
-// Show or hide the modal footer (used for admin contact mode)
 function toggleFooter(show) {
     const footer = document.getElementById('chatbotFooter');
     footer.style.display = show ? 'block' : 'none';
     isAdminContactMode = show;
 }
-
-// Show the email resource request form
 function showEmailOption() {
     hideAllButtons();
     toggleFooter(false);
@@ -181,8 +210,6 @@ function showEmailOption() {
     addToConversation('assistant', CHATBOT_TEXT.pleaseProvideEmail);
     showEmailCollectionForm();
 }
-
-// Allow user to choose program and enter email
 function showEmailCollectionForm() {
     const existingForm = document.getElementById('programEmailForm');
     if (existingForm) existingForm.remove();
@@ -229,8 +256,6 @@ function showEmailCollectionForm() {
         }
     });
 }
-
-// Handle sending program resources to given email
 function submitProgramEmail() {
     const emailInput = document.getElementById('programEmailInput');
     const programSelect = document.getElementById('programSelect');
@@ -289,7 +314,6 @@ function submitProgramEmail() {
     });
 }
 
-// Handlers for student's initial Yes/No responses
 function yesListener(){
     hideAllButtons();
     toggleFooter(false);
@@ -306,7 +330,6 @@ function yesListener(){
     `;
     showButtons(studentButtonsHTML);
 }
-
 function noListener(){
     hideAllButtons();
     toggleFooter(false);
@@ -326,7 +349,6 @@ function noListener(){
     `;
     showButtons(studyTypeButtonsHTML);
 }
-
 function underGradListener(){
     hideAllButtons();
     toggleFooter(false);
@@ -343,7 +365,6 @@ function underGradListener(){
     `;
     showButtons(undergradButtonsHTML);
 }
-
 function gradListener(){
     hideAllButtons();
     toggleFooter(false);
@@ -360,7 +381,6 @@ function gradListener(){
     `;
     showButtons(gradButtonsHTML);
 }
-
 function onlineStudiesListener(){
     hideAllButtons();
     toggleFooter(false);
@@ -377,8 +397,6 @@ function onlineStudiesListener(){
     `;
     showButtons(onlineButtonsHTML);
 }
-
-// Redirects user to program detail page after selection
 function redirect(path, programName){
     hideAllButtons();
     toggleFooter(false);
@@ -388,61 +406,15 @@ function redirect(path, programName){
         window.location.href = path;
     }, 1500);
 }
-
-// Student option for contacting admin
 function contactAdmin() {
     hideAllButtons();
     toggleFooter(true);
     addToConversation('user', `👨‍💼 ${CHATBOT_TEXT.contactAdminMessage}`);
     addToConversation('assistant', CHATBOT_TEXT.describeIssue);
-    document.getElementById('sendTranscript').checked = true;
-    document.getElementById('userEmail').style.display = 'block';
+    document.getElementById('showFooterDetails').checked = false;
+    document.getElementById('footerDetails').style.display = 'none';
+    document.getElementById('userEmail').value = '';
 }
-
-// Send message in admin contact mode, and send transcript if needed
-function sendMessage() {
-    if (!isAdminContactMode) return;
-    const userInput = document.getElementById('userInput');
-    const message = userInput.value.trim();
-    if (message) {
-        addToConversation('user', message);
-        addToConversation('assistant', CHATBOT_TEXT.thankYouMessage);
-        userInput.value = '';
-        const userEmail = document.getElementById('userEmail').value;
-        if (userEmail) {
-            sendTranscript();
-        }
-    }
-}
-
-// Sends transcript via AJAX (POST)
-function sendTranscript() {
-    const sendTranscriptCheckbox = document.getElementById('sendTranscript').checked;
-    const userEmailInput = document.getElementById('userEmail').value;
-    if (sendTranscriptCheckbox && userEmailInput) {
-        fetch('/send-transcript/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCSRFToken()
-            },
-            body: JSON.stringify({
-                'email': userEmailInput,
-                'conversation': conversationHistory
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showAlert(CHATBOT_TEXT.transcriptSent, 'success');
-            } else {
-                showAlert(CHATBOT_TEXT.failedToSend, 'error');
-            }
-        });
-    }
-}
-
-// Shows alert message in modal footer
 function showAlert(message, type) {
     const alertDiv = document.createElement('div');
     alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} mt-2`;
@@ -450,14 +422,11 @@ function showAlert(message, type) {
     document.querySelector('.modal-footer').prepend(alertDiv);
     setTimeout(() => alertDiv.remove(), 3000);
 }
-
-// Resets chatbot UI each time the widget is closed/reopened
 function resetChatbotVisibility() {
     conversationHistory = [
         { sender: "assistant", message: CHATBOT_TEXT.welcome },
         { sender: "assistant", message: CHATBOT_TEXT.studentQuestion }
     ];
-
     const chatMessages = document.getElementById('chatMessages');
     chatMessages.innerHTML = `
         <div class="alert alert-info">
@@ -465,18 +434,17 @@ function resetChatbotVisibility() {
             <strong>${CHATBOT_TEXT.assistant}:</strong> ${CHATBOT_TEXT.studentQuestion}
         </div>
         <div class="gap-2" id="initialDecision">
-            <button class="btn btn-outline-primary" id='yesButton' onclick="yesListener()">
+            <button class="btn btn-outline-primary" id="yesButton" onclick="yesListener()">
                 ✅ ${CHATBOT_TEXT.yes}
             </button>
-            <button class="btn btn-outline-primary" id='noButton' onclick="noListener()">
+            <button class="btn btn-outline-primary" id="noButton" onclick="noListener()">
                 ❌ ${CHATBOT_TEXT.no}
             </button>
         </div>
     `;
-    document.getElementById('sendTranscript').checked = false;
-    document.getElementById('userEmail').style.display = 'none';
+    document.getElementById('showFooterDetails').checked = false;
+    document.getElementById('footerDetails').style.display = 'none';
     document.getElementById('userEmail').value = '';
-    document.getElementById('userInput').value = '';
     toggleFooter(false);
     isAdminContactMode = false;
     resourceRequestInProgress = false;
@@ -484,24 +452,25 @@ function resetChatbotVisibility() {
     pendingProgram = null;
     chatMessages.scrollTop = 0;
 }
-
-// On page ready, reset chatbot modal and setup input behaviors
 document.addEventListener('DOMContentLoaded', function () {
+    var checkbox = document.getElementById('showFooterDetails');
+    var footerDetails = document.getElementById('footerDetails');
+    var userEmail = document.getElementById('userEmail');
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            footerDetails.style.display = 'block';
+            userEmail.style.display = '';
+            userEmail.focus();
+        } else {
+            footerDetails.style.display = 'none';
+            userEmail.value = '';
+        }
+    });
+    footerDetails.style.display = 'none';
+
     const chatbotModal = document.getElementById('chatbotModal');
     chatbotModal.addEventListener('hidden.bs.modal', function () {
         resetChatbotVisibility();
-    });
-
-    document.getElementById('sendTranscript').addEventListener('change', function() {
-        const emailInput = document.getElementById('userEmail');
-        emailInput.style.display = this.checked ? 'block' : 'none';
-        if (!this.checked) emailInput.value = '';
-    });
-
-    document.getElementById('userInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && isAdminContactMode) {
-            sendMessage();
-        }
     });
 });
 </script>

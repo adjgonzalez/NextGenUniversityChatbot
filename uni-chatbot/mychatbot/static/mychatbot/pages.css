@@ -224,3 +224,53 @@ nav[aria-label="breadcrumb"] .breadcrumb {
     padding: 4px 10px !important;
   }
 }
+/* Sidebar panel */
+.sidebar-section, aside.sidebar {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(85,111,181,0.08);
+  padding: 24px 18px 10px 18px;
+  margin-bottom: 18px;
+}
+
+/* Main vertical navigation group */
+.list-group {
+  background: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 10px;
+  padding: 0;
+}
+
+/* Each clickable item */
+.list-group-item {
+  color: var(--primary);
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  margin-bottom: 8px;
+  padding: 14px 18px;
+  font-size: 1.08rem;
+  transition: background 0.18s, color 0.13s, box-shadow 0.16s;
+  box-shadow: 0 1px 4px 0 rgba(169,181,211,0.07);
+}
+
+.list-group-item:hover,
+.list-group-item:focus {
+  background: linear-gradient(98deg, var(--accent) 80%, var(--secondary) 100%);
+  color: var(--primary);
+  box-shadow: 0 2px 10px 0 rgba(85,111,181,0.08);
+  text-decoration: none;
+}
+
+/* Strong highlight for current/active */
+.list-group-item.active,
+.list-group-item.active:focus,
+.list-group-item.active:hover {
+  background: linear-gradient(92deg, var(--primary) 80%, var(--highlight) 100%);
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 3.5px 16px 0 rgba(85,111,181,0.10);
+  border: none;
+}

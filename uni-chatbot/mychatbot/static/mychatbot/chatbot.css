@@ -1,0 +1,187 @@
+/* --- Modern Modal Container & Content --- */
+.chatbot-modern {
+  font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+}
+#chatbotModal .chatbot-modern.modal-content {
+  border-radius: 18px !important;
+  box-shadow: 0 8px 32px rgba(76,121,245,0.12), 0 1px 4px rgba(0,0,0,0.09);
+  background: linear-gradient(135deg,#f4f7fb 0%, #e9edf7 100%) !important;
+  border: 1px solid #e2e7f5 !important;
+  overflow: hidden;
+}
+#chatbotModal .chatbot-modern .modal-header {
+  background: #556FB5 !important;
+  color: #fff !important;
+  border-bottom: 1px solid #e2e7f5 !important;
+  border-radius: 18px 18px 0 0 !important;
+}
+#chatbotModal .chatbot-modern .modal-title {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* --- Modern Bubbles --- */
+#chatbotModal .chatbot-modern .alert,
+#chatbotModal .chatbot-modern .alert-info,
+#chatbotModal .chatbot-modern .alert-primary {
+  border-radius: 16px !important;
+  font-size: 1rem !important;
+  border: none !important;
+  box-shadow: 0 2px 10px 0 #e9edf7e6 !important;
+  padding: 12px 22px !important;
+  word-break: break-word !important;
+  margin-bottom: 9px !important;
+}
+#chatbotModal .chatbot-modern .alert-info {
+  background: linear-gradient(120deg,#f4f7fb 92%,#e2e7f5 100%) !important;
+  color: #312c47 !important;
+}
+#chatbotModal .chatbot-modern .alert-primary {
+  background: linear-gradient(120deg,#c6655f 90%,#eaa199 100%) !important;
+  color: #fff !important;
+  text-align: right !important;
+  box-shadow: 0 2px 14px #eed2cb2c !important;
+}
+
+/* --- Decision, Option Rows, and Buttons --- */
+#chatbotModal .chatbot-modern .gap-2,
+#chatbotModal .chatbot-modern .mt-2,
+#chatbotModal .chatbot-modern .d-flex {
+  display: flex !important;
+  gap: 10px !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  margin-bottom: 10px !important;
+}
+#chatbotModal .chatbot-modern .gap-2 .btn,
+#chatbotModal .chatbot-modern .gap-2 button,
+#chatbotModal .chatbot-modern .mt-2 .btn,
+#chatbotModal .chatbot-modern .mt-2 button,
+#chatbotModal .chatbot-modern .d-flex .btn,
+#chatbotModal .chatbot-modern .d-flex button {
+  margin: 2px 0 !important;
+}
+
+/* --- ALL Buttons (with specificity + important to override Bootstrap) --- */
+#chatbotModal .chatbot-modern .btn,
+#chatbotModal .chatbot-modern button,
+#chatbotModal .btn,
+#chatbotModal button {
+  border-radius: 10px !important;
+  padding: 8px 20px !important;
+  font-weight: 600 !important;
+  color: #556FB5 !important;
+  background: #fff !important;
+  border: 2px solid #c3cee6 !important;
+  box-shadow: 0 1px 9px 0 rgba(76,121,245,0.14) !important;
+  transition: background 0.18s, color 0.12s !important;
+  font-size: 1rem !important;
+}
+#chatbotModal .chatbot-modern .btn-primary,
+#chatbotModal .chatbot-modern .btn-success {
+  color: #fff !important;
+  background: linear-gradient(120deg,#556FB5 80%,#4c79f5 100%) !important;
+  border: none !important;
+}
+#chatbotModal .chatbot-modern .btn-success {
+  background: linear-gradient(120deg,#51be8a 80%,#73dfa4 100%) !important;
+}
+#chatbotModal .chatbot-modern .btn-secondary {
+  background: #d3dee5 !important;
+  color: #446 !important;
+  border: none !important;
+}
+#chatbotModal .chatbot-modern .btn:hover,
+#chatbotModal .chatbot-modern .btn-primary:hover,
+#chatbotModal .chatbot-modern button:hover,
+#chatbotModal .btn:hover,
+#chatbotModal button:hover {
+  background: #556FB5 !important;
+  color: #fff !important;
+  border-color: #556FB5 !important;
+}
+
+/* --- Inputs and Selects --- */
+#chatbotModal .chatbot-modern .form-control,
+#chatbotModal .chatbot-modern .form-select {
+  border-radius: 8px !important;
+  border: 2px solid #c3cee6 !important;
+  background: #f7f9fd !important;
+  color: #3c436a !important;
+  font-weight: 500 !important;
+  padding: 8px 15px !important;
+}
+#chatbotModal .chatbot-modern .form-control:focus,
+#chatbotModal .chatbot-modern .form-select:focus {
+  border-color: #556fb5 !important;
+  outline: none !important;
+}
+
+/* --- Footer Area --- */
+#chatbotModal .chatbot-modern .modal-footer {
+  border-top: 1px solid #e2e7f5 !important;
+  background: #fff !important;
+  border-radius: 0 0 18px 18px !important;
+  padding: 18px 18px 12px 18px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+#chatbotModal .chatbot-modern .form-check-label {
+  font-size: 0.98rem !important;
+  color: #556FB5 !important;
+}
+#chatbotModal .chatbot-modern #userEmail {
+  margin-top: 4px !important;
+  background: #f4f8fc !important;
+}
+
+/* --- Custom scrollbar for messages --- */
+#chatbotModal .chatbot-modern .modal-body {
+  scrollbar-width: thin;
+  scrollbar-color: #ddd #fff;
+}
+#chatbotModal .chatbot-modern .modal-body::-webkit-scrollbar {
+  width: 8px;
+  background: #fff0;
+}
+#chatbotModal .chatbot-modern .modal-body::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 8px;
+}
+
+/* --- Floating chat open button --- */
+.chatbot-btn {
+  background: #4c79f5;
+  border-radius: 50% !important;
+  color: #fff;
+  font-size: 1.6rem;
+  width: 52px;
+  height: 52px;
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 1000;
+  box-shadow: 0 6px 24px rgba(76,121,245,0.13);
+  border: none;
+}
+.chatbot-btn:hover {
+  background: #314ca2;
+}
+#chatMessages .alert-primary {
+  display: inline-block;
+  max-width: 85%;
+  margin-left: auto;
+  margin-right: 0;
+  border-radius: 18px 18px 18px 3px;
+  padding: 0.5em 1em 0.5em 0.7em;
+}
+#chatMessages .alert-info {
+  display: block;
+  max-width: 90%;
+  margin-right: auto;
+  margin-left: 0;
+  border-radius: 8px 18px 18px 18px;
+  padding: 0.5em 1em 0.5em 1.1em;
+}

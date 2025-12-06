@@ -405,44 +405,81 @@ label {
 }
 /* Modern pop for hero image */
 .hero-image img {
-  width: 85%;
   border-radius: 16px;
   background: transparent;
   box-shadow: 0 4px 22px rgba(85,111,181,0.09);
   filter: none;
+  width: 100%;
 }
 
-/* === Responsive Tweaks === */
+.hero-image img,
+.carousel-inner img,
+.carousel-item img {
+  width: 100% !important;
+  height: 480px !important;
+  min-height: 480px !important;
+  max-height: 480px !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  background: #f4f7fb !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+.carousel-inner,
+.carousel-item {
+  min-height: 480px !important;
+  height: 480px !important;
+  max-height: 480px !important;
+}
+.carousel-caption,
+.carousel-overlay {
+  display: none !important;
+  background: none !important;
+}
+.carousel-item,
+.row,
+.col-lg-6,
+.hero-content,
+.hero-image {
+  background: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+.hero-image img {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Responsive Tweaks: Match uniform height for carousel on small screens */
 @media (max-width: 992px) {
-  .hero-section {
-    padding: 48px 4%;
-    text-align: center;
+  .hero-image img,
+  .carousel-inner img,
+  .carousel-item img {
+    height: 260px !important;
+    min-height: 260px !important;
+    max-height: 260px !important;
   }
-  .hero-content h1 {
-    font-size: 1.5rem;
-  }
-  .hero-content h1 small {
-    font-size: 1.1rem;
-  }
-  .hero-image img {
-    width: 70%;
-    margin-top: 30px;
-  }
-  .card {
-    padding: 18px 8vw;
+  .carousel-inner,
+  .carousel-item {
+    min-height: 260px !important;
+    height: 260px !important;
+    max-height: 260px !important;
   }
 }
 @media (max-width: 600px) {
-  .card {
-    padding: 13px 4vw;
+  .hero-image img,
+  .carousel-inner img,
+  .carousel-item img {
+    height: 160px !important;
+    min-height: 160px !important;
+    max-height: 160px !important;
   }
-  .chat-box {
-    width: 98vw;
-    right: 1vw;
-    padding: 0;
-  }
-  .hero-section {
-    padding: 28px 2vw;
-    border-radius: 14px;
+  .carousel-inner,
+  .carousel-item {
+    min-height: 160px !important;
+    height: 160px !important;
+    max-height: 160px !important;
   }
 }
