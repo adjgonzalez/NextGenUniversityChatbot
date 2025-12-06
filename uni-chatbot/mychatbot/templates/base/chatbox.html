@@ -140,6 +140,16 @@
   flex-direction: column !important;
   gap: 10px !important;
 }
+function isRulesBased(msg) {
+    // Check for keywords, exact matches, or other intents you already handle via buttons.
+    const rules = [
+        "I'm a student",
+        "I want program information",
+        "Contact administrator",
+        // etc, add your specific triggers here
+    ];
+    return rules.some(r => msg.toLowerCase().includes(r.toLowerCase()));
+}
 #chatbotModal .chatbot-modern .form-check-label {
   font-size: 0.98rem !important;
   color: #556FB5 !important;
@@ -258,6 +268,10 @@
                           📧 Email me this conversation
                       </label>
                   </div>
+                    <div class="input-group mt-2">
+                  <input type="text" id="chatbotFreeText" class="form-control" placeholder="Type your question or request..." />
+                  <button class="btn btn-primary" id="chatbotSend" type="button">Send</button>
+                </div>
                   <div id="footerDetails" style="display:none;">
                       <input type="email" class="form-control mt-2" id="userEmail" placeholder="Your email address">
                   </div>
@@ -268,7 +282,524 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
+<script>const INTENT_DICTIONARY = {
+    // ENGLISH
+    "student": yesListener,
+    "already a student": yesListener,
+    "not a student": noListener,
+    "enroll": noListener,
+    "enrol": noListener,
+    "enrollment": noListener,
+    "enrolement": noListener,
+    "register": { reply: "I'll redirect you to our Registration page.", redirect: "users/register/" },
+    "registration": { reply: "I'll redirect you to our Registration page.", redirect: "users/register/" },
+    "regestration": { reply: "I'll redirect you to our Registration page.", redirect: "users/register/" },
+    "course registration": { reply: "I'll redirect you to the Registration page for courses.", redirect: "users/register/" },
+    "no student": noListener,
+    "program information": showEmailOption,
+    "program info": showEmailOption,
+    "undergraduate program": underGradListener,
+    "undergrad program": underGradListener,
+    "graduate program": gradListener,
+    "grad program": gradListener,
+    "online course": onlineStudiesListener,
+    "online courses": onlineStudiesListener,
+    "computer science": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "compuer science": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "economics": { reply: "I'll redirect you to the economics program.", redirect: "/programs/ba-in-economics/" },
+    "ecomonics": { reply: "I'll redirect you to the economics program.", redirect: "/programs/ba-in-economics/" },
+    "mba": { reply: "I'll redirect you to the MBA program.", redirect: "/programs/mba/" },
+    "data science": { reply: "I'll redirect you to the Data Science program.", redirect: "/programs/mdsc-in-data-science/" },
+    "web development": { reply: "I'll redirect you to the Web Development Bootcamp.", redirect: "/programs/web-development-bootcamp/" },
+    "ai": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "introduction to ai": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "business": { reply: "We offer an MBA program, I'll redirect you to it.", redirect: "/programs/mba/" },
+    "degree": { reply: "I'll redirect you to our degree programs.", redirect: "/programs/" },
+    "programs": { reply: "You can find all of our programs on the Programs page.", redirect: "/programs/" },
+    "courses": { reply: "Our course offerings are listed on the Programs page.", redirect: "/programs/" },
+    "admissions": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "admissons": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "admisssions": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "addmissions": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "application": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "applicaiton": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "apply": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "aply": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "application status": { reply: "To check your application status, please log in to your student portal or contact Admissions.", redirect: "/admissions/" },
+    "deadline": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "deadlines": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "registrar": { reply: "I'll redirect you to the Admissions and Registrar office.", redirect: "/admissions/" },
+    "resgistrar": { reply: "I'll redirect you to the Admissions and Registrar office.", redirect: "/admissions/" },
+    "registar": { reply: "I'll redirect you to the Admissions and Registrar office.", redirect: "/admissions/" },
+    "tuition": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "tution": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "cost": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "costs": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "scholarship": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "scholarships": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "scholarhips": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "grant": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "grants": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "financial aid": { reply: "I'll redirect you to our Funding and Scholarships page.", redirect: "/admissions/funding" },
+    "contact administrator": contactAdmin,
+    "contact admin": contactAdmin,
+    "bug": contactAdmin,
+    "support": { reply: "I'm here to help! If you have a technical issue or need assistance, please describe your problem." },
+    "technical issue": contactAdmin,
+    "tech issue": contactAdmin,
+    "contact": { reply: "You can contact us via the Contact Us page.", redirect: "/contact/" },
+    "location": { reply: "Our university is located in Canada. Visit our Contact Us page for the exact address.", redirect: "/contact/" },
+    "adress": { reply: "Our address details are available on our Contact Us page.", redirect: "/contact/" },
+    "address": { reply: "Our address details are available on our Contact Us page.", redirect: "/contact/" },
+    "help": { reply: "I'm here to help, what do you need help with?" },
+    "question": { reply: "I'm here to help, what do you need help with?" },
+    "assistance": { reply: "I'm here to help, what do you need help with?" },
+    "email": { reply: "Our email is nextgenuniversity@gmail.ca." },
+    "emial": { reply: "Our email is nextgenuniversity@gmail.ca." },
+    "thank you": politeReply,
+    "thanks": politeReply,
+    "ty": politeReply,
+    "hi": { reply: "Hello! How can I assist you today?" },
+    "hello": { reply: "Hello! How can I assist you today?" },
+    "hey": { reply: "Hello! How can I assist you today?" },
+
+    // FRENCH (recognized keywords with English replies)
+    "étudiant": yesListener,
+    "déjà étudiant": yesListener,
+    "pas étudiant": noListener,
+    "inscrire": noListener,
+    "inscription": noListener,
+    "enrôlement": noListener,
+    "enregistrer": { reply: "I'll redirect you to our Registration page.", redirect: "users/register/" },
+    "inscription au cours": { reply: "I'll redirect you to the Registration page for courses.", redirect: "users/register/" },
+    "informations sur le programme": showEmailOption,
+    "info programme": showEmailOption,
+    "programme de premier cycle": underGradListener,
+    "programme de licence": underGradListener,
+    "programme d'études supérieures": gradListener,
+    "programme de maîtrise": gradListener,
+    "cours en ligne": onlineStudiesListener,
+    "informatique": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "sciences informatiques": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "économie": { reply: "I'll redirect you to the economics program.", redirect: "/programs/ba-in-economics/" },
+    "science des données": { reply: "I'll redirect you to the Data Science program.", redirect: "/programs/mdsc-in-data-science/" },
+    "développement web": { reply: "I'll redirect you to the Web Development Bootcamp.", redirect: "/programs/web-development-bootcamp/" },
+    "ia": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "introduction à l'ia": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "commerce": { reply: "We offer an MBA program, I'll redirect you to it.", redirect: "/programs/mba/" },
+    "diplôme": { reply: "I'll redirect you to our degree programs.", redirect: "/programs/" },
+    "programmes": { reply: "You can find all of our programs on the Programs page.", redirect: "/programs/" },
+    "cours": { reply: "Our course offerings are listed on the Programs page.", redirect: "/programs/" },
+    "admissions": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "candidature": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "postuler": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "statut de la candidature": { reply: "To check your application status, please log in to your student portal or contact Admissions.", redirect: "/admissions/" },
+    "date limite": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "dates limites": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "bureau du registraire": { reply: "I'll redirect you to the Admissions and Registrar office.", redirect: "/admissions/" },
+    "frais de scolarité": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "coût": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "coûts": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "bourse": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "bourses": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "subvention": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "aide financière": { reply: "I'll redirect you to our Funding and Scholarships page.", redirect: "/admissions/funding" },
+    "contacter l'administrateur": contactAdmin,
+    "problème technique": contactAdmin,
+    "emplacement": { reply: "Our university is located in Canada. Visit our Contact Us page for the exact address.", redirect: "/contact/" },
+    "adresse": { reply: "Our address details are available on our Contact Us page.", redirect: "/contact/" },
+    "aide": { reply: "I'm here to help, what do you need help with?" },
+    "assistance": { reply: "I'm here to help, what do you need help with?" },
+    "courriel": { reply: "Our email is nextgenuniversity@gmail.ca." },
+    "merci": politeReply,
+    "merci beaucoup": politeReply,
+    "bonjour": { reply: "Hello! How can I assist you today?" },
+    "salut": { reply: "Hello! How can I assist you today?" },
+    "coucou": { reply: "Hello! How can I assist you today?" },
+
+    // SPANISH (recognized keywords with English replies)
+    "estudiante": yesListener,
+    "ya soy estudiante": yesListener,
+    "no soy estudiante": noListener,
+    "matricular": noListener,
+    "matrícula": noListener,
+    "inscribirse": noListener,
+    "registrarse": { reply: "I'll redirect you to our Registration page.", redirect: "users/register/" },
+    "registración": { reply: "I'll redirect you to our Registration page.", redirect: "users/register/" },
+    "matrícula de cursos": { reply: "I'll redirect you to the Registration page for courses.", redirect: "users/register/" },
+    "información del programa": showEmailOption,
+    "info del programa": showEmailOption,
+    "programa de pregrado": underGradListener,
+    "programa de grado": underGradListener,
+    "programa de posgrado": gradListener,
+    "curso en línea": onlineStudiesListener,
+    "cursos en línea": onlineStudiesListener,
+    "ciencias de la computación": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "informática": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "economía": { reply: "I'll redirect you to the economics program.", redirect: "/programs/ba-in-economics/" },
+    "ciencia de datos": { reply: "I'll redirect you to the Data Science program.", redirect: "/programs/mdsc-in-data-science/" },
+    "desarrollo web": { reply: "I'll redirect you to the Web Development Bootcamp.", redirect: "/programs/web-development-bootcamp/" },
+    "ia": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "introducción a la ia": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "negocios": { reply: "We offer an MBA program, I'll redirect you to it.", redirect: "/programs/mba/" },
+    "título": { reply: "I'll redirect you to our degree programs.", redirect: "/programs/" },
+    "programas": { reply: "You can find all of our programs on the Programs page.", redirect: "/programs/" },
+    "cursos": { reply: "Our course offerings are listed on the Programs page.", redirect: "/programs/" },
+    "admisiones": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "solicitud": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "aplicar": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "estado de la solicitud": { reply: "To check your application status, please log in to your student portal or contact Admissions.", redirect: "/admissions/" },
+    "fecha límite": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "fechas límite": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "registrador": { reply: "I'll redirect you to the Admissions and Registrar office.", redirect: "/admissions/" },
+    "beca": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "becas": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "subvención": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "ayuda financiera": { reply: "I'll redirect you to our Funding and Scholarships page.", redirect: "/admissions/funding" },
+    "contactar administrador": contactAdmin,
+    "error": contactAdmin,
+    "soporte": { reply: "I'm here to help! If you have a technical issue or need assistance, please describe your problem." },
+    "problema técnico": contactAdmin,
+    "ubicación": { reply: "Our university is located in Canada. Visit our Contact Us page for the exact address.", redirect: "/contact/" },
+    "dirección": { reply: "Our address details are available on our Contact Us page.", redirect: "/contact/" },
+    "ayuda": { reply: "I'm here to help, what do you need help with?" },
+    "asistencia": { reply: "I'm here to help, what do you need help with?" },
+    "correo electrónico": { reply: "Our email is nextgenuniversity@gmail.ca." },
+    "gracias": politeReply,
+    "muchas gracias": politeReply,
+    "hola": { reply: "Hello! How can I assist you today?" },
+    "buenos días": { reply: "Hello! How can I assist you today?" },
+
+    // ITALIAN (recognized keywords with English replies)
+    "studente": yesListener,
+    "già studente": yesListener,
+    "non studente": noListener,
+    "iscriversi": noListener,
+    "iscrizione": noListener,
+    "registrarsi": { reply: "I'll redirect you to our Registration page.", redirect: "users/register/" },
+    "registrazione": { reply: "I'll redirect you to our Registration page.", redirect: "users/register/" },
+    "iscrizione ai corsi": { reply: "I'll redirect you to the Registration page for courses.", redirect: "users/register/" },
+    "informazioni sul programma": showEmailOption,
+    "info programma": showEmailOption,
+    "programma universitario": underGradListener,
+    "programma triennale": underGradListener,
+    "programma di laurea magistrale": gradListener,
+    "corso online": onlineStudiesListener,
+    "corsi online": onlineStudiesListener,
+    "informatica": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "scienze informatiche": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "economia": { reply: "I'll redirect you to the economics program.", redirect: "/programs/ba-in-economics/" },
+    "scienza dei dati": { reply: "I'll redirect you to the Data Science program.", redirect: "/programs/mdsc-in-data-science/" },
+    "sviluppo web": { reply: "I'll redirect you to the Web Development Bootcamp.", redirect: "/programs/web-development-bootcamp/" },
+    "ai": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "introduzione all'ai": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "laurea": { reply: "I'll redirect you to our degree programs.", redirect: "/programs/" },
+    "programmi": { reply: "You can find all of our programs on the Programs page.", redirect: "/programs/" },
+    "ammissioni": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "domanda": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "applicare": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "stato della domanda": { reply: "To check your application status, please log in to your student portal or contact Admissions.", redirect: "/admissions/" },
+    "scadenza": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "scadenze": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "ufficio del registro": { reply: "I'll redirect you to the Admissions and Registrar office.", redirect: "/admissions/" },
+    "tasse universitarie": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "costo": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "costi": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "borsa di studio": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "borse di studio": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "borsa": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "aiuto finanziario": { reply: "I'll redirect you to our Funding and Scholarships page.", redirect: "/admissions/funding" },
+    "contattare amministratore": contactAdmin,
+    "supporto": { reply: "I'm here to help! If you have a technical issue or need assistance, please describe your problem." },
+    "problema tecnico": contactAdmin,
+    "posizione": { reply: "Our university is located in Canada. Visit our Contact Us page for the exact address.", redirect: "/contact/" },
+    "indirizzo": { reply: "Our address details are available on our Contact Us page.", redirect: "/contact/" },
+    "aiuto": { reply: "I'm here to help, what do you need help with?" },
+    "assistenza": { reply: "I'm here to help, what do you need help with?" },
+    "posta elettronica": { reply: "Our email is nextgenuniversity@gmail.ca." },
+    "grazie": politeReply,
+    "grazie mille": politeReply,
+    "ciao": { reply: "Hello! How can I assist you today?" },
+    "salve": { reply: "Hello! How can I assist you today?" },
+    "buongiorno": { reply: "Hello! How can I assist you today?" },
+
+    // GERMAN (recognized keywords with English replies)
+    "student": yesListener,
+    "bereits student": yesListener,
+    "kein student": noListener,
+    "einschreiben": noListener,
+    "einschreibung": noListener,
+    "registrieren": { reply: "I'll redirect you to our Registration page.", redirect: "users/register/" },
+    "registrierung": { reply: "I'll redirect you to our Registration page.", redirect: "users/register/" },
+    "kurseinschreibung": { reply: "I'll redirect you to the Registration page for courses.", redirect: "users/register/" },
+    "programminformationen": showEmailOption,
+    "programminfo": showEmailOption,
+    "grundstudium": underGradListener,
+    "grundstudienprogramm": underGradListener,
+    "aufbaustudium": gradListener,
+    "graduiertenprogramm": gradListener,
+    "online-kurs": onlineStudiesListener,
+    "online-kurse": onlineStudiesListener,
+    "informatik": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "computerwissenschaften": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "wirtschaft": { reply: "I'll redirect you to the economics program.", redirect: "/programs/ba-in-economics/" },
+    "datenwissenschaft": { reply: "I'll redirect you to the Data Science program.", redirect: "/programs/mdsc-in-data-science/" },
+    "webentwicklung": { reply: "I'll redirect you to the Web Development Bootcamp.", redirect: "/programs/web-development-bootcamp/" },
+    "ki": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "einführung in ki": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "abschluss": { reply: "I'll redirect you to our degree programs.", redirect: "/programs/" },
+    "programme": { reply: "You can find all of our programs on the Programs page.", redirect: "/programs/" },
+    "zulassung": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "bewerbung": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "bewerben": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "bewerbungsstatus": { reply: "To check your application status, please log in to your student portal or contact Admissions.", redirect: "/admissions/" },
+    "frist": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "fristen": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "studierendensekretariat": { reply: "I'll redirect you to the Admissions and Registrar office.", redirect: "/admissions/" },
+    "studiengebühren": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "kosten": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "stipendium": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "stipendien": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "finanzhilfe": { reply: "I'll redirect you to our Funding and Scholarships page.", redirect: "/admissions/funding" },
+    "administrator kontaktieren": contactAdmin,
+    "fehler": contactAdmin,
+    "technisches problem": contactAdmin,
+    "standort": { reply: "Our university is located in Canada. Visit our Contact Us page for the exact address.", redirect: "/contact/" },
+    "hilfe": { reply: "I'm here to help, what do you need help with?" },
+    "unterstützung": { reply: "I'm here to help, what do you need help with?" },
+    "e-mail": { reply: "Our email is nextgenuniversity@gmail.ca." },
+    "danke": politeReply,
+    "dankeschön": politeReply,
+    "hallo": { reply: "Hello! How can I assist you today?" },
+    "guten tag": { reply: "Hello! How can I assist you today?" },
+
+    // CHINESE (Simplified) (recognized keywords with English replies)
+    "学生": yesListener,
+    "已经是学生": yesListener,
+    "不是学生": noListener,
+    "注册": noListener,
+    "登记": noListener,
+    "注册课程": { reply: "I'll redirect you to the Registration page for courses.", redirect: "users/register/" },
+    "课程注册": { reply: "I'll redirect you to the Registration page for courses.", redirect: "users/register/" },
+    "项目信息": showEmailOption,
+    "项目资讯": showEmailOption,
+    "本科项目": underGradListener,
+    "本科课程": underGradListener,
+    "研究生项目": gradListener,
+    "研究生课程": gradListener,
+    "在线课程": onlineStudiesListener,
+    "计算机科学": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "经济学": { reply: "I'll redirect you to the economics program.", redirect: "/programs/ba-in-economics/" },
+    "数据科学": { reply: "I'll redirect you to the Data Science program.", redirect: "/programs/mdsc-in-data-science/" },
+    "网站开发": { reply: "I'll redirect you to the Web Development Bootcamp.", redirect: "/programs/web-development-bootcamp/" },
+    "人工智能": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "人工智能导论": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "商业": { reply: "We offer an MBA program, I'll redirect you to it.", redirect: "/programs/mba/" },
+    "学位": { reply: "I'll redirect you to our degree programs.", redirect: "/programs/" },
+    "项目": { reply: "You can find all of our programs on the Programs page.", redirect: "/programs/" },
+    "课程": { reply: "Our course offerings are listed on the Programs page.", redirect: "/programs/" },
+    "招生": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "申请": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "申请状态": { reply: "To check your application status, please log in to your student portal or contact Admissions.", redirect: "/admissions/" },
+    "截止日期": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "学费": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "费用": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "奖学金": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "助学金": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "经济资助": { reply: "I'll redirect you to our Funding and Scholarships page.", redirect: "/admissions/funding" },
+    "联系管理员": contactAdmin,
+    "错误": contactAdmin,
+    "支持": { reply: "I'm here to help! If you have a technical issue or need assistance, please describe your problem." },
+    "技术问题": contactAdmin,
+    "位置": { reply: "Our university is located in Canada. Visit our Contact Us page for the exact address.", redirect: "/contact/" },
+    "地址": { reply: "Our address details are available on our Contact Us page.", redirect: "/contact/" },
+    "帮助": { reply: "I'm here to help, what do you need help with?" },
+    "协助": { reply: "I'm here to help, what do you need help with?" },
+    "电子邮件": { reply: "Our email is nextgenuniversity@gmail.ca." },
+    "谢谢": politeReply,
+    "感谢": politeReply,
+    "你好": { reply: "Hello! How can I assist you today?" },
+    "您好": { reply: "Hello! How can I assist you today?" },
+    "嗨": { reply: "Hello! How can I assist you today?" },
+
+    // RUSSIAN (recognized keywords with English replies)
+    "студент": yesListener,
+    "уже студент": yesListener,
+    "не студент": noListener,
+    "записаться": noListener,
+    "регистрация": noListener,
+    "зарегистрироваться": { reply: "I'll redirect you to our Registration page.", redirect: "users/register/" },
+    "регистрация на курс": { reply: "I'll redirect you to the Registration page for courses.", redirect: "users/register/" },
+    "информация о программе": showEmailOption,
+    "инфо о программе": showEmailOption,
+    "бакалавриат": underGradListener,
+    "программа бакалавриата": underGradListener,
+    "магистратура": gradListener,
+    "программа магистратуры": gradListener,
+    "онлайн-курс": onlineStudiesListener,
+    "онлайн-курсы": onlineStudiesListener,
+    "компьютерные науки": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "информатика": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "экономика": { reply: "I'll redirect you to the economics program.", redirect: "/programs/ba-in-economics/" },
+    "наука о данных": { reply: "I'll redirect you to the Data Science program.", redirect: "/programs/mdsc-in-data-science/" },
+    "веб-разработка": { reply: "I'll redirect you to the Web Development Bootcamp.", redirect: "/programs/web-development-bootcamp/" },
+    "ии": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "введение в ии": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "бизнес": { reply: "We offer an MBA program, I'll redirect you to it.", redirect: "/programs/mba/" },
+    "степень": { reply: "I'll redirect you to our degree programs.", redirect: "/programs/" },
+    "программы": { reply: "You can find all of our programs on the Programs page.", redirect: "/programs/" },
+    "курсы": { reply: "Our course offerings are listed on the Programs page.", redirect: "/programs/" },
+    "поступление": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "заявка": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "подать заявку": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "статус заявки": { reply: "To check your application status, please log in to your student portal or contact Admissions.", redirect: "/admissions/" },
+    "срок": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "сроки": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "регистратура": { reply: "I'll redirect you to the Admissions and Registrar office.", redirect: "/admissions/" },
+    "плата за обучение": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "стоимость": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "расходы": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "стипендия": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "стипендии": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "грант": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "финансовая помощь": { reply: "I'll redirect you to our Funding and Scholarships page.", redirect: "/admissions/funding" },
+    "связаться с администратором": contactAdmin,
+    "ошибка": contactAdmin,
+    "поддержка": { reply: "I'm here to help! If you have a technical issue or need assistance, please describe your problem." },
+    "техническая проблема": contactAdmin,
+    "местоположение": { reply: "Our university is located in Canada. Visit our Contact Us page for the exact address.", redirect: "/contact/" },
+    "адрес": { reply: "Our address details are available on our Contact Us page.", redirect: "/contact/" },
+    "помощь": { reply: "I'm here to help, what do you need help with?" },
+    "содействие": { reply: "I'm here to help, what do you need help with?" },
+    "электронная почта": { reply: "Our email is nextgenuniversity@gmail.ca." },
+    "спасибо": politeReply,
+    "благодарю": politeReply,
+    "привет": { reply: "Hello! How can I assist you today?" },
+    "здравствуйте": { reply: "Hello! How can I assist you today?" },
+    "добрый день": { reply: "Hello! How can I assist you today?" },
+
+    // ARABIC (recognized keywords with English replies)
+    "طالب": yesListener,
+    "طالب بالفعل": yesListener,
+    "لست طالبًا": noListener,
+    "التسجيل": noListener,
+    "سجل": { reply: "I'll redirect you to our Registration page.", redirect: "users/register/" },
+    "تسجيل المقرر": { reply: "I'll redirect you to the Registration page for courses.", redirect: "users/register/" },
+    "معلومات البرنامج": showEmailOption,
+    "معلومات برنامج": showEmailOption,
+    "برنامج البكالوريوس": underGradListener,
+    "برنامج المرحلة الجامعية": underGradListener,
+    "برنامج الدراسات العليا": gradListener,
+    "برنامج الماجستير": gradListener,
+    "مقرر عبر الإنترنت": onlineStudiesListener,
+    "مقررات عبر الإنترنت": onlineStudiesListener,
+    "علوم الحاسوب": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "اقتصاد": { reply: "I'll redirect you to the economics program.", redirect: "/programs/ba-in-economics/" },
+    "علم البيانات": { reply: "I'll redirect you to the Data Science program.", redirect: "/programs/mdsc-in-data-science/" },
+    "تطوير الويب": { reply: "I'll redirect you to the Web Development Bootcamp.", redirect: "/programs/web-development-bootcamp/" },
+    "الذكاء الاصطناعي": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "مقدمة في الذكاء الاصطناعي": { reply: "I'll redirect you to Introduction to AI.", redirect: "/programs/introduction-to-ai/" },
+    "أعمال": { reply: "We offer an MBA program, I'll redirect you to it.", redirect: "/programs/mba/" },
+    "درجة علمية": { reply: "I'll redirect you to our degree programs.", redirect: "/programs/" },
+    "برامج": { reply: "You can find all of our programs on the Programs page.", redirect: "/programs/" },
+    "مقررات": { reply: "Our course offerings are listed on the Programs page.", redirect: "/programs/" },
+    "القبول": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "طلب": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "تقدم بطلب": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "حالة الطلب": { reply: "To check your application status, please log in to your student portal or contact Admissions.", redirect: "/admissions/" },
+    "موعد نهائي": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "مواعيد نهائية": { reply: "Application deadlines can be found on our Admissions page.", redirect: "/admissions/" },
+    "السجل": { reply: "I'll redirect you to the Admissions and Registrar office.", redirect: "/admissions/" },
+    "الرسوم الدراسية": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "تكلفة": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "تكاليف": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "منحة": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "منح": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "منحة دراسية": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "مساعدة مالية": { reply: "I'll redirect you to our Funding and Scholarships page.", redirect: "/admissions/funding" },
+    "اتصل بالمسؤول": contactAdmin,
+    "خطأ": contactAdmin,
+    "دعم": { reply: "I'm here to help! If you have a technical issue or need assistance, please describe your problem." },
+    "مشكلة فنية": contactAdmin,
+    "موقع": { reply: "Our university is located in Canada. Visit our Contact Us page for the exact address.", redirect: "/contact/" },
+    "عنوان": { reply: "Our address details are available on our Contact Us page.", redirect: "/contact/" },
+    "مساعدة": { reply: "I'm here to help, what do you need help with?" },
+    "بريد إلكتروني": { reply: "Our email is nextgenuniversity@gmail.ca." },
+    "شكرًا": politeReply,
+    "شكرا": politeReply,
+    "مرحبًا": { reply: "Hello! How can I assist you today?" },
+    "السلام عليكم": { reply: "Hello! How can I assist you today?" },
+    "أهلاً": { reply: "Hello! How can I assist you today?" },
+
+    // MONGOLIAN (recognized keywords with English replies)
+    "оюутан": yesListener,
+    "аль хэдийн оюутан": yesListener,
+    "оюутан биш": noListener,
+    "бүртгүүлэх": noListener,
+    "бүртгэл": { reply: "I'll redirect you to our Registration page.", redirect: "users/register/" },
+    "хичээлийн бүртгэл": { reply: "I'll redirect you to the Registration page for courses.", redirect: "users/register/" },
+    "програмын мэдээлэл": showEmailOption,
+    "компьютерийн ухаан": { reply: "I'll redirect you to the computer science program.", redirect: "/programs/bsc-in-computer-science/" },
+    "эдийн засаг": { reply: "I'll redirect you to the economics program.", redirect: "/programs/ba-in-economics/" },
+    "өгөгдлийн шинжлэх ухаан": { reply: "I'll redirect you to the Data Science program.", redirect: "/programs/mdsc-in-data-science/" },
+    "элсэлт": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "өргөдөл": { reply: "I'll redirect you to our Admissions page.", redirect: "/admissions/" },
+    "сурахын төлбөр": { reply: "Our costs are listed on each of our different programs. Which one are you interested in?" },
+    "тэтгэлэг": { reply: "To learn more about our scholarships and financial aid options, please visit our Scholarships and Funding page.", redirect: "/admissions/funding" },
+    "холбоо барих": { reply: "You can contact us via the Contact Us page.", redirect: "/contact/" },
+    "тусламж": { reply: "I'm here to help, what do you need help with?" },
+    "баярлалаа": politeReply,
+    "сайн уу": { reply: "Hello! How can I assist you today?" },
+    "мэнд": { reply: "Hello! How can I assist you today?" }
+};
+
+function politeReply() {
+    addToConversation('assistant', "No problem, I'm here to help!");
+}
+function checkIntentAndHandle(msg) {
+    msg = msg.toLowerCase().trim();
+
+    // 1. Exact match first
+    if (INTENT_DICTIONARY[msg]) {
+        const action = INTENT_DICTIONARY[msg];
+        handleAction(action, msg);
+        return true;
+    }
+
+    // 2. Keyword/substring match: look for any INTENT_DICTIONARY key inside the input
+    for (const key of Object.keys(INTENT_DICTIONARY)) {
+        // Skip matching if key is very short, to avoid false positives
+        if (key.length < 3) continue;
+        if (msg.includes(key)) {
+            const action = INTENT_DICTIONARY[key];
+            handleAction(action, key);
+            return true;
+        }
+    }
+
+    // 3. Fallback
+    addToConversation('assistant', "Sorry, I didn't recognize that. Please choose an option or try rephrasing your question.");
+    return false;
+}
+
+function handleAction(action, matchedKey = "") {
+    if (typeof action === "function") {
+        action();
+    } else if (typeof action === "object") {
+        if (action.reply) addToConversation('assistant', action.reply);
+        if (action.redirect) {
+            redirect(action.redirect, matchedKey || action.reply || "program");
+        }
+    }
+}
+function handleFreeTextInput() {
+    const inputEl = document.getElementById('chatbotFreeText');
+    const userMessage = inputEl.value.trim();
+    if (!userMessage) return;
+    addToConversation('user', userMessage);
+    inputEl.value = "";
+    checkIntentAndHandle(userMessage);
+}
 let transcriptSentFlag = false;
 const CHATBOT_TEXT = {
     assistant: "Assistant", you: "You", yes: "Yes", no: "No",
@@ -318,7 +849,6 @@ let pendingProgram = null;
 let resourceRequestInProgress = false;
 
 function getCookie(name) {
-    // ... unchanged ...
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         var cookies = document.cookie.split(';');
@@ -333,7 +863,6 @@ function getCookie(name) {
     return cookieValue;
 }
 function getCSRFToken() {
-    // ... unchanged ...
     return document.querySelector('[name=csrfmiddlewaretoken]')?.value || getCookie('csrftoken') || '';
 }
 function addToConversation(sender, message) {
@@ -565,6 +1094,7 @@ function redirect(path, programName){
     toggleFooter(false);
     addToConversation('user', `${programName}`);
     addToConversation('assistant', `${CHATBOT_TEXT.takingYouTo} ${programName} ${CHATBOT_TEXT.page}`);
+    sendTranscriptIfNeeded();
     setTimeout(() => {
         window.location.href = path;
     }, 1500);
@@ -676,7 +1206,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     footerDetails.style.display = checkbox.checked ? 'block' : 'none';
-
+    document.getElementById('chatbotSend').onclick = handleFreeTextInput;
+    document.getElementById('chatbotFreeText').addEventListener('keypress', function(e) {
+        if (e.key === "Enter") handleFreeTextInput();
+    });
     const chatbotModal = document.getElementById('chatbotModal');
     chatbotModal.addEventListener('hidden.bs.modal', function () {
         sendTranscriptIfNeeded();

@@ -18,7 +18,7 @@
     <div class="row">
 
         <!-- LEFT COLUMN: Programs List -->
-        <div class="col-md-3 mb-4">
+        <div class="col-md-3 mb-4" id="programs-sidebar">
         <div class="card shadow-sm p-3">
             <h5 class="fw-bold mb-3">Programs List</h5>
 
@@ -37,17 +37,17 @@
                     <div class="accordion-body">
                         {% if programs %}
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item px-0">
-                                    {% for program in programs %}
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            {% if program.program_type.name == category %}
+                                {% for program in programs %}
+                                    {% if program.program_type.name == category %}
+                                        <li class="list-group-item px-0">
+                                            <div class="d-flex justify-content-between align-items-center">
                                                 <a href="{% url 'pages:program_detail' program.slug %}" class="text-decoration-none fw-semibold text-dark">
                                                     {{ program.name }}
                                                 </a>
-                                            {% endif %}
-                                        </div>
-                                    {% endfor %}
-                                </li>
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
                             </ul>
                             {% else %}
                             <p class="text-muted">No programs available.</p>
@@ -62,7 +62,7 @@
 
 
         <!-- Main Programs Info -->
-        <div class="col-md-8 mb-4">
+        <div class="col-md-8 mb-4" id="programs-main">
         <h3 class="fw-bold">Our Programs</h3>
         <p>
             Explore the undergraduate and graduate programs offered at
