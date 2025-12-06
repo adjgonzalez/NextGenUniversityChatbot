@@ -1,6 +1,6 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light py-3" style="position:relative;">
-  <div class="container d-flex flex-row align-items-center justify-content-between position-relative" style="min-width:400px;">
+  <div class="container d-flex flex-row align-items-center justify-content-start position-relative" style="min-width:400px;">
     <!-- Logo -->
     <a class="navbar-brand" href="/">
       <img src="{% static 'images/logo.png' %}" alt="Logo" class="navbar-logo d-inline-block align-text-top">
@@ -20,8 +20,8 @@
       </ul>
     </div>
     <!-- Right: Language, Register/Login -->
-    <div class="navbar-nav">
-      <select name="language" id="googleLangSelect" class="form-select form-select-sm" style="width:auto;">
+    <div class="navbar-nav navbar-controls ms-auto">
+      <select name="language" id="googleLangSelect" class="form-select form-select-sm" style="background-color: #F7E396; color: #212529; width:auto;">
         <option value="en">English</option>
         <option value="fr">Français</option>
         <option value="es">Español</option>
@@ -51,7 +51,6 @@
         </a>
       {% endif %}
     </div>
-
     <!-- Mobile Hamburger Menu (hidden by default, absolute for overlay) -->
     <div class="navbar-links-mobile">
       <ul>

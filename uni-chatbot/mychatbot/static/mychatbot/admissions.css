@@ -9,32 +9,42 @@ body {
   --primary-color: #b9625d;
 }
 
-/* Sidebar items */
+/* Sidebar items container */
 .list-group {
   box-shadow: none !important;
   border: none;
   border-radius: 0;
+  background: transparent;
 }
 
+/* Sidebar item base style */
 .list-group-item {
   color: #003366;
-  font-weight: 0;
+  font-weight: 400;
   border: none;
   border-radius: 0;
-  transition: color 0.3s;
-  background-color: transparent;
+  background: transparent;
+  transition: color 0.25s, background 0.18s;
+  padding-left: 18px;
+  position: relative;
+  box-shadow: none;
+  z-index: 1;
 }
 
-.list-group-item:hover {
-  color: var(--primary-color);
-  background-color: transparent !important;
-}
-
+/* Highlight observed for hover or active state */
+.list-group-item:hover,
+.list-group-item:focus,
 .list-group-item.active {
-  color: var(--primary-color);
+  /* Blue to blue gradient */
+  background: linear-gradient(90deg, #556FB5 0%, #4c79f5 100%) !important;
+  color: #fff !important;
   font-weight: 650;
-  background-color: transparent !important;
-  border: none !important;
+  border-left: 4px solid #34539e;  /* optional: strong left border */
+  z-index: 2;
+}
+
+.list-group-item:not(.active) {
+  border-left: 4px solid transparent;
 }
 
 /* Main content area */
@@ -45,14 +55,14 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-/* Optional: Sidebar container spacing */
+/* Sidebar container spacing */
 aside {
   padding: 10px 0;
 }
 
 /* Main Heading - first heading */
 .main-heading {
-  color: var(--primary-color); /* Use your primary color #b9625d */
+  color: var(--primary-color);
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 20px;
@@ -98,26 +108,29 @@ aside {
   padding: 0;
 }
 
-/* Breadcrumb links */
+/* Breadcrumb links: neutral blue, no salmon */
 #admissions-breadcrumb .breadcrumb-item a {
-  color: #b9625d !important;
+  color: #003366 !important;
   text-decoration: none !important;
-  font-weight: 300;
+  font-weight: 400;
+  background: none !important;
 }
 
 /* Hover state for links */
 #admissions-breadcrumb .breadcrumb-item a:hover {
-  color: #ddb8b6 !important;
+  color: #19527a !important;
   text-decoration: underline !important;
+  background: none !important;
 }
 
 /* Active breadcrumb (current page) */
 #admissions-breadcrumb .breadcrumb-item.active {
-  color: #6c3f3b !important;
-  font-weight: 300;
+  color: #666 !important;
+  font-weight: 400;
+  background: none !important;
 }
 
 /* Reduce spacing between breadcrumb items */
 #admissions-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
-  padding: 0 4px; /* spacing between separator and text */
+  padding: 0 4px;
 }

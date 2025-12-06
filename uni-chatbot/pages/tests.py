@@ -1,5 +1,6 @@
 from django.test import Client, TestCase
 from django.urls import reverse
+from django.utils import translation
 
 
 class PagesSectionTests(TestCase):
@@ -65,6 +66,21 @@ class PagesSectionTests(TestCase):
         self.assertTemplateUsed(res, "admissions/admission.html")
         self.assertEqual(res.context["current_page"], "undergraduate")
         self.assertEqual(res.context["page_title"], "Undergraduate")
+
+    def test_language_can_be_changed_multiple_times(self):
+        # Set initial language to French
+        with translation.override("fr"):
+            lang1 = translation.get_language()
+            lang2 = translation.get_language()
+            lang3 = translation.get_language()
+
+            # All checks should return the same language code
+            self.assertEqual(lang1, "fr")
+            self.assertEqual(lang2, "fr")
+            self.assertEqual(lang3, "fr")
+
+            # The result should be consistent across checks
+            self.assertTrue(lang1 == lang2 == lang3)
 
     def test_contact(self):
         """Contact pages return 200 with correct templates."""

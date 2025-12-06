@@ -5,6 +5,48 @@
 {% block title %}{{ program.name }}{% endblock %}
 
 {% block content %}
+<style>
+:root {
+  --squash-bg: #f4b942;
+  --squash-hover: #e8a521;
+  --squash-text: #473a20;
+}
+
+.program-info-card {
+  background: #fff;
+  border-radius: 18px;
+  color: #333;
+  box-shadow: 0 2px 14px 0 rgba(80,60,0,0.09);
+  border: 1.2px solid #eee;
+  padding: 27px 22px 24px 22px;
+}
+
+.program-info-card h5,
+.program-info-card .fw-bold {
+  color: var(--squash-text);
+}
+
+#apply-btn {
+  background: var(--squash-bg);
+  color: var(--squash-text);
+  border: 2px solid var(--squash-hover);
+  font-weight: bold;
+  transition: background 0.18s, color 0.18s;
+}
+
+#apply-btn:hover,
+#apply-btn:focus {
+  background: var(--squash-hover);
+  color: #fff;
+  border-color: var(--squash-hover);
+}
+
+#apply-feedback {
+  font-weight: 600;
+  min-height: 28px;
+}
+</style>
+
 <div class="container mt-5">
 
   <!-- Breadcrumb -->
@@ -49,21 +91,29 @@
 
     <!-- RIGHT COLUMN: Program Information -->
     <div class="col-md-4">
-      <div class="card shadow-sm p-3">
+      <div class="program-info-card shadow-sm">
         <h5 class="fw-bold mb-3">Program Information</h5>
         <p><strong>Degrees Offered:</strong> {{ program.degree }}</p>
-        <p><strong>Routes:</strong> Course-based</p>
-        <p><strong>Enrollment Status:</strong> Full-time</p>
-        <p><strong>Campus:</strong> St. John’s</p>
+        <p><strong>Routes:</strong> {{ program.routes|default:"Course-based" }}</p>
+        <p><strong>Enrollment Status:</strong> {{ program.enrollment_status|default:"Full-time" }}</p>
+        <p><strong>Campus:</strong> {{ program.campus|default:"St. John’s" }}</p>
         <p><strong>Application Deadline:</strong><br>
           April 1 (International) for Fall admission<br>
           May 1 (Canadian) for Fall admission
         </p>
         <form id="apply-form" method="POST" action="{% url 'pages:apply_now' %}">
           {% csrf_token %}
-          <input type="hidden" name="program" value='{{ program_json |safe }}'>
-          <button type="submit" class="btn btn-outline-secondary w-100" aria-label="Apply Now" title="Apply Now">Apply Now</button>
+          <input type="hidden" name="program" value='{{ program_json|safe }}'>
+          <button
+            type="submit"
+            class="btn w-100"
+            id="apply-btn"
+            aria-label="Apply Now"
+            title="Apply Now">
+            Apply Now
+          </button>
         </form>
+        <div id="apply-feedback" class="mt-2"></div>
       </div>
     </div>
 
@@ -74,14 +124,31 @@
 </div> <!-- end container -->
 
 <script>
-  document.getElementById("apply-form").addEventListener("submit", function(e) {
+document.addEventListener("DOMContentLoaded", function() {
+  const form = document.getElementById("apply-form");
+  if (!form) return;
+
+  const button = document.getElementById("apply-btn");
+  const feedback = document.getElementById("apply-feedback");
+
+  form.addEventListener("submit", function(e) {
     e.preventDefault();  // prevent page reload
+    if (!button || !feedback) return;
 
-    const form = e.target;
     const raw = form.querySelector("input[name='program']").value;
-    const program = JSON.parse(raw);
+    let program;
+    try {
+      program = JSON.parse(raw);
+    } catch (err) {
+      feedback.textContent = "Invalid program data.";
+      feedback.style.color = "red";
+      return;
+    }
 
-    fetch("{% url 'pages:apply_now' %}", {
+    button.disabled = true;
+    button.innerText = "Submitting...";
+
+    fetch(form.action, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -97,15 +164,24 @@
       }
     })
     .then(data => {
+      button.disabled = false;
+      button.innerText = "Apply Now";
       if (data?.message) {
-        alert(data.message);
+        feedback.textContent = data.message;
+        feedback.style.color = "green";
+      } else {
+        feedback.textContent = "Application submitted!";
+        feedback.style.color = "green";
       }
     })
     .catch(err => {
+      button.disabled = false;
+      button.innerText = "Apply Now";
+      feedback.textContent = "Something went wrong.";
+      feedback.style.color = "red";
       console.error("Error:", err);
-      alert("'Something went wrong.'");
     });
   });
+});
 </script>
-
 {% endblock %}

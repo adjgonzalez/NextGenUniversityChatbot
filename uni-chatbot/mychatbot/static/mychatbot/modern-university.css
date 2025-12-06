@@ -483,3 +483,53 @@ label {
     max-height: 160px !important;
   }
 }
+.enroll-btn {
+  background: var(--squash-bg, #f4b942) !important;
+  color: var(--squash-text, #473a20) !important;
+  border: 2px solid var(--squash-hover, #e8a521) !important;
+}
+#programs-main .list-group-item:hover,
+#programs-main .list-group-item.active {
+    background: linear-gradient(100deg, #556FB5 60%, #A9B5D3 100%) !important;
+    color: #fff !important;
+}
+#programs-main .list-group-item:hover a,
+#programs-main .list-group-item.active a {
+    color: #fff !important;
+    text-decoration: none !important;
+}
+#programs-sidebar .list-group-item:hover,
+#programs-sidebar .list-group-item.active {
+  background: linear-gradient(100deg, var(--primary) 60%, var(--secondary) 100%) !important;
+  color: #fff !important;
+  border-radius: 8px;
+  transition: background 0.17s, color 0.11s;
+}
+#programs-sidebar .list-group-item:hover a,
+#programs-sidebar .list-group-item.active a {
+  color: #fff !important;
+  text-decoration: none !important;
+}
+#programs-sidebar .list-group-item {
+  cursor: pointer;
+}
+#programs-sidebar .list-group-item {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-clip: padding-box;
+    margin-bottom: 6px;
+}
+
+.enroll-btn:hover,
+.enroll-btn:focus {
+  background: var(--squash-hover, #e8a521) !important;
+  color: #fff !important;
+}
+#googleLangSelect {
+  background-color: #F7E396 !important;
+  color: #212529 !important;
+  font-weight: bold;
+}
+#programs-main, #programs-main * {
+  color: #111 !important;
+}
