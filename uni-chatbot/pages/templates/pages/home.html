@@ -1,35 +1,151 @@
 {% extends "base/base.html" %}
-{% comment %} Extends needs to be first line {% endcomment %}
 {% load static %}
-{% comment %} Tells django to use the css styles from static {% endcomment %}
 {% load i18n %}
 {% block title %}
 Home Page
 {% endblock %}
 
 {% block content %}
-    <section class="hero-section container-fluid">
-        <div class="row align-items-center">
-          <!-- Left Side -->
-          <div class="col-lg-6 col-md-12 hero-content">
-            <!-- Enroll Now button -->
-            <span class="enroll-btn">Enroll Now</span>
+<style>
+.carousel-item .row,
+.carousel-item .hero-content {
+  overflow: visible !important;
+}
 
+.enroll-btn:hover,
+.enroll-btn:focus {
+  z-index: 1000 !important;
+  position: relative;
+  transform: scale(1.06);
+  box-shadow: 0 0 16px #5b99f6a0;
+  outline: none;
+}
+
+.hero-image .carousel-inner img {
+  max-height: 400px;
+  object-fit: cover;
+}
+.enroll-btn {
+  display: inline-block;
+  margin-bottom: 10px;
+  transition: transform 0.15s, box-shadow 0.18s;
+}
+</style>
+
+<div class="container-fluid hero-section">
+  <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+    <div class="carousel-inner">
+
+      <!-- Slide 1 -->
+      <div class="carousel-item active">
+        <div class="row align-items-center">
+          <div class="col-lg-6 col-md-12 hero-content">
+            <button class="btn btn-warning enroll-btn" id="enrollNowBtn" type="button">Enroll Now</button>
             <h1>
               YOUR <span class="swatch-word">COMEBACK</span> STARTS<br>
               <small>NOW WITH NextGen University</small>
             </h1>
-
             <p>Reignite your career with hands-on learning and expert mentorship. Start your journey today.</p>
           </div>
-
-          <!-- Right Side -->
           <div class="col-lg-6 col-md-12 hero-image text-center">
-            <img src="{% static 'images/group.png' %}" alt="'Hero Banner'" class="img-fluid">
+            <img src="{% static 'images/group.png' %}" class="img-fluid" alt="Hero Image 1">
           </div>
         </div>
-    </section>
+      </div>
 
-    <!-- Floating Chat Button -->
-    {% include "base/chatbox.html" %}
+      <!-- Slide 2 -->
+      <div class="carousel-item">
+        <div class="row align-items-center">
+          <div class="col-lg-6 col-md-12 hero-content">
+            <a href="/programs/web-development-bootcamp/" class="btn btn-success enroll-btn" style="margin-bottom: 10px;">Apply Now</a>
+            <h1>
+              UNLOCK <span class="swatch-word">YOUR POTENTIAL</span><br>
+              <small>Personalized Learning Paths</small>
+            </h1>
+            <p>Discover flexible programs tailored for busy professionals. Find your fit and succeed at your own pace!</p>
+          </div>
+          <div class="col-lg-6 col-md-12 hero-image text-center">
+            <img src="{% static 'images/group2.jpg' %}" class="img-fluid" alt="Hero Image 2">
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="carousel-item">
+        <div class="row align-items-center">
+          <div class="col-lg-6 col-md-12 hero-content">
+            <a href="/programs/" class="btn btn-primary enroll-btn" style="margin-bottom: 10px;">Get Started</a>
+            <h1>
+              EXPLORE <span class="swatch-word">NEW FIELDS</span><br>
+              <small>NextGen University Programs</small>
+            </h1>
+            <p>Advance in high-demand industries with expert faculty and a supportive community.</p>
+          </div>
+          <div class="col-lg-6 col-md-12 hero-image text-center">
+            <img src="{% static 'images/group3.jpg' %}" class="img-fluid" alt="Hero Image 3">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Carousel controls and indicators -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Chat Button -->
+{% include "base/chatbox.html" %}
 {% endblock %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var enrollBtn = document.getElementById('enrollNowBtn');
+  if (enrollBtn) {
+    enrollBtn.addEventListener('click', function() {
+      var chatbotModalEl = document.getElementById('chatbotModal');
+      if (chatbotModalEl) {
+        var chatbotModal = bootstrap.Modal.getOrCreateInstance(chatbotModalEl);
+        chatbotModal.show();
+
+        setTimeout(function() {
+          try {
+            if (typeof hideAllButtons === 'function') {
+              hideAllButtons();
+            }
+            if (typeof addToConversation === 'function') {
+              addToConversation('user', "I want to Enroll!");
+              addToConversation('assistant', "Sure, which type of program are you interested in?");
+            }
+            if (typeof showButtons === 'function') {
+              showButtons(`
+                <button class="btn btn-outline-primary program-option" onclick="underGradListener()">
+                  🎓 Undergraduate
+                </button>
+                <button class="btn btn-outline-primary program-option" onclick="gradListener()">
+                  📖 Graduate
+                </button>
+                <button class="btn btn-outline-primary program-option" onclick="onlineStudiesListener()">
+                  🌐 Online Courses
+                </button>
+              `);
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        }, 350); // Allow modal animation to finish
+      }
+    });
+  }
+});
+</script>

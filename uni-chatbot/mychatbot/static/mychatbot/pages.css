@@ -1,30 +1,23 @@
-/* Navbar alignment fix */
+/* --- Navbar Styles --- */
 .navbar-nav .nav-item {
   display: flex;
   align-items: center;
 }
 
-/* Default link style */
 .navbar-nav .nav-link {
-  color: #fff !important; /* Make all nav links white */
+  color: #fff !important;
   padding: 10px 15px;
   text-decoration: none;
   vertical-align: middle;
 }
-
-/* Hover effect */
 .navbar-nav .nav-link:hover {
   color: #f8f8f8 !important;
 }
-
-/* Active link style */
 .navbar-nav .nav-link.active {
   color: #fff !important;
   font-weight: bold;
   text-decoration: underline;
 }
-
-/* Remove blue link focus outline */
 .navbar-nav .nav-link:focus,
 .navbar-nav .nav-link:visited,
 .navbar-nav .nav-link:active {
@@ -33,8 +26,7 @@
   outline: none;
 }
 
-/* === Programs Page Styling === */
-
+/* --- Programs Page Styling --- */
 .programs-container {
   padding-top: 40px;
   padding-bottom: 40px;
@@ -54,7 +46,6 @@
   font-weight: 500;
   transition: all 0.2s ease-in-out;
 }
-
 .programs-list .program-link:hover {
   color: #a43d3d;
   text-decoration: underline;
@@ -65,24 +56,13 @@
   border: 1px solid #e0e0e0;
   background-color: #fff;
 }
+.card h5 { color: #2e2e2e; }
+.card p { margin-bottom: 8px; }
 
-.card h5 {
-  color: #2e2e2e;
-}
+.container ul { padding-left: 20px; }
 
-.card p {
-  margin-bottom: 8px;
-}
-
-.container ul {
-  padding-left: 20px;
-}
-
-/* For smaller screens */
 @media (max-width: 768px) {
-  .programs-container .card {
-    margin-bottom: 20px;
-  }
+  .programs-container .card { margin-bottom: 20px; }
 }
 
 .program-link {
@@ -91,105 +71,206 @@
   font-weight: 600;
   cursor: pointer;
 }
-
-.program-link:hover {
-  color: #007bff;
-}
-
+.program-link:hover { color: #007bff; }
 .nested-link {
   text-decoration: none;
   color: #555;
   display: block;
   padding: 3px 0;
 }
+.nested-link:hover { color: #007bff; }
+.bi { transition: transform 0.3s ease; }
+a[aria-expanded="true"] .bi { transform: rotate(180deg); }
+.program-link[aria-expanded="true"] .bi { transform: rotate(180deg); }
 
-.nested-link:hover {
-  color: #007bff;
-}
-
-.bi {
-  transition: transform 0.3s ease;
-}
-
-a[aria-expanded="true"] .bi {
-  transform: rotate(180deg);
-}
-
-.program-link {
-  text-decoration: none;
-  color: #333;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.program-link:hover {
-  color: #007bff;
-}
-
-.nested-link {
-  text-decoration: none;
-  color: #555;
-  display: block;
-  padding: 3px 0;
-}
-
-.nested-link:hover {
-  color: #007bff;
-}
-
-.bi {
-  transition: transform 0.3s ease;
-}
-
-/* Rotate arrow on expand */
-.program-link[aria-expanded="true"] .bi {
-  transform: rotate(180deg);
-}
-
-.breadcrumb {
-  background-color: transparent !important;
-}
-
+/* --- Breadcrumb Styling --- */
+.breadcrumb { background-color: transparent !important; }
 .breadcrumb-item a {
-  color: #0d6efd !important; /* Bootstrap blue for links */
+  color: #0d6efd !important;
   text-decoration: none;
 }
-
-.breadcrumb-item a:hover {
-  text-decoration: underline;
-}
-
+.breadcrumb-item a:hover { text-decoration: underline; }
 .breadcrumb-item.active {
-  color: #212529 !important; /* standard dark text for the active breadcrumb */
+  color: #212529 !important;
   font-weight: 500;
 }
-
-/* Force breadcrumb text to be visible and consistent */
 nav.breadcrumb-nav,
 nav[aria-label="breadcrumb"] .breadcrumb {
   background-color: transparent !important;
   padding: 0;
   margin-bottom: 1rem;
 }
-
-/* All breadcrumb items */
-.breadcrumb-item {
-  color: #212529 !important; /* readable dark text */
-  font-weight: 500;
-}
-
-/* Breadcrumb links */
+.breadcrumb-item { color: #212529 !important; font-weight: 500; }
 .breadcrumb-item a {
-  color: #0d6efd !important; /* Bootstrap blue */
+  color: #0d6efd !important;
   text-decoration: none !important;
 }
-
 .breadcrumb-item a:hover {
   text-decoration: underline !important;
-  color: #0a58ca !important; /* darker hover blue */
+  color: #0a58ca !important;
+}
+.breadcrumb-item.active { color: #212529 !important; }
+
+/* --- Carousel Controls Flush to Edges + More Transparent --- */
+#heroCarousel .carousel-control-prev,
+#heroCarousel .carousel-control-next {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+  opacity: 0.55; /* More transparent by default */
+  transition: opacity 0.2s;
+  background: none;
+  box-shadow: none;
+}
+#heroCarousel .carousel-control-prev { left: -25px; }
+#heroCarousel .carousel-control-next { right: -25px; }
+#heroCarousel .carousel-control-prev-icon,
+#heroCarousel .carousel-control-next-icon {
+  width: 40px;
+  height: 40px;
+  background-size: 40px 40px;
+  background-color: rgba(0,0,0,0.15); /* More transparent arrow icon */
+  border-radius: 50%;
+}
+#heroCarousel .carousel-control-prev:hover,
+#heroCarousel .carousel-control-next:hover {
+  opacity: 0.90;
+}
+@media (max-width: 600px) {
+  #heroCarousel .carousel-control-prev { left: 0; }
+  #heroCarousel .carousel-control-next { right: 0; }
+  #heroCarousel .carousel-control-prev-icon,
+  #heroCarousel .carousel-control-next-icon {
+    width: 32px;
+    height: 32px;
+    background-size: 32px 32px;
+  }
 }
 
-/* Active breadcrumb (current page) */
-.breadcrumb-item.active {
-  color: #212529 !important; /* visible gray/black */
+/* --- Carousel Fixed Height for All Slides/Images (object-fit: contain, never cropped, show all image) --- */
+#heroCarousel,
+#heroCarousel .carousel-inner,
+#heroCarousel .carousel-item,
+#heroCarousel .row.align-items-center,
+.hero-image {
+  min-height: 400px;
+  max-height: 400px;
+  height: 400px;
+}
+.hero-image img,
+.hero-image .carousel-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #eee; /* Optional: letterbox background */
+  max-height: 400px;
+  min-height: 400px;
+  display: block;
+  margin: 0 auto;
+}
+@media (max-width: 768px) {
+  #heroCarousel,
+  #heroCarousel .carousel-inner,
+  #heroCarousel .carousel-item,
+  #heroCarousel .row.align-items-center,
+  .hero-image,
+  .hero-image img,
+  .hero-image .carousel-inner img {
+    min-height: 250px;
+    max-height: 250px;
+    height: 250px;
+  }
+}
+#googleLangSelect.form-select-sm,
+#googleLangSelect {
+  height: 38px !important;             /* Bootstrap btn height is 38px for default/small */
+  min-width: 110px;
+  font-size: 1rem !important;           /* Bootstrap btn font-size: 1rem */
+  padding: 6px 18px !important;         /* Vertical/horizontal padding very close to .btn */
+  border-radius: 10px !important;
+  line-height: 1.5 !important;          /* Bootstrap btn line-height is 1.5 */
+  vertical-align: middle !important;
+  margin-left: 8px !important;          /* Bootstrap btn spacing is usually 8px */
+  margin-right: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  background-color: #fff !important;
+  color: #212529 !important;
+  border: 1px solid #ced4da !important;
+  box-sizing: border-box;
+  display: inline-block;
+  appearance: none;                     /* Uniform look across browsers */
+}
+
+/* Optional: Remove background on focus to match Bootstrap outline-button */
+#googleLangSelect:focus {
+  border-color: #86b7fe !important;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+}
+
+/* On very small screens shrink the combobox as well */
+@media (max-width: 600px) {
+  #googleLangSelect.form-select-sm,
+  #googleLangSelect {
+    height: 32px !important;
+    font-size: 0.92rem !important;
+    min-width: 70px;
+    padding: 4px 10px !important;
+  }
+}
+/* Sidebar panel */
+.sidebar-section, aside.sidebar {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(85,111,181,0.08);
+  padding: 24px 18px 10px 18px;
+  margin-bottom: 18px;
+}
+
+/* Main vertical navigation group */
+.list-group {
+  background: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 10px;
+  padding: 0;
+}
+
+/* Each clickable item */
+.list-group-item {
+  color: var(--primary);
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  margin-bottom: 8px;
+  padding: 14px 18px;
+  font-size: 1.08rem;
+  transition: background 0.18s, color 0.13s, box-shadow 0.16s;
+  box-shadow: 0 1px 4px 0 rgba(169,181,211,0.07);
+}
+
+.list-group-item:hover,
+.list-group-item:focus {
+  background: linear-gradient(98deg, var(--accent) 80%, var(--secondary) 100%);
+  color: var(--primary);
+  box-shadow: 0 2px 10px 0 rgba(85,111,181,0.08);
+  text-decoration: none;
+}
+
+/* Strong highlight for current/active */
+.list-group-item.active,
+.list-group-item.active:focus,
+.list-group-item.active:hover {
+  background: linear-gradient(92deg, var(--primary) 80%, var(--highlight) 100%);
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 3.5px 16px 0 rgba(85,111,181,0.10);
+  border: none;
 }
