@@ -4,6 +4,16 @@
 {% block title %}Programs{% endblock %}
 
 {% block content %}
+{% comment %} <div class="container-fluid my-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="py-1 ps-3 mb-2">
+        <ol class="breadcrumb" id="admissions-breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'pages:index' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'pages:admissions' %}">Admissions</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ page_title }}</li>
+        </ol>
+    </nav>
+</div> {% endcomment %}
 <div class="container mt-5">
     <div class="row">
 
