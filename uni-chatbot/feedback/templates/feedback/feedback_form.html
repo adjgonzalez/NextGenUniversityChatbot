@@ -2,16 +2,16 @@
 {% block title %}Feedback{% endblock %}
 {% load i18n %}
 {% block content %}
-<div class="container py-5">
+<div class="container">
   <div class="row justify-content-center">
     <div class="col-12 col-md-10 col-lg-8 col-xl-7">
       
      
       <div class="card shadow-lg border-0" style="border-radius: 1rem;">
-        <div class="card-body p-4 p-md-5">
+        <div class="card-body p-4 p-md-1">
 
-          <h1 class="h2 text-center mb-4">Leave Your Feedback</h1>
-          <p class="text-center text-muted mb-5">We value your opinion and will use it to improve our services.</p>
+          <h1 class="h2 text-center mb-2">Leave Your Feedback</h1>
+          <p class="text-center text-muted mb-3">We value your opinion and will use it to improve our services.</p>
 
           <form action="{% url 'feedback_form' %}" method="POST">
             {% csrf_token %}
