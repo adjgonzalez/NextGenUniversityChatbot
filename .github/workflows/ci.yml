@@ -57,11 +57,11 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: uni-chatbot/coverage.xml
 
-    - name: Upload coverage.xml as artifact
-      uses: actions/upload-artifact@v4
+    - name: Upload coverage artifact
+      uses: actions/upload-artifact@v3
       with:
-        name: coverage-xml
-        path: uni-chatbot/coverage.xml
+        name: coverage-${{ github.run_id }}
+        path: ./coverage/
 
 # ===== INTEGRATION TESTS =====
   integration-tests:
