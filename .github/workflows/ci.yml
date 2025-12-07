@@ -51,42 +51,28 @@ jobs:
         coverage run manage.py test
         coverage xml
 
-    # --- Diagnostic step added: inspect release assets and checksums before the action runs ---
-    - name: Debug Coveralls release assets and checksums
+    - name: Install coveralls CLI
       run: |
-        set -x
-        TAG="v1.9.0"
-        echo "Checking direct checksum URL for tag: $TAG"
-        curl -svI "https://github.com/coverallsapp/coverage-reporter/releases/download/${TAG}/coveralls-checksums.txt" || true
-        echo "Fetching checksum file body (if present):"
-        curl -s "https://github.com/coverallsapp/coverage-reporter/releases/download/${TAG}/coveralls-checksums.txt" || true
+        cd uni-chatbot
+        python -m pip install --upgrade pip
+        pip install coveralls
 
-        echo "Querying GitHub Releases API for tag: $TAG (lists asset names and download urls)"
-        curl -s "https://api.github.com/repos/coverallsapp/coverage-reporter/releases/tags/${TAG}" | sed -n '1,200p' | grep -E '"name"|"browser_download_url"' || true
-
-        echo "Querying latest release assets (for comparison)"
-        curl -s "https://api.github.com/repos/coverallsapp/coverage-reporter/releases/latest" | sed -n '1,200p' | grep -E '"name"|"browser_download_url"' || true
-
-        echo "Check generic download URLs that the action may use (headers):"
-        for f in coveralls-linux-x86_64.tar.gz coveralls-linux-aarch64.tar.gz coveralls-linux.tar.gz coveralls-darwin-amd64.tar.gz coveralls-windows-amd64.zip; do
-          echo "HEAD for ${f}"
-          curl -sI "https://github.com/coverallsapp/coverage-reporter/releases/download/${TAG}/${f}" || true
-        done
-      shell: bash
-
-    - name: Upload coverage to Coveralls
-      uses: coverallsapp/github-action@v2.3.6
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: uni-chatbot/coverage.xml
-        coverage-reporter-version: "v1.9.0"
-        fail-on-error: false
+    - name: Send coverage to Coveralls (via coveralls CLI)
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      run: |
+        cd uni-chatbot
+        # coveralls CLI reads the .coverage data produced by `coverage run` and posts it.
+        # Run with --verbose while debugging if needed.
+        coveralls || python -m coveralls || (echo "Coveralls upload failed" && exit 1)
+    # ------------------------------------------------------------------------------
 
     - name: Upload coverage artifact
       uses: actions/upload-artifact@v4
       with:
-        name: coverage-${{ github.run_id }}
-        path: ./coverage/
+        name: coverage-${{ github.run_id }}-${{ github.job }}-${{ matrix.python-version }}
+        path: uni-chatbot/coverage.xml
+        retention-days: 7
 
 # ===== INTEGRATION TESTS =====
   integration-tests:
