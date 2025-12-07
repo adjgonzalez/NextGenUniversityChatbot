@@ -49,26 +49,18 @@ jobs:
       run: |
         cd uni-chatbot
         coverage run manage.py test
-        coverage xml
+        coverage xml -o coverage.xml
 
-    - name: Install coveralls CLI
-      run: |
-        cd uni-chatbot
-        python -m pip install --upgrade pip
-        pip install coveralls
-
-    - name: Send coverage to Coveralls (via coveralls CLI)
-      env:
-        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-      run: |
-        cd uni-chatbot
-        # coveralls CLI reads the .coverage data produced by `coverage run` and posts it.
-        # Run with --verbose while debugging if needed.
-        coveralls || python -m coveralls || (echo "Coveralls upload failed" && exit 1)
-    # ------------------------------------------------------------------------------
+    - name: Upload coverage to Coveralls
+      uses: coverallsapp/github-action@v2.3.6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: uni-chatbot/coverage.xml
+        fail-on-error: false
 
     - name: Upload coverage artifact
       uses: actions/upload-artifact@v4
+      if: always()
       with:
         name: coverage-${{ github.run_id }}-${{ github.job }}-${{ matrix.python-version }}
         path: uni-chatbot/coverage.xml
@@ -94,24 +86,43 @@ jobs:
         cd uni-chatbot
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install coverage
 
     - name: Run migrations
       run: |
         cd uni-chatbot
         python manage.py migrate --noinput
 
-    - name: Run integration tests (explicit path)
+    - name: Run integration tests with coverage
       run: |
         cd uni-chatbot
-        # Explicitly run the integration_tests folder (the discovery that works for you)
-        python manage.py test -v 2 integration_tests
+        coverage run --source='.' manage.py test -v 2 integration_tests
+        coverage xml -o coverage.xml
+
+    - name: Debug coverage file
+      run: |
+        echo "Listing uni-chatbot/ to confirm coverage.xml:"
+        ls -la uni-chatbot || true
+        if [ -f "uni-chatbot/coverage.xml" ]; then
+          echo "uni-chatbot/coverage.xml exists"
+        else
+          echo "uni-chatbot/coverage.xml NOT found"
+        fi
 
     - name: Upload coverage artifact
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: coverage-${{ github.run_id }}-${{ github.job }}-${{ matrix.python-version }}
+        name: coverage-${{ github.run_id }}-${{ github.job }}
         path: uni-chatbot/coverage.xml
+        retention-days: 7
+
+    - name: Upload test artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: integration-test-logs
+        path: uni-chatbot/test_results/
         retention-days: 7
 
   # ===== E2E TESTS WITH ETHEREAL EMAIL =====
