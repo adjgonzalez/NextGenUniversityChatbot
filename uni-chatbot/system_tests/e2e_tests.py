@@ -1,7 +1,10 @@
 import os
 import random
+import sys
 
 from playwright.sync_api import sync_playwright
+
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__) + "/../"))
 
 
 def generate_test_username():
