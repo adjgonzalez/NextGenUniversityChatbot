@@ -106,12 +106,12 @@ jobs:
         # Explicitly run the integration_tests folder (the discovery that works for you)
         python manage.py test -v 2 integration_tests
 
-    - name: Upload test artifacts
+    - name: Upload coverage artifact
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: integration-test-logs
-        path: uni-chatbot/test_results/
+        name: coverage-${{ github.run_id }}-${{ github.job }}-${{ matrix.python-version }}
+        path: uni-chatbot/coverage.xml
         retention-days: 7
 
   # ===== E2E TESTS WITH ETHEREAL EMAIL =====
