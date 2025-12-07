@@ -2,6 +2,8 @@
 This guide will help you get started with development and ensure consistent code quality.
 
 # Development Setup
+
+
 # 1. Fork and Clone
 Fork the repository on GitHub, then:
 git clone https://github.com/your-username/university-chatbot-project
@@ -27,11 +29,12 @@ python manage.py createsuperuser  # If needed for admin access
 python manage.py loaddata fixtures/pages_data.json
 ```
 # 4. Code Quality Setup
-# Install pre-commit hooks (automatically formats code before commits)
+Install pre-commit hooks (automatically formats code before commits)
 ```
 pre-commit install
 ```
 # Development Workflow
+
 # 1. Create a Feature Branch
 
 git checkout -b feature/your-feature-name or git checkout -b fix/issue-description
@@ -47,7 +50,7 @@ Run the test suite
 python manage.py test
 ```
 # 4. Ensure Code Quality
-# Format code automatically
+Format code automatically
 ```
 black.
 ```
