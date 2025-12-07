@@ -49,19 +49,22 @@ jobs:
       run: |
         cd uni-chatbot
         coverage run manage.py test
-        coverage xml
+        coverage xml -o coverage.xml
 
     - name: Upload coverage to Coveralls
       uses: coverallsapp/github-action@v2.3.6
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: uni-chatbot/coverage.xml
+        fail-on-error: false
 
     - name: Upload coverage artifact
       uses: actions/upload-artifact@v4
+      if: always()
       with:
-        name: coverage-${{ github.run_id }}
-        path: ./coverage/
+        name: coverage-${{ github.run_id }}-${{ github.job }}-${{ matrix.python-version }}
+        path: uni-chatbot/coverage.xml
+        retention-days: 7
 
 # ===== INTEGRATION TESTS =====
   integration-tests:
@@ -69,39 +72,47 @@ jobs:
     name: Integration Tests (integration_tests folder)
     timeout-minutes: 15
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.11"
-        cache: 'pip'
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: 'pip'
 
-    - name: Install dependencies
-      run: |
-        cd uni-chatbot
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          cd uni-chatbot
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install coverage
 
-    - name: Run migrations
-      run: |
-        cd uni-chatbot
-        python manage.py migrate --noinput
+      - name: Run migrations
+        run: |
+          cd uni-chatbot
+          python manage.py migrate --noinput
 
-    - name: Run integration tests (explicit path)
-      run: |
-        cd uni-chatbot
-        # Explicitly run the integration_tests folder (the discovery that works for you)
-        python manage.py test -v 2 integration_tests
+      - name: Run integration tests with coverage and capture logs
+        run: |
+          cd uni-chatbot
+          # ensure test_results exists so upload-artifact always finds something
+          mkdir -p test_results
+          
+          # Run tests under coverage, capture stdout/stderr into a log file for artifact upload
+          # The tests will run once; coverage.xml will be produced afterwards.
+          coverage run --source='.' manage.py test -v 2 integration_tests 2>&1 | tee test_results/integration_tests.log
+          
+          # Generate coverage.xml into the test_results directory
+          coverage xml -o test_results/coverage.xml
 
-    - name: Upload test artifacts
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: integration-test-logs
-        path: uni-chatbot/test_results/
-        retention-days: 7
+      - name: Upload integration test artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-test-logs
+          path: uni-chatbot/test_results/
+          retention-days: 7
 
   # ===== E2E TESTS WITH ETHEREAL EMAIL =====
   e2e-smoke:
