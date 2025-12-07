@@ -93,7 +93,7 @@ def programs_detail(request, program_slug):
 
     return render(
         request,
-        "base/programs_detail1.html",
+        "base/programs_details.html",
         {"program": program, "program_json": program_json, "category": category},
     )
 

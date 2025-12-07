@@ -59,6 +59,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>const INTENT_DICTIONARY = {
     // ENGLISH
+    "feedback":{ reply: "I'll redirect you to our Feedback page.", redirect: "/feedback" },
     "student": yesListener,
     "already a student": yesListener,
     "not a student": noListener,
@@ -291,6 +292,7 @@
     "indirizzo": { reply: "Our address details are available on our Contact Us page.", redirect: "/contact/" },
     "aiuto": { reply: "I'm here to help, what do you need help with?" },
     "assistenza": { reply: "I'm here to help, what do you need help with?" },
+    "aiutarmi": { reply: "I'm here to help, what do you need help with?" },
     "posta elettronica": { reply: "Our email is nextgenuniversity@gmail.ca." },
     "grazie": politeReply,
     "grazie mille": politeReply,
@@ -341,6 +343,7 @@
     "technisches problem": contactAdmin,
     "standort": { reply: "Our university is located in Canada. Visit our Contact Us page for the exact address.", redirect: "/contact/" },
     "hilfe": { reply: "I'm here to help, what do you need help with?" },
+    "helfen": { reply: "I'm here to help, what do you need help with?" },
     "unterstützung": { reply: "I'm here to help, what do you need help with?" },
     "e-mail": { reply: "Our email is nextgenuniversity@gmail.ca." },
     "danke": politeReply,
@@ -349,7 +352,10 @@
     "guten tag": { reply: "Hello! How can I assist you today?" },
 
     // CHINESE (Simplified) (recognized keywords with English replies)
+    "请帮我注册": { reply: "I'll redirect you to the Registration page for courses.", redirect: "users/register/" },
+    "我要反馈": { reply: "I'll redirect you to our Feedback page.", redirect: "/feedback" },
     "学生": yesListener,
+    "请帮我帮助": { reply: "I'm here to help! If you have a technical issue or need assistance, please describe your problem." },
     "已经是学生": yesListener,
     "不是学生": noListener,
     "注册": noListener,
@@ -452,6 +458,7 @@
     "привет": { reply: "Hello! How can I assist you today?" },
     "здравствуйте": { reply: "Hello! How can I assist you today?" },
     "добрый день": { reply: "Hello! How can I assist you today?" },
+    "Обратная связь": { reply: "I'll redirect you to our Feedback page.", redirect: "/feedback" },
 
     // ARABIC (recognized keywords with English replies)
     "طالب": yesListener,
