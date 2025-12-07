@@ -1,3 +1,9 @@
+:root {
+  --squash-bg: #f4b942;
+  --squash-hover: #e8a521;
+  --squash-text: #473a20;
+}
+
 /* --- Modern Modal Container & Content --- */
 .chatbot-modern {
   font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
@@ -20,8 +26,6 @@
   font-weight: 600 !important;
   letter-spacing: 0.5px !important;
 }
-
-/* --- Modern Bubbles --- */
 #chatbotModal .chatbot-modern .alert,
 #chatbotModal .chatbot-modern .alert-info,
 #chatbotModal .chatbot-modern .alert-primary {
@@ -32,19 +36,31 @@
   padding: 12px 22px !important;
   word-break: break-word !important;
   margin-bottom: 9px !important;
+  clear: both !important;
 }
 #chatbotModal .chatbot-modern .alert-info {
   background: linear-gradient(120deg,#f4f7fb 92%,#e2e7f5 100%) !important;
   color: #312c47 !important;
+  display: block !important;
+  max-width: 90%;
+  margin-right: auto;
+  margin-left: 0;
+  border-radius: 8px 18px 18px 18px !important;
+  padding: 12px 22px !important;
 }
 #chatbotModal .chatbot-modern .alert-primary {
   background: linear-gradient(120deg,#c6655f 90%,#eaa199 100%) !important;
   color: #fff !important;
-  text-align: right !important;
+  text-align: left !important;
   box-shadow: 0 2px 14px #eed2cb2c !important;
+  display: inline-block !important;
+  float: right !important;
+  max-width: 85%;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  border-radius: 18px 18px 18px 8px !important;
+  padding: 12px 22px 12px 16px !important;
 }
-
-/* --- Decision, Option Rows, and Buttons --- */
 #chatbotModal .chatbot-modern .gap-2,
 #chatbotModal .chatbot-modern .mt-2,
 #chatbotModal .chatbot-modern .d-flex {
@@ -62,8 +78,6 @@
 #chatbotModal .chatbot-modern .d-flex button {
   margin: 2px 0 !important;
 }
-
-/* --- ALL Buttons (with specificity + important to override Bootstrap) --- */
 #chatbotModal .chatbot-modern .btn,
 #chatbotModal .chatbot-modern button,
 #chatbotModal .btn,
@@ -101,8 +115,6 @@
   color: #fff !important;
   border-color: #556FB5 !important;
 }
-
-/* --- Inputs and Selects --- */
 #chatbotModal .chatbot-modern .form-control,
 #chatbotModal .chatbot-modern .form-select {
   border-radius: 8px !important;
@@ -117,8 +129,6 @@
   border-color: #556fb5 !important;
   outline: none !important;
 }
-
-/* --- Footer Area --- */
 #chatbotModal .chatbot-modern .modal-footer {
   border-top: 1px solid #e2e7f5 !important;
   background: #fff !important;
@@ -136,8 +146,6 @@
   margin-top: 4px !important;
   background: #f4f8fc !important;
 }
-
-/* --- Custom scrollbar for messages --- */
 #chatbotModal .chatbot-modern .modal-body {
   scrollbar-width: thin;
   scrollbar-color: #ddd #fff;
@@ -150,38 +158,55 @@
   background: #ddd;
   border-radius: 8px;
 }
-
-/* --- Floating chat open button --- */
-.chatbot-btn {
-  background: #4c79f5;
-  border-radius: 50% !important;
-  color: #fff;
-  font-size: 1.6rem;
-  width: 52px;
-  height: 52px;
+.chatbot-vertical-tab {
   position: fixed;
-  bottom: 32px;
-  right: 32px;
-  z-index: 1000;
-  box-shadow: 0 6px 24px rgba(76,121,245,0.13);
+  right: 0;
+  top: 70%;
+  z-index: 1050;
+  width: 140px;
+  height: 46px;
+  background: var(--squash-bg);
+  color: var(--squash-text);
   border: none;
+  border-radius: 12px 12px 0 0;
+  font-size: 1.15rem;
+  font-weight: bold;
+  box-shadow: 0 2px 18px rgba(80,60,0,0.14);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  transition: background 0.16s, box-shadow 0.18s;
+  outline: none;
+  transform: rotate(-90deg);
+  transform-origin: right bottom;
 }
-.chatbot-btn:hover {
-  background: #314ca2;
+.chatbot-vertical-tab:hover, .chatbot-vertical-tab:focus {
+  background: var(--squash-hover);
+  color: #fff;
+  box-shadow: 0 4px 28px 2px rgba(80,60,0,0.25);
 }
-#chatMessages .alert-primary {
-  display: inline-block;
-  max-width: 85%;
-  margin-left: auto;
-  margin-right: 0;
-  border-radius: 18px 18px 18px 3px;
-  padding: 0.5em 1em 0.5em 0.7em;
+@media (max-width:560px) {
+  .chatbot-vertical-tab {
+    width: 94px;
+    height: 33px;
+    font-size: 0.99rem;
+    top: auto;
+    bottom: 56px;
+  }
 }
-#chatMessages .alert-info {
-  display: block;
-  max-width: 90%;
-  margin-right: auto;
-  margin-left: 0;
-  border-radius: 8px 18px 18px 18px;
-  padding: 0.5em 1em 0.5em 1.1em;
+.btn-close-custom {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #7a592c;
+  background: transparent;
+  border: none;
+  padding: 0 .6rem;
+  line-height: 1;
+}
+.btn-close-custom:hover, .btn-close-custom:focus {
+  color: #b94c26;
+  background: #f6e0b8;
 }
