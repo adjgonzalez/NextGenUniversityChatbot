@@ -12,17 +12,20 @@ cd university-chatbot-project
 ```
 pip install -r requirements.txt
 ```
-# Set up environment variables
+# Set up environment variables (if testing Ethereal)
 ```
 cp .env.example .env
 ```
 Edit .env with your settings
 # 3. Database Setup
 ```
-cd uni-chatbot
 python manage.py migrate
-```
 python manage.py createsuperuser  # If needed for admin access
+```
+# 4. Load fixtures (baseline data)
+```
+python manage.py loaddata fixtures/pages_data.json
+```
 # 4. Code Quality Setup
 # Install pre-commit hooks (automatically formats code before commits)
 ```
