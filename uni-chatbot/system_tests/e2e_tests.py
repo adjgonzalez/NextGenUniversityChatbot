@@ -107,7 +107,7 @@ def test_features():
             print("\n1. CHATBOT TEST")
             print("-" * 40)
 
-            chatbot_btn = page.locator(".chatbot-btn").first
+            chatbot_btn = page.locator(".chatbot-vertical-tab").first
             if chatbot_btn.is_visible():
                 chatbot_btn.click()
                 page.wait_for_timeout(1000)
