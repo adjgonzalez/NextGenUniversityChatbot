@@ -51,26 +51,19 @@ jobs:
         coverage run manage.py test
         coverage xml
 
-    - name: Debug Coveralls binary availability (diagnose download failure)
-      run: |
-        echo "Runner info: $(uname -s) $(uname -m)"
-        # Try known platform filenames the Coveralls action uses
-        for f in coveralls-linux-amd64 coveralls-linux-arm64 coveralls-linux-386 coveralls-darwin-amd64 coveralls-windows-amd64.exe; do
-          echo "Checking https://github.com/coverallsapp/coverage-reporter/releases/latest/download/$f"
-          http_code=$(curl -s -o /dev/null -w "%{http_code}" -I "https://github.com/coverallsapp/coverage-reporter/releases/latest/download/$f" || echo "000")
-          echo "$f -> HTTP $http_code"
-        done
-        # Check the releases page too
-        echo "Releases page:"
-        curl -sI "https://github.com/coverallsapp/coverage-reporter/releases/latest" | sed -n '1,5p' || true
-
-    - name: Upload coverage to Coveralls (attempt pinned reporter)
+    - name: Upload coverage to Coveralls
       uses: coverallsapp/github-action@v2.3.6
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: uni-chatbot/coverage.xml
-        coverage-reporter-version: "1.9.0"
+        coverage-reporter-version: "v1.9.0"
         fail-on-error: false
+
+    - name: Upload coverage artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-${{ github.run_id }}
+        path: ./coverage/
 
 # ===== INTEGRATION TESTS =====
   integration-tests:
