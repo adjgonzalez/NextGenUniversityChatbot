@@ -4,85 +4,21 @@ This document serves as a template designed for a rapid and comprehensive unders
 ## 1. Project Structure
 This section provides a high-level overview of the project's directory and file structure, categorised by architectural layer or major functional area. It is essential for quickly navigating the codebase, locating relevant files, and understanding the overall organization and separation of concerns.
 
-
-[uni-chatbot]/
-├── mychatbot/                       # Contains all server-side code and APIs
-│   ├── migrations/                  # Main source code for backend services
-│   │   └── __init__.py/             #
-│   ├── static/                      # Frontend configuration files
-│   │  ├── images/                   # Frontend configuration files
-│   │  │  ├── group.png              # Frontend configuration files
-│   │  │  ├── logo.png               # Frontend configuration files
-│   │  │  └── logo1.png              # Frontend configuration files
-│   │  ├── js/                       # Backend unit
-│   │  │  ├── admission_sidebar.js   # Backend unit
-│   │  │  ├── chatbox.png            # Backend unit
-│   │  │  └── navbar.png             # Backend unit
-│   │  ├── mychatbot/                # Backend unit
-│   │  │  ├── admissions.png         # Frontend configuration files
-│   │  │  ├── pages.png              # Frontend configuration files
-│   │  │  └── style.png              # Frontend configuration files
-│   ├── __init__.py                  # Backend unit
-│   ├── admin.py                     # Backend unit
-│   ├── apps.py                      # Backend unit
-│   ├── models.py                    # Backend unit
-│   ├── tests.py                     # Backend unit and unit test
-│   ├── urls.py                      # Backend unit
-│   └── views.py                     # Backend unit
-├── mysite/                          # Contains all client-side code for user interfaces
-│   ├── __init__.py                  # Main source code for frontend applications
-│   ├── asgi.py                      # Main source code for frontend applications
-│   ├── settings.py                  # Main source code for frontend applications
-│   ├── urls.py                      # Main source code for frontend applications
-│   └── wsgu.py                      # Main source code for frontend applications
-├── pages/                           # Main source code for frontend applications
-│   ├── migrations/                  # Main source code for frontend applications
-│   │  ├── 0001_initial.py           # Main source code for frontend applications
-│   │  └── __init__.py               # Main source code for frontend applications
-│   └── templates/                   # Main source code for frontend applications
-│   │  ├── admissions/               # Main source code for frontend applications
-│   │  │  ├── admission.html         # Frontend configuration files
-│   │  │  ├── funding.html           # Frontend configuration files
-│   │  │  ├── graduate.html          # Frontend configuration files
-│   │  │  ├── online_course.html     # Frontend configuration files
-│   │  │  ├── siderbar.html          # Frontend configuration files
-│   │  │  └── undergraduate.html     # Frontend configuration files
-│   │  ├── base/                     # Frontend configuration files
-│   │  │  ├── base.html              # Frontend configuration files
-│   │  │  ├── chatbox.html           # Frontend configuration files
-│   │  │  ├── contact.html           # Frontend configuration files
-│   │  │  ├── faculty.html           # Frontend configuration files
-│   │  │  ├── footer.html            # Frontend configuration files
-│   │  │  ├── navbar.html            # Frontend configuration files
-│   │  │  ├── programs.html          # Frontend configuration files
-│   │  │  └── programs_detail1.html  # Frontend configuration files
-│   │  ├── pages/                    # Frontend configuration files
-│   │  │  └── home.html              # Frontend configuration files
-│   │  ├── __init__.py               # Main source code for frontend applications
-│   │  ├── admin.py                  # Main source code for frontend applications
-│   │  ├── apps.py                   # Main source code for frontend applications
-│   │  ├── models.py                 # Main source code for frontend applications
-│   │  ├── tests.py                  # Main source code for frontend applications
-│   │  ├── urls.py                   # Main source code for frontend applications
-│   │  └── views.py                  # Main source code for frontend applications
-├── users/                           # Main source code for frontend applications
-│   ├── migrations/                  # Main source code for frontend applications
-│   │  ├── 0001_initial.py           # Main source code for frontend applications
-│   │  └── __init__.py               # Main source code for frontend applications
-│   ├── templates/users/             # Frontend configuration files
-│   │  ├── login.html                # Frontend configuration files
-│   │  └── register.html             # Frontend configuration files
-│   manage.py                        # Main source code for frontend applications
-│   pyproject.toml                   # General utility functions
-│   superuser.json                   # General utility functions
-├── .gitignore                       # General utility functions
-├── .pre-commit-config.yaml          # General utility functions
-├── LICENSE                          # General utility functions
-├── NextGenUseCase.png               # General utility functions
-├── README.md                        # Project overview and quick start guide
-├── requirements.txt                 # Specifies intentionally untracked files to ignore
-└── ARCHITECTURE.md                  # This document
-
+NextGenUniversityChatbot/
+├── .github/                     # GitHub workflows, CI, nightly build
+├── docs/                        # Project documentation and artifacts
+├── UAT/                         # User Acceptance Test scenarios
+└── uni-chatbot/                 # DJANGO PROJECT ROOT
+    ├── feedback/                # Django app for feedback submission and storage
+    ├── chatbot_browser_tests/   # Playwright-based chatbot intent unit test
+    ├── integration_tests/       # Django integration tests (test interactions between components/apps)
+    ├── system_tests/            # End-to-end and system-level tests for the entire application
+    ├── regression_test_nightly  # Contains the regression test we run on the nightly build at 3 AM
+    ├── fixtures/                # Database and app fixtures for populating test data
+    ├── mychatbot/               # Core chatbot functionality Django app
+    ├── mysite/                  # Django project configuration and settings (settings.py)
+    ├── pages/                   # Django app for website pages (content, structure, navigation)
+    ├── users/                   # Django app for user accounts, authentication, and user management
 
 ## 2. High-Level System Diagram
 The project’s objective is to create a website that’ll allow a prospective student to find a program of their liking in our University’s website via website navigation or the help of a chatbot. We aim to assist the student in their initial process of enrolling and adjusting to university life so we will send useful resources to the student depending on their enrolled program upon registration and upon request to the chatbot. We will also implement a localization feature that will translate the entire website (including the chatbot) to different languages and a feedback feature where the student can communicate issues and comments directly to the admins.
