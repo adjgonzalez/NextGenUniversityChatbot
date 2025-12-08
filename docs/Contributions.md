@@ -17,7 +17,8 @@
 - Made the pre-commit hooks
 - Implemented the PR template
 - Added the Forgot your Password templates and logic flow
-- Worked as Pull Request Reviewer, in charge of reviewing merge requests and approving them.
+- Reviewed PRs
+- Did Code Reviews for merge requests
 - Worked on the CI pipeline to ensure the delivery of artifacts
 - Worked on each of the deliverables for the project (Proposal, Progress, Final)
 - Functioned as a mediator for internal issues
